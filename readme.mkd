@@ -1,0 +1,119 @@
+# Unite-taskwarrior
+
+A unite.vim interface to task warrior.
+
+Much of the code for this came from:
+[unite-todo](https://github.com/kannokanno/unite-todo).
+
+This is meant to be a simple interface to taskwarrior, that works faster than
+[vim-taskwarrior](https://github.com/farseer90718/vim-taskwarrior). Plus I like
+Unite's interface.
+
+## Requirements
+
+* python-enabled vim
+* [unite](https://github.com/Shougo/unite.vim)
+* [vimproc](https://github.com/Shougo/vimproc.vim)
+* [taskwarrior](http://taskwarrior.org/)
+
+    Taskwarrior should be configured to not prompt for stuff. I use:
+
+    ```
+    echo.command=yes
+    verbose=no
+    confirmation=no
+    ```
+
+    I addition, I've only tested this with version 2.3.0.
+
+## Installing
+
+Use a plugin manager. I like
+[NeoBundle](https://github.com/Shougo/neobundle.vim), Other good options are:
+[Vim-Plug](https://github.com/junegunn/vim-plug),
+[Vim-Pathogen](https://github.com/tpope/vim-pathogen),
+[Vundle](https://github.com/gmarik/Vundle.vim).
+
+For NeoBundle add:
+
+```vim
+NeoBundle 'blakesweeney/unite-taskwarrior'
+```
+
+## Screenshots
+
+
+
+## Usage
+
+This doesn't come with any key bindings added by default, you should add your
+own as needed. My bindings are:
+
+```vim
+nnoremap <Leader>T  :Unite taskwarrior<CR>
+nnoremap <Leader>Tt :Unite taskwarrior:
+nnoremap <Leader>Ta :UniteTaskwarriorAdd<CR>
+vnoremap <Leader>Ta :B UniteTaskwarriorAdd<CR>
+```
+
+The `:B` is from
+[vis.vim](http://vim.sourceforge.net/scripts/script.php?script_id=1195) which
+makes visual commands apply only the selected text, not the whole line. I highly
+recommend it as well.
+
+and in `ftplugin/unite.vim` I use:
+
+```vim
+nnoremap <C-t> :call unite#do_action('edit_tag')
+```
+
+### Viewing tasks:
+
+```vim
+:Unite taskwarrior               " Show all tasks not marked as completed or deleted
+:Unite taskwarrior:tag           " Show all tasks with the given tag
+:Unite taskwarrior:tag,other-tag " Show all tasks with tag and other-tag
+:UniteTaskwarriorAdd             " Add a task
+```
+
+### Available task actions
+
+Here are the actions that can be done on a task.
+
+* `toggle`
+    Will toggle the task status. This is the default action. By default is called by
+    `<CR>`. This will change the status as follows: 
+    `pending` -> `waiting` -> `completed`
+
+    Can be used on several selected tasks.
+
+* `delete`
+    Delete the the task
+
+    Can be used on several selected tasks.
+
+    By default is called by `d`.
+
+
+* `edit` 
+    Will edit the description of task.
+
+    By default is called by `e`.
+
+* `edit_tags` 
+    Will edit the tags.
+
+    Can be used on several tasks.
+
+* `open` 
+    Will open a notes file for the task.
+
+    By default is called by `o`.
+
+* `preview` 
+    Will preview the notes file.
+
+    By default is called by `p`.
+
+* `similar`
+    Show all tasks that have the tags from the current task.
