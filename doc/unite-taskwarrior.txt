@@ -1,0 +1,22 @@
+unite-taskwarrior.txt
+
+Installation
+Usage
+  Commands
+  Functions
+  Variables
+
+==============================================================================
+g:unite_task_note_directory                      *g:unite_task_note_directory*
+
+Define the directory that all notes will reside in.
+
+Default: "~/.task/note"
+
+                                                    *g:unite_task_note_suffix*
+
+Define the suffix for the note file.
+
+Default: "mkd"
+
+ vim:tw=78:ts=8:ft=help:norl:
