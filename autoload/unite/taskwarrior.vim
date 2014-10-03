@@ -126,7 +126,7 @@ function! unite#taskwarrior#input(args, use_range, line1, line2)
     call unite#taskwarrior#new(reverse(getline(a:line1, a:line2)))
   else 
     if a:args == ""
-      call unite#taskwarrior#new([input('Todo:')])
+      call unite#taskwarrior#new(input('Todo:'))
     else
       call unite#taskwarrior#new(a:args)
     endif
