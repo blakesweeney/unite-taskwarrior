@@ -1,7 +1,7 @@
-if exists('g:loaded_unite_task') && g:loaded_unite_task
+if exists('g:loaded_unite_taskwarrior') && g:loaded_unite_taskwarrior
   finish
 endif
-let g:loaded_unite_todo = 0
+let g:loaded_unite_taskwarrior = 0
 
 let s:save_cpo = &cpo
 set cpo&vim
