@@ -75,11 +75,11 @@ endfunction
 function! unite#taskwarrior#filter(strings)
   let filters = []
   for entry in a:strings
-    if strpart(entry, 0) == '@'
-      call add(filters, 'tag:' . entry)
+    if strpart(entry, 0, 1) == '@'
+      call add(filters, 'tag:' . strpart(entry, 1))
     endif
-    if strpart(entry, 0) == '$'
-      call add(filters, 'project:' . entry)
+    if strpart(entry, 0, 1) == '$'
+      call add(filters, 'project:' . strpart(entry, 1))
     endif
   endfor
   return filters
