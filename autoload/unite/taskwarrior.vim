@@ -13,11 +13,19 @@ let g:unite_taskwarrior_note_suffix = get(g:,
 
 let g:unite_taskwarrior_format_string = get(g:,
       \ "unite_taskwarrior_format_string",
-      \ "[%s] $%s\t%s (%s)")
+      \ "[%s] %s\t%s (%s)")
 
 let g:unite_taskwarrior_formatter = get(g:,
       \ "unite_taskwarrior_formatter",
       \ 'unite#taskwarrior#format')
+
+let g:unite_taskwarrior_tag_formatter = get(g:,
+      \ "unite_taskwarrior_tag_formatter",
+      \ 'unite#taskwarrior#tags#format')
+
+let g:unite_taskwarrior_project_formatter = get(g:,
+      \ "unite_taskwarrior_project_formatter",
+      \ 'unite#taskwarrior#projects#format')
 
 let g:unite_taskwarrior_filter = get(g:,
       \ 'unite_taskwarrior_filter',
@@ -58,15 +66,6 @@ function! unite#taskwarrior#run(task, cmd, ...)
   return vimproc#system(args)
 endfunction
 
-function! unite#taskwarrior#format(task)
-  let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
-  let tags = join(map(a:task.tags, "'@' . v:val"), ' ')
-  return printf(g:unite_taskwarrior_format_string,
-        \ status,
-        \ a:task.project,
-        \ a:task.description, tags)
-endfunction
-
 function! unite#taskwarrior#init()
   if !isdirectory(g:unite_taskwarrior_note_directory)
     call mkdir(g:unite_taskwarrior_note_directory, 'p')
@@ -78,11 +77,26 @@ function! unite#taskwarrior#filter(strings)
   for entry in a:strings
     if strpart(entry, 0) == '@'
       call add(filters, 'tag:' . entry)
-    else
+    endif
+    if strpart(entry, 0) == '$'
       call add(filters, 'project:' . entry)
     endif
   endfor
   return filters
+endfunction
+
+function! unite#taskwarrior#format(task)
+  let project = call(g:unite_taskwarrior_project_formatter, 
+        \ [{'name': a:task.project}])
+  let tags = map(a:task.tags, 
+        \ "call(g:unite_taskwarrior_tag_formatter, [{'name': v:val}])")
+  let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
+
+  return printf(g:unite_taskwarrior_format_string,
+        \ status,
+        \ project,
+        \ a:task.description,
+        \ join(tags, ' '))
 endfunction
 
 function! unite#taskwarrior#parse(raw)
@@ -90,7 +104,7 @@ function! unite#taskwarrior#parse(raw)
   " Who needs safety?
   let data = eval(line)
   " TODO: Fix safe version
-  " let data = pyeval("json.loads(vim.eval('a:line'))")
+  " let data = pyeval("json.loads(vim.eval('a:raw'))")
   let data.note = printf('%s/%s.%s',
         \ g:unite_taskwarrior_note_directory,
         \ data.uuid,
@@ -118,6 +132,9 @@ function! unite#taskwarrior#all()
 endfunction
 
 function! unite#taskwarrior#new(data)
+  if type(a:data) == type([])
+    return vimproc#system(["task", "add", a:data[0]])
+  endif
   return vimproc#system(["task", "add", a:data])
 endfunction
 
@@ -126,7 +143,7 @@ function! unite#taskwarrior#input(args, use_range, line1, line2)
     call unite#taskwarrior#new(reverse(getline(a:line1, a:line2)))
   else 
     if a:args == ""
-      call unite#taskwarrior#new(input('Todo:'))
+      call unite#taskwarrior#new(input('Task:'))
     else
       call unite#taskwarrior#new(a:args)
     endif

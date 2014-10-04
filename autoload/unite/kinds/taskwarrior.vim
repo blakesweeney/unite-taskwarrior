@@ -7,7 +7,7 @@ let s:kind = {
       \ 'action_table': {},
       \ 'is_selectable': 1,
       \ 'parents': ['openable'],
-      \}
+      \ }
 
 let s:kind.action_table.open = {'description' : 'open note'}
 function! s:kind.action_table.open.func(candidate)

@@ -18,7 +18,6 @@ simpler interface much of the time.
 * [unite](https://github.com/Shougo/unite.vim)
 * [vimproc](https://github.com/Shougo/vimproc.vim)
 * [taskwarrior]
-
     Taskwarrior should be configured to not prompt for stuff. I use:
 
     ```
@@ -52,13 +51,21 @@ Add some.
 ## Usage
 
 This doesn't come with any key bindings added by default, you should add your
-own as needed. My bindings are:
+own as needed. My configuration is:
 
 ```vim
-nnoremap <Leader>T  :Unite taskwarrior<CR>
-nnoremap <Leader>Tt :Unite taskwarrior:
-nnoremap <Leader>Ta :UniteTaskwarriorAdd<CR>
-vnoremap <Leader>Ta :B UniteTaskwarriorAdd<CR>
+" vimrc
+NeoBundle 'blakesweeney/unite-taskwarrior'
+call unite#custom#source('taskwarrior', 'matchers', 'matcher_fuzzy')
+call unite#custom#source('taskwarrior', 'sorters', 'sorter_rank')
+
+nnoremap <silent>  <Leader>T  :Unite taskwarrior -winheight=50<CR>
+nnoremap           <Leader>Ta :UniteTaskWarriorAdd<CR>
+vnoremap <silent>  <Leader>Ta :B UniteTaskWarriorAdd<CR>
+
+" ftplugin/unite.vim
+inoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
+nnoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
 ```
 
 The `:B` is from
@@ -70,19 +77,33 @@ recommend it as well. In `ftplugin/unite.vim` I use:
 nnoremap <C-t> :call unite#do_action('edit_tag')
 ```
 
-### Viewing tasks:
+### Commands:
 
 ```vim
 :Unite taskwarrior                 " Show all tasks not marked as deleted
-:Unite taskwarrior:proj            " Show all tasks for the given project
+:Unite taskwarrior:$proj           " Show all tasks for the given project
 :Unite taskwarrior:@tag            " Show all tasks with the given tag
 :Unite taskwarrior:@tag:@other-tag " Show all tasks with tag and other-tag
+:Unite taskwarrior:tags            " Show a tag listing
+:Unite taskwarrior:projects        " Show a project listing
 :UniteTaskwarriorAdd               " Add a task
 ```
 
-### Available task actions
+### Project list actions
 
-Here are the actions that can be done on a task.
+* `open`
+    Show all tasks for the given project
+
+    This can be run on several projects.
+
+### Tag list actions
+
+* `open`
+    Show all tasks with the given tag.
+
+    This can be run on several tags.
+
+### Task list actions
 
 * `do`
     Complete this task.
@@ -121,14 +142,23 @@ Here are the actions that can be done on a task.
 
     By default is called by `p`.
 
+* `search`
+    Search all tasks.
+
+    TODO: Implement me
+
+* `similar`
+    Show all similar tasks.
+
+    TODO: Implement me
+
 * `toggle`
     Will toggle the task status. This is the default action. By default is called by
     `<CR>`. This will toggle between `pending` and `completed`.
 
     Can be used on several selected tasks.
 
-## TODO:
-
-* Add a `similar` action
+* `view`
+    Provide a defailed view of the task.
 
 [taskwarrior]: http://taskwarrior.org/
