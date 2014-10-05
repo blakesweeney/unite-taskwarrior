@@ -46,6 +46,14 @@ let g:unite_taskwarrior_status_mapping = get(g:,
       \ 'recurring': '@'
       \ })
 
+let g:unite_taskwarrior_projects_abbr = get(g:,
+      \ "unite_taskwarrior_projects_abbr",
+      \ "$")
+
+let g:unite_taskwarrior_tags_abbr = get(g:,
+      \ "unite_taskwarrior_tags_abbr",
+      \ "@")
+
 python << EOF
 import json
 EOF
