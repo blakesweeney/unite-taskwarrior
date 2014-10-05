@@ -90,6 +90,14 @@ function! s:kind.action_table.toggle.func(candidates)
   endfor
 endfunction
 
+let s:kind.action_table.modify = {'description': 'modify task', 'is_selectable': 1}
+function! s:kind.action_table.modify.func(candidates)
+  let raw = unite#taskwarrior#trim(input("Modify: "))
+  for candidate in a:candidates
+    call unite#taskwarrior#modify(candidate.source__data, raw)
+  endfor
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
