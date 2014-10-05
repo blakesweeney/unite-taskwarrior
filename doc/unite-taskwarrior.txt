@@ -7,6 +7,32 @@ Usage
   Variables
 
 ==============================================================================
+Commands
+
+==============================================================================
+Functions
+
+unite#taskwarrior#trim
+unite#taskwarrior#call
+unite#taskwarrior#run
+unite#taskwarrior#init
+unite#taskwarrior#filter
+unite#taskwarrior#format
+unite#taskwarrior#parse
+unite#taskwarrior#select
+unite#taskwarrior#all
+unite#taskwarrior#new
+unite#taskwarrior#input
+unite#taskwarrior#do
+unite#taskwarrior#delete
+unite#taskwarrior#modify
+unite#taskwarrior#rename
+unite#taskwarrior#open
+unite#taskwarrior#toggle
+
+==============================================================================
+Variables
+
 g:unite_task_note_directory                      *g:unite_task_note_directory*
 
 Define the directory that all notes will reside in.
@@ -18,5 +44,23 @@ Default: "~/.task/note"
 Define the suffix for the note file.
 
 Default: "mkd"
+
+g:unite_taskwarrior_format_string
+
+g:unite_taskwarrior_formatter
+
+g:unite_taskwarrior_tag_formatter
+
+g:unite_taskwarrior_project_formatter
+
+g:unite_taskwarrior_filter
+
+g:unite_taskwarrior_toggle_mapping
+
+g:unite_taskwarrior_status_mapping
+
+g:unite_taskwarrior_projects_abbr
+
+g:unite_taskwarrior_tags_abbr
 
  vim:tw=78:ts=8:ft=help:norl:
