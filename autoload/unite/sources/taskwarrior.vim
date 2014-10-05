@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior',
+      \ 'syntax': 'TaskWarrior'
       \ }
 
 " Consider using async
