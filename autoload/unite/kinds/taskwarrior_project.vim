@@ -20,6 +20,18 @@ function! s:kind.action_table.open.func(candidates)
   call unite#start([args])
 endfunction
 
+let s:kind.action_table.rename = {
+      \ 'description' : 'rename a project',
+      \ }
+
+function! s:kind.action_table.rename.func(candidate)
+  let name = a:candidate.name
+  let filter = unite#taskwarrior#projects#expand(name)
+  let name = unite#taskwarrior#trim(input("Name ( " . name . "): ", name))
+  let proj = unite#taskwarrior#projects#expand(name)
+  call unite#taskwarrior#call(filter, "modify", proj)
+endfunction
+
 function! unite#kinds#taskwarrior_project#define()
   return s:kind
 endfunction
