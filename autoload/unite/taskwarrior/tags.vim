@@ -20,7 +20,26 @@ function! unite#taskwarrior#tags#select(args)
 endfunction
 
 function! unite#taskwarrior#tags#format(tag)
-  return '@' . a:tag.name
+  return printf(g:unite_taskwarrior_tag_format_string, 
+        \ a:tag.name,
+        \ a:tag.count)
+endfunction
+
+function! unite#taskwarrior#tags#abbr(data)
+  if a:data == ''
+    return ''
+  endif
+  if type(a:data) == type('')
+    return g:unite_taskwarrior_tags_abbr . a:data
+  endif
+  return g:unite_taskwarrior_tags_abbr . a:data.name
+endfunction
+
+function! unite#taskwarrior#tags#expand(short)
+  if strpart(a:short, 0, 1) == g:unite_taskwarrior_tags_abbr
+    return 'tag:' . strpart(a:short, 1, -1)
+  endif
+  return 'tag:' . a:short
 endfunction
 
 let &cpo = s:save_cpo

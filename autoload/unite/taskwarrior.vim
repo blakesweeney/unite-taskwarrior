@@ -15,6 +15,14 @@ let g:unite_taskwarrior_format_string = get(g:,
       \ "unite_taskwarrior_format_string",
       \ "[%s] %s\t%s (%s)")
 
+let g:unite_taskwarrior_tag_format_string = get(g:,
+      \ 'unite_taskwarrior_tag_format_string',
+      \ "%20s\t%5s")
+
+let g:unite_taskwarrior_project_format_string = get(g:,
+      \ 'unite_taskwarrior_project_format_string',
+      \ "%20s\t%5s")
+
 let g:unite_taskwarrior_formatter = get(g:,
       \ "unite_taskwarrior_formatter",
       \ 'unite#taskwarrior#format')
@@ -94,10 +102,9 @@ function! unite#taskwarrior#filter(strings)
 endfunction
 
 function! unite#taskwarrior#format(task)
-  let project = call(g:unite_taskwarrior_project_formatter, 
-        \ [{'name': a:task.project}])
+  let project = unite#taskwarrior#projects#abbr(a:task.project)
   let tags = map(a:task.tags, 
-        \ "call(g:unite_taskwarrior_tag_formatter, [{'name': v:val}])")
+        \ "unite#taskwarrior#tags#abbr(v:val)")
   let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
 
   return printf(g:unite_taskwarrior_format_string,

@@ -23,7 +23,9 @@ function! unite#taskwarrior#projects#select(args)
 endfunction
 
 function! unite#taskwarrior#projects#format(project)
-  return '$' . a:project.name
+  return printf(g:unite_taskwarrior_project_format_string, 
+        \ a:project.name,
+        \ a:project.count)
 endfunction
 
 function! unite#taskwarrior#projects#abbr(data)
