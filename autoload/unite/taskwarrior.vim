@@ -106,6 +106,9 @@ function! unite#taskwarrior#format(task)
   let tags = map(a:task.tags, 
         \ "unite#taskwarrior#tags#abbr(v:val)")
   let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
+  if filereadable(a:task.note)
+    call add(tags, "@note")
+  endif
 
   return printf(g:unite_taskwarrior_format_string,
         \ status,
