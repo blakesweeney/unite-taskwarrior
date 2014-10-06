@@ -51,7 +51,7 @@ let g:unite_taskwarrior_status_mapping = get(g:,
       \ 'waiting': '-',
       \ 'completed': '✓',
       \ 'deleted': 'x',
-      \ 'recurring': '@'
+      \ 'recurring': '+'
       \ })
 
 let g:unite_taskwarrior_projects_abbr = get(g:,
