@@ -3,6 +3,10 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
+let g:unite_taskwarrior_command = get(g:,
+      \ 'unite_taskwarrior_command',
+      \ "task")
+
 let g:unite_taskwarrior_note_directory = get(g:,
       \ 'unite_taskwarrior_note_directory',
       \ expand('~/.task/note'))
@@ -62,6 +66,10 @@ let g:unite_taskwarrior_tags_abbr = get(g:,
       \ "unite_taskwarrior_tags_abbr",
       \ "@")
 
+let g:unite_taskwarrior_fallback_match = get(g:,
+      \ "unite_taskwarrior_fallback_match",
+      \ "matcher_fuzzy")
+
 python << EOF
 import json
 EOF
@@ -71,15 +79,15 @@ function! unite#taskwarrior#trim(str)
 endfunction
 
 function! unite#taskwarrior#call(filter, cmd, ...)
-  let args = ["task", a:filter, a:cmd]
+  let args = [g:unite_taskwarrior_command, a:filter, a:cmd]
   call extend(args, a:000)
   return  vimproc#system(args)
 endfunction
 
 function! unite#taskwarrior#run(task, cmd, ...)
-  let args = ["task", a:task.uuid, a:cmd]
+  let args = [a:task.uuid, a:cmd]
   call extend(args, a:000)
-  return vimproc#system(args)
+  return call('unite#taskwarrior#call', args)
 endfunction
 
 function! unite#taskwarrior#init()
@@ -107,7 +115,7 @@ function! unite#taskwarrior#format(task)
         \ "unite#taskwarrior#tags#abbr(v:val)")
   let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
   if filereadable(a:task.note)
-    call add(tags, "@note")
+    call add(tags, g:unite_taskwarrior_tags_abbr . "NOTE")
   endif
 
   return printf(g:unite_taskwarrior_format_string,
@@ -137,11 +145,10 @@ function! unite#taskwarrior#parse(raw)
 endfunction
 
 function! unite#taskwarrior#select(pattern)
-  let args = ["task"]
+  let args = [g:unite_taskwarrior_filter, "export"]
   call extend(args, a:pattern)
-  call add(args, "export")
-  call add(args, g:unite_taskwarrior_filter)
-  let lines = split(vimproc#system(args), ",\n")
+  let raw = call("unite#taskwarrior#call", args)
+  let lines = split(raw, ",\n")
   return map(lines, 'unite#taskwarrior#parse(v:val)')
 endfunction
 
@@ -151,9 +158,9 @@ endfunction
 
 function! unite#taskwarrior#new(data)
   if type(a:data) == type([])
-    return vimproc#system(["task", "add", a:data[0]])
+    return unite#taskwarrior#call("", "add", a:data[0])
   endif
-  return vimproc#system(["task", "add", a:data])
+  return unite#taskwarrior#call("", "add", a:data)
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
@@ -161,7 +168,7 @@ function! unite#taskwarrior#input(args, use_range, line1, line2)
     call unite#taskwarrior#new(reverse(getline(a:line1, a:line2)))
   else 
     if a:args == ""
-      call unite#taskwarrior#new(input('Task:'))
+      call unite#taskwarrior#new(input('Task: '))
     else
       call unite#taskwarrior#new(a:args)
     endif
