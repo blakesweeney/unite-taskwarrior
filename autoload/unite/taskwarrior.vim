@@ -203,5 +203,9 @@ function! unite#taskwarrior#toggle(task)
   return unite#taskwarrior#modify(a:task, "status:" . a:task.status)
 endfunction
 
+function! unite#taskwarrior#annotate(task, text)
+  return unite#taskwarrior#run(a:task, "annotate", a:text)
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo

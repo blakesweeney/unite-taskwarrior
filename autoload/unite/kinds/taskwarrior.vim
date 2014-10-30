@@ -98,6 +98,14 @@ function! s:kind.action_table.modify.func(candidates)
   endfor
 endfunction
 
+let s:kind.action_table.annotate = {'description': 'annotate task', 'is_selectable': 1}
+function! s:kind.action_table.annotate.func(candidates)
+  let raw = unite#taskwarrior#trim(input("Annotate: "))
+  for candidate in a:candidates
+    call unite#taskwarrior#annotate(candidate.source__data, raw)
+  endfor
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
