@@ -1,66 +1,124 @@
-unite-taskwarrior.txt
+*unite-taskwarrior.txt*                    |unite-taskwarrior|
 
-Installation
-Usage
-  Commands
-  Functions
-  Variables
+Author: Blake Sweeney
+License: Same terms as vim itself (see *license*)
 
-==============================================================================
-Commands
+|CONTENTS|                     *unite-taskwarrior-contents*
 
-==============================================================================
-Functions
-
-unite#taskwarrior#trim
-unite#taskwarrior#call
-unite#taskwarrior#run
-unite#taskwarrior#init
-unite#taskwarrior#filter
-unite#taskwarrior#format
-unite#taskwarrior#parse
-unite#taskwarrior#select
-unite#taskwarrior#all
-unite#taskwarrior#new
-unite#taskwarrior#input
-unite#taskwarrior#do
-unite#taskwarrior#delete
-unite#taskwarrior#modify
-unite#taskwarrior#rename
-unite#taskwarrior#open
-unite#taskwarrior#toggle
+Installation                   *unite-taskwarrior-install*
+Usage                           *unite-taskwarrior-usage*
+  Commands                      *unite-taskwarrior-commands*
+  Functions                     *unite-taskwarrior-functions*
+  Variables                     *unite-taskwarrior-variables*
 
 ==============================================================================
-Variables
+Installation                                       |unite-taskwarrior-install|
 
-g:unite_task_note_directory                      *g:unite_task_note_directory*
+Copy files into the correct places, or just use a package manager.
+
+==============================================================================
+Usage                                                |unite-taskwarrior-usage|
+
+This does not come with any key bindings. Personally I find the follow ones
+very useful:
+
+In my `vimrc`:
+>
+  let g:unite_taskwarrior_filter = 'status.not:delete and status.not:completed'
+
+  call unite#custom#source('taskwarrior', 'matchers', 'matcher_fuzzy')
+  call unite#custom#source('taskwarrior', 'sorters', 'sorter_rank')
+
+  nnoremap <silent>  <Leader>T :Unite taskwarrior -winheight=50<CR>
+  nnoremap           <Leader>Ta :UniteTaskWarriorAdd<CR>
+  vnoremap <silent>  <Leader>Ta :B UniteTaskWarriorAdd<CR>
+>
+
+This makes my listing show the pending task, gives me useful mappings to open
+and add tasks. Also, by using the matcher and sorder I get a nice responsive
+search in my tasks.
+
+
+In `ftplugin/unite.vim`:
+>
+  inoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
+  nnoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
+<
+This lets me edit the tags quickly. I end up doing this a lot so it's useful
+to have.
+
+==============================================================================
+Commands                                   |unite-taskwarrior-commands|
+
+==============================================================================
+Functions                                        |unite-taskwarrior-functions|
+
+This comes with a bunch of 
+
+unite#taskwarrior#trim                             |unite#taskwarrior#trim|
+
+Stip off whitespace from some string. 
+
+unite#taskwarrior#call                             |unite#taskwarrior#call|
+
+Run a task command.
+
+unite#taskwarrior#run                             |unite#taskwarrior#run|
+unite#taskwarrior#init                             |unite#taskwarrior#init|
+unite#taskwarrior#filter                             |unite#taskwarrior#filter|
+unite#taskwarrior#format                             |unite#taskwarrior#format|
+unite#taskwarrior#parse                             |unite#taskwarrior#parse|
+unite#taskwarrior#select                             |unite#taskwarrior#select|
+unite#taskwarrior#all                             |unite#taskwarrior#all|
+unite#taskwarrior#new                             |unite#taskwarrior#new|
+unite#taskwarrior#input                             |unite#taskwarrior#input|
+unite#taskwarrior#do                             |unite#taskwarrior#do|
+
+Mark a task as done.
+
+unite#taskwarrior#delete                             |unite#taskwarrior#delete|
+
+Mark a task as deleted
+
+unite#taskwarrior#modify                             |unite#taskwarrior#modify|
+
+Run the modify command on one task.
+
+unite#taskwarrior#rename                             |unite#taskwarrior#rename|
+
+Change the tasks description
+
+unite#taskwarrior#open                             |unite#taskwarrior#open|
+
+Open the note file assoicated with a task.
+
+unite#taskwarrior#toggle                             |unite#taskwarrior#toggle|
+
+Toggle the status of a task. This is the default action.
+
+==============================================================================
+Variables                                       |unite-taskwarrior-variables|
+
+g:unite_task_note_directory                      |g:unite_task_note_directory|
 
 Define the directory that all notes will reside in.
 
 Default: "~/.task/note"
 
-                                                    *g:unite_task_note_suffix*
+g:unite_task_note_suffix                            |g:unite_task_note_suffix|
 
 Define the suffix for the note file.
 
 Default: "mkd"
 
-g:unite_taskwarrior_format_string
-
-g:unite_taskwarrior_formatter
-
-g:unite_taskwarrior_tag_formatter
-
-g:unite_taskwarrior_project_formatter
-
-g:unite_taskwarrior_filter
-
-g:unite_taskwarrior_toggle_mapping
-
-g:unite_taskwarrior_status_mapping
-
-g:unite_taskwarrior_projects_abbr
-
-g:unite_taskwarrior_tags_abbr
+g:unite_taskwarrior_format_string                  |g:unite_taskwarrior_format_string|
+g:unite_taskwarrior_formatter                  |g:unite_taskwarrior_formatter|
+g:unite_taskwarrior_tag_formatter                  |g:unite_taskwarrior_tag_formatter|
+g:unite_taskwarrior_project_formatter                  |g:unite_taskwarrior_project_formatter|
+g:unite_taskwarrior_filter                  |g:unite_taskwarrior_filter|
+g:unite_taskwarrior_toggle_mapping                  |g:unite_taskwarrior_toggle_mapping|
+g:unite_taskwarrior_status_mapping                  |g:unite_taskwarrior_status_mapping|
+g:unite_taskwarrior_projects_abbr                  |g:unite_taskwarrior_projects_abbr|
+g:unite_taskwarrior_tags_abbr                  |g:unite_taskwarrior_tags_abbr|
 
  vim:tw=78:ts=8:ft=help:norl:
