@@ -111,8 +111,7 @@ endfunction
 
 function! unite#taskwarrior#format(task)
   let project = unite#taskwarrior#projects#abbr(a:task.project)
-  let tags = map(a:task.tags, 
-        \ "unite#taskwarrior#tags#abbr(v:val)")
+  let tags = map(a:task.tags, "unite#taskwarrior#tags#abbr(v:val)")
   let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
   if filereadable(a:task.note)
     call add(tags, g:unite_taskwarrior_tags_abbr . "NOTE")
