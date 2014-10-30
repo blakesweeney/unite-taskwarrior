@@ -70,8 +70,17 @@ function! s:task_source(args)
   return candidates
 endfunction
 
+let s:source_cmd = {
+      \ 'name': 'taskwarrior/cmd',
+      \ 'default_kind': 'taskwarrior_cmd'
+      \ }
+
+function! s:source_cmd.change_candidates(args, context)
+  return [{"word": a:context.input}]
+endfunction
+
 function! unite#sources#taskwarrior#define()
-  return s:source
+  return [s:source, s:source_cmd]
 endfunction
 
 let &cpo = s:save_cpo
