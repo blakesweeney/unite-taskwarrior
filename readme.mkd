@@ -161,4 +161,18 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 * `view`
     Provide a defailed view of the task.
 
+# Running tests
+
+The tests use [vim-vspec](kana/vim-vspec) and [vim-flavor](kana/vim-flavor). You
+should install vim-flavor with `bundle install`. You can then run tests by
+running then `run-tests` script. The script makes sure we use the correct task
+configuration and data directory. The first time running this it will fail
+because vimproc must be compiled. To do this:
+
+```sh
+$ cd .vim-flavor/deps/Shougo_vimproc.vim/
+$ make -f make_mac.mak # If you have a mac
+# If you don't have mac you'll have to choose the correct make file.
+```
+
 [taskwarrior]: http://taskwarrior.org/

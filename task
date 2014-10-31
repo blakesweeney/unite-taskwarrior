@@ -1,0 +1,3 @@
+#!/bin/sh
+
+TASKRC=$PWD/t/taskrc TASKDATA=$PWD/t/tasks task $@

@@ -1,0 +1,5 @@
+echo.command=no
+verbose=no
+confirmation=no
+
+default.command=list
