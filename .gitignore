@@ -3,3 +3,5 @@ GPATH
 GRTAGS
 GTAGS
 .vim-flavor/
+Gemfile.lock
+VimFlavor.lock
