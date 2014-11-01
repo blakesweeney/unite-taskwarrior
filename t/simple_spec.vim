@@ -1,4 +1,12 @@
 describe 'basic unite#taskwarrior actions'
+  before
+    call vimproc#system("./run setup")
+  end
+
+  after
+    call vimproc#system("./run setup")
+  end
+
   it 'can list all tasks'
    let tasks = unite#taskwarrior#select([])
    Expect 4 == len(tasks)
@@ -55,5 +63,11 @@ describe 'basic unite#taskwarrior actions'
     let result = unite#taskwarrior#trim("  Add some useful task proj:other  ")
     let ans = "Add some useful task proj:other"
     Expect ans == result
+  end
+
+  it 'get a task status'
+    let task = unite#taskwarrior#select(["uuid:ac5ca2e6-869d-4af7-964a-e24e8b49e60c"])
+    Expect 1 == len(task)
+    Expect "pending" == task[0].status
   end
 end
