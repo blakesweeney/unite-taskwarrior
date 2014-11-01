@@ -1,3 +1,0 @@
-#!/bin/sh
-
-TASKRC=$PWD/t/taskrc TASKDATA=$PWD/t/tasks bundle exec vim-flavor test
