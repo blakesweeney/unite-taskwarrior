@@ -22,11 +22,15 @@ describe 'Modifying the tasks'
     let annotation = "Something informative"
     let task = unite#taskwarrior#select(["uuid:ac5ca2e6-869d-4af7-964a-e24e8b49e60c"])
     Expect 1 == len(task)
+    let desc = task[0].description
+    let project = task[0].project
 
     call unite#taskwarrior#annotate(task[0], annotation)
     let task = unite#taskwarrior#select(["uuid:ac5ca2e6-869d-4af7-964a-e24e8b49e60c"])
     Expect 1 == len(task)
     Expect annotation == task[0].annotations[0].description
+    Expect project == task[0].project
+    Expect desc == task[0].description
   end
 
   it 'can mark a task as started or stopped'
@@ -51,11 +55,13 @@ describe 'Modifying the tasks'
     let task = unite#taskwarrior#select(["uuid:ac5ca2e6-869d-4af7-964a-e24e8b49e60c"])
     Expect 1 == len(task)
     let task[0].description = title
+    let project = task[0].project
     call unite#taskwarrior#rename(task[0])
 
     let task = unite#taskwarrior#select(["uuid:ac5ca2e6-869d-4af7-964a-e24e8b49e60c"])
     Expect 1 == len(task)
     Expect title == task[0].description
+    Expect project == task[0].project
   end
 
   it 'can modify the project of a task'
