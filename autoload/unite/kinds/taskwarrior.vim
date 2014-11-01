@@ -106,6 +106,16 @@ function! s:kind.action_table.annotate.func(candidates)
   endfor
 endfunction
 
+let s:kind.action_table.start = {'description': 'start a task'}
+function! s:kind.action_table.start.func(candidate)
+  return unite#taskwarrior#start(a:candidate.source__data)
+endfunction
+
+let s:kind.action_table.stop = {'description': 'stop a task'}
+function! s:kind.action_table.stop.func(candidate)
+  return unite#taskwarrior#stop(a:candidate.source__data)
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
