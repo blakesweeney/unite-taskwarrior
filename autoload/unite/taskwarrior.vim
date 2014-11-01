@@ -238,5 +238,13 @@ function! unite#taskwarrior#stop(task)
   return unite#taskwarrior#run(a:task, "stop")
 endfunction
 
+function! unite#taskwarrior#yank_uri(task)
+  let @@ = '<task:' . a:task.uuid . '>'
+endfunction
+
+function! unite#taskwarrior#yank_id(task)
+  let @@ = a:task.uuid
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
