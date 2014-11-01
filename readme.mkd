@@ -117,27 +117,27 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 
     By default is called by `d`.
 
-* `edit` 
+* `edit`
     Will edit the description of task.
 
     By default is called by `e`.
 
-* `edit_tags` 
+* `edit_tags`
     Will edit the tags.
 
     Can be used on several tasks.
 
-* `edit_proj` 
+* `edit_proj`
     Edit the project of the current task
 
     Can be used on several tasks.
 
-* `open` 
+* `open`
     Will open a notes file for the task.
 
     By default is called by `o`.
 
-* `preview` 
+* `preview`
     Will preview the notes file.
 
     By default is called by `p`.
@@ -163,16 +163,20 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 
 # Running tests
 
-The tests use [vim-vspec](kana/vim-vspec) and [vim-flavor](kana/vim-flavor). You
-should install vim-flavor with `bundle install`. You can then run tests by
-running then `run-tests` script. The script makes sure we use the correct task
-configuration and data directory. The first time running this it will fail
-because vimproc must be compiled. To do this:
+First install the required packages with [vim-flavor](kana/vim-flavor). You
+should only need to do `run install` to install everything needed. 
+Then compile vimproc with:
 
 ```sh
 $ cd .vim-flavor/deps/Shougo_vimproc.vim/
 $ make -f make_mac.mak # If you have a mac
 # If you don't have mac you'll have to choose the correct make file.
 ```
+
+If `run install` doesn't install everything then install vim-flavor with bundler
+and use vim-flavor to install vim-vspec.
+
+You can then run tests by doing `./run test`. The script makes sure we use the
+correct task configuration and data directory.
 
 [taskwarrior]: http://taskwarrior.org/
