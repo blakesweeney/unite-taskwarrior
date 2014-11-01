@@ -134,12 +134,31 @@ function! unite#taskwarrior#parse(raw)
         \ g:unite_taskwarrior_note_directory,
         \ data.uuid,
         \ g:unite_taskwarrior_note_suffix)
+
   if !has_key(data, 'tags')
     let data.tags = []
   endif
+
+  if !has_key(data, 'annotations')
+    let data.annotations = []
+  endif
+
   if !has_key(data, 'project')
     let data.project = ''
   endif
+
+  let data.started = 0
+  let data.start_time = ''
+  if has_key(data, 'start_time')
+    let data.started = 1
+  endif
+
+  let data.stopped = 0
+  let data.stop_time = ''
+  if has_key(data, 'stop_time')
+    let data.stopped = 1
+  endif
+
   return data
 endfunction
 
@@ -189,7 +208,7 @@ function! unite#taskwarrior#modify(task, data)
 endfunction
 
 function! unite#taskwarrior#rename(task)
-  return unite#taskwarrior#modify(a:task, "description:" . a:task.description)
+  return unite#taskwarrior#modify(a:task, "description:'" . a:task.description . "'")
 endfunction
 
 function! unite#taskwarrior#open(task)
@@ -203,8 +222,20 @@ function! unite#taskwarrior#toggle(task)
   return unite#taskwarrior#modify(a:task, "status:" . a:task.status)
 endfunction
 
+function! unite#taskwarrior#project(task, project)
+  return unite#taskwarrior#modify(a:task, "proj:'" . a:project . "'")
+endfunction
+
 function! unite#taskwarrior#annotate(task, text)
   return unite#taskwarrior#run(a:task, "annotate", a:text)
+endfunction
+
+function! unite#taskwarrior#start(task)
+  return unite#taskwarrior#run(a:task, "start")
+endfunction
+
+function! unite#taskwarrior#stop(task)
+  return unite#taskwarrior#run(a:task, "stop")
 endfunction
 
 let &cpo = s:save_cpo

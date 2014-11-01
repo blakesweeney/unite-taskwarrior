@@ -64,7 +64,7 @@ function! s:kind.action_table.edit_proj.func(candidates)
   if !empty(after)
     for candidate in a:candidates
       let task = candidate.source__data
-      call unite#taskwarrior#modify(task, "proj: " . after)
+      call unite#taskwarrior#project(task, after)
     endfor
   endif
 endfunction
