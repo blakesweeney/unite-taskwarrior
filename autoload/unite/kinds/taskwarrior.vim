@@ -116,6 +116,16 @@ function! s:kind.action_table.stop.func(candidate)
   return unite#taskwarrior#stop(a:candidate.source__data)
 endfunction
 
+let s:kind.action_table.yank = {'description': 'yank a task uuid', 'is_quit': 1}
+function! s:kind.action_table.yank.func(candidate)
+  return unite#taskwarrior#yank_id(a:candidate.source__data)
+endfunction
+
+let s:kind.action_table.yank_uri = {'description': 'yank a task uri', 'is_quit': 1}
+function! s:kind.action_table.yank_uri.func(candidate)
+  return unite#taskwarrior#yank_uri(a:candidate.source__data)
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
