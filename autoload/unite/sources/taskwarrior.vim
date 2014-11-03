@@ -23,7 +23,7 @@ function! s:source.gather_candidates(args, context)
     return s:project_source(data)
   endif
 
-  return s:task_source(a:args)
+  return s:task_source(a:args, a:context)
 endfunction
 
 function! s:project_source(raw)
@@ -54,7 +54,7 @@ function! s:tag_source(raw)
   return candidates
 endfunction
 
-function! s:task_source(args)
+function! s:task_source(args, context)
   let candidates = []
   let filter = unite#taskwarrior#filter(a:args)
   let loaded = unite#taskwarrior#select(filter)
