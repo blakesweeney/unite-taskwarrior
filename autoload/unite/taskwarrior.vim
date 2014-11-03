@@ -70,6 +70,10 @@ let g:unite_taskwarrior_fallback_match = get(g:,
       \ "unite_taskwarrior_fallback_match",
       \ "matcher_fuzzy")
 
+let g:unite_taskwarrior_uri_format = get(g:,
+      \ 'unite_taskwarrior_uri_format',
+      \ '<task:%s>')
+
 python << EOF
 import json
 EOF
@@ -239,7 +243,7 @@ function! unite#taskwarrior#stop(task)
 endfunction
 
 function! unite#taskwarrior#yank_uri(task)
-  let @@ = '<task:' . a:task.uuid . '>'
+  let @@ = printf(g:unite_taskwarrior_uri_format, a:task.uuid)
 endfunction
 
 function! unite#taskwarrior#yank_id(task)
