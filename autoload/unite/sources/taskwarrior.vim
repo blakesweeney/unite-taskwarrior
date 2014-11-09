@@ -11,7 +11,8 @@ let s:source = {
 " Consider using async
 function! s:source.gather_candidates(args, context)
   let candidates = []
-  let filter = unite#taskwarrior#filter(a:args)
+  let project = get(a:context, 'custom_project', '')
+  let filter = unite#taskwarrior#filter(a:args, project)
   let loaded = unite#taskwarrior#select(filter)
   for todo in loaded
     let line = call(g:unite_taskwarrior_formatter, [todo])

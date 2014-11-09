@@ -100,7 +100,13 @@ function! unite#taskwarrior#init()
   endif
 endfunction
 
-function! unite#taskwarrior#filter(strings)
+function! unite#taskwarrior#load_config(filename)
+  let file = vimproc#open(a:filename)
+  let lines = file.read()
+  return eval(lines)
+endfunction
+
+function! unite#taskwarrior#filter(strings, project)
   let filters = []
   for entry in a:strings
     if strpart(entry, 0, 1) == '@'
@@ -110,6 +116,17 @@ function! unite#taskwarrior#filter(strings)
       call add(filters, 'project:' . strpart(entry, 1))
     endif
   endfor
+  
+  if a:project ==? 'infer'
+    echomsg 'infer'
+    if filereadable("./unite-taskwarior")
+      let config = unite#taskwarrior#load_config("./unite-taskwarior")
+      call add(filters, 'project:' . config.project)
+    else
+      call add(filters, "project:" . fnamemodify(getcwd(), ":t"))
+    endif
+  endif
+
   return filters
 endfunction
 
