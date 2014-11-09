@@ -4,7 +4,7 @@ set cpo&vim
 call unite#taskwarrior#init()
 
 let s:source = {
-      \ 'name': 'taskwarrior_annotate',
+      \ 'name': 'taskwarrior/annotate',
       \ 'syntax': 'TaskWarrior',
       \ 'default_action': 'annotate',
       \ 'action_table': {}
@@ -13,7 +13,7 @@ let s:source = {
 let s:taskwarrior = unite#sources#taskwarrior#define()[0]
 
 function! s:source.gather_candidates(args, context)
-  let candidates = s:taskwarrior.gather_candidates([], {})
+  let candidates = s:taskwarrior.gather_candidates([], a:context)
   for candidate in candidates
     let candidate['source__annotations'] = a:args[0]
   endfor

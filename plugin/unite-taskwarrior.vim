@@ -15,12 +15,12 @@ let g:unite_taskwarrior_add_annotations = get(g:,
 
 let s:annotate = {
       \ 'is_selectable': 1,
-      \ 'description':  'Use this word to annotate tasks',
+      \ 'description': 'Use this word to annotate tasks',
       \ 'is_quit': 1
       \ }
 function! s:annotate.func(candidates)
   let annotatations = map(a:candidates, "v:val.word")
-  call unite#start([["taskwarrior_annotate", annotatations]])
+  call unite#start([["taskwarrior/annotate", annotatations]])
 endfunction
 
 for s:kind in g:unite_taskwarrior_add_annotations

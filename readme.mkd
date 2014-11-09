@@ -84,8 +84,8 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 :Unite taskwarrior:$proj           " Show all tasks for the given project
 :Unite taskwarrior:@tag            " Show all tasks with the given tag
 :Unite taskwarrior:@tag:@other-tag " Show all tasks with tag and other-tag
-:Unite taskwarrior:tags            " Show a tag listing
-:Unite taskwarrior:projects        " Show a project listing
+:Unite taskwarrior/tags            " Show a tag listing
+:Unite taskwarrior/projects        " Show a project listing
 :UniteTaskwarriorAdd               " Add a task
 ```
 
