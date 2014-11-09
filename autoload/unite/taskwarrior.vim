@@ -206,9 +206,7 @@ function! unite#taskwarrior#delete(task)
 endfunction
 
 function! unite#taskwarrior#modify(task, data)
-  return unite#taskwarrior#run(a:task,
-        \ "modify",
-        \ a:data)
+  return unite#taskwarrior#run(a:task, "modify", a:data)
 endfunction
 
 function! unite#taskwarrior#rename(task)
