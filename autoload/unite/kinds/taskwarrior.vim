@@ -126,6 +126,12 @@ function! s:kind.action_table.yank_uri.func(candidate)
   return unite#taskwarrior#yank_uri(a:candidate.source__data)
 endfunction
 
+let s:kind.action_table.view = {'description': 'view a task'}
+function! s:kind.action_table.view.func(candidate)
+  let task = a:candidate.source__data
+  echo unite#taskwarrior#run(task, 'information')
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
