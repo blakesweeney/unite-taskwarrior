@@ -187,7 +187,7 @@ function! unite#taskwarrior#select(pattern)
   let args = [g:unite_taskwarrior_filter, "export"]
   call extend(args, a:pattern)
   let raw = call("unite#taskwarrior#call", args)
-  let lines = split(raw, ",\n")
+  let lines = split(raw, "\n")
   return map(lines, 'unite#taskwarrior#parse(v:val)')
 endfunction
 
