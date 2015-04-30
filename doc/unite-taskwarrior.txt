@@ -97,15 +97,15 @@ unite#taskwarrior#toggle                             |unite#taskwarrior#toggle|
 Toggle the status of a task. This is the default action.
 
 ==============================================================================
-Variables                                       |unite-taskwarrior-variables|
+Variables                                          |unite-taskwarrior-variables|
 
-g:unite_task_note_directory                      |g:unite_task_note_directory|
+g:unite_taskwarrior_note_directory          |g:unite_taskwarrior_note_directory|
 
 Define the directory that all notes will reside in.
 
 Default: "~/.task/note"
 
-g:unite_task_note_suffix                            |g:unite_task_note_suffix|
+g:unite_taskwarrior_note_suffix                            |g:unite_taskwarrior_note_suffix|
 
 Define the suffix for the note file.
 
