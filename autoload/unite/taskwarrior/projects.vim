@@ -4,7 +4,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! unite#taskwarrior#projects#select(args)
-  let filter = unite#taskwarrior#filter(a:args)
+  let filter = unite#taskwarrior#filter(a:args, '')
   let tasks = unite#taskwarrior#select(filter)
   let projects = {}
 
