@@ -153,7 +153,7 @@ function! unite#taskwarrior#parse(raw)
   " let data = pyeval("json.loads(vim.eval('a:raw'))")
   let data.note = printf('%s/%s.%s',
         \ g:unite_taskwarrior_note_directory,
-        \ data.uuid,
+        \ strpart(data.uuid, 0, 8),
         \ g:unite_taskwarrior_note_suffix)
 
   if !has_key(data, 'tags')
