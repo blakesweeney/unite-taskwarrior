@@ -231,6 +231,9 @@ function! unite#taskwarrior#rename(task)
 endfunction
 
 function! unite#taskwarrior#open(task)
+  if !filereadable(a:task.note)
+    call writefile([a:task.description], a:task.note)
+  endif
   execute ':edit ' . a:task.note
 endfunction
 
