@@ -14,7 +14,6 @@ simpler interface much of the time.
 
 ## Requirements
 
-* python-enabled vim
 * [unite](https://github.com/Shougo/unite.vim)
 * [vimproc](https://github.com/Shougo/vimproc.vim)
 * [taskwarrior]
@@ -26,7 +25,7 @@ simpler interface much of the time.
     confirmation=no
     ```
 
-    I've only tested this with version 2.3.0.
+    I've only tested this with version 2.4.0.
 
 ## Installing
 
@@ -49,6 +48,9 @@ to your vimrc.
 Add some.
 
 ## Usage
+
+This is a general overview of the functionality here, for details about this
+see the docs in doc/unite-taskwarrior.txt.
 
 This doesn't come with any key bindings added by default, you should add your
 own as needed. My configuration is:
@@ -159,7 +161,14 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
     Can be used on several selected tasks.
 
 * `view`
-    Provide a defailed view of the task.
+    Provide a detailed view of the task.
+
+## Notes files
+
+This provides some simple tasknote functionality. In the list of tasks you can
+open a file for a task using 'o' by default. This will be created with the
+description of the task.  You can modify and save this file and re open it
+later.
 
 # Running tests
 
