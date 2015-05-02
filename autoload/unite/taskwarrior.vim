@@ -219,8 +219,8 @@ endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
   if a:use_range 
-    let lines = reverse(getline(a:line1, a:line2))
-    call unite#taskwarrior#new(split(lines[0]))
+    let lines = join(getline(a:line1, a:line2))
+    call unite#taskwarrior#new(split(lines))
   else 
     if a:args == ""
       call unite#taskwarrior#new(input('Task: '))
