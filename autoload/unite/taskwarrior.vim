@@ -74,10 +74,6 @@ let g:unite_taskwarrior_uri_format = get(g:,
       \ 'unite_taskwarrior_uri_format',
       \ '<task:%s>')
 
-python << EOF
-import json
-EOF
-
 function! unite#taskwarrior#trim(str)
   return substitute(a:str, '^\s\+\|\s\+$', '', 'g')
 endfunction
