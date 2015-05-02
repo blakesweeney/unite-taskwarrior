@@ -82,9 +82,26 @@ function! unite#taskwarrior#trim(str)
   return substitute(a:str, '^\s\+\|\s\+$', '', 'g')
 endfunction
 
+" Take from https://gist.github.com/dahu/3322468
+function! unite#taskwarrior#flatten(list) abort
+  let val = []
+  for elem in a:list
+    if type(elem) == type([])
+      call extend(val, unite#taskwarrior#flatten(elem))
+    else
+      call extend(val, [elem])
+    endif
+    unlet elem
+  endfor
+  return val
+endfunction
+
 function! unite#taskwarrior#call(filter, cmd, ...)
   let args = [g:unite_taskwarrior_command, a:filter, a:cmd]
   call extend(args, a:000)
+  if a:filter == ''
+    call remove(args, 1)
+  endif
   return  vimproc#system(args)
 endfunction
 
@@ -118,7 +135,6 @@ function! unite#taskwarrior#filter(strings, project)
   endfor
   
   if a:project ==? 'infer'
-    echomsg 'infer'
     if filereadable("./unite-taskwarior")
       let config = unite#taskwarrior#load_config("./unite-taskwarior")
       call add(filters, 'project:' . config.project)
@@ -196,15 +212,19 @@ function! unite#taskwarrior#all()
 endfunction
 
 function! unite#taskwarrior#new(data)
+  let args = ["", "add"]
   if type(a:data) == type([])
-    return unite#taskwarrior#call("", "add", a:data[0])
+    call extend(args, unite#taskwarrior#flatten(a:data))
+  elseif type(a:data) == type("")
+    call extend(args, split(a:data))
   endif
-  return unite#taskwarrior#call("", "add", a:data)
+  return call("unite#taskwarrior#call", args)
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
   if a:use_range 
-    call unite#taskwarrior#new(reverse(getline(a:line1, a:line2)))
+    let lines = reverse(getline(a:line1, a:line2))
+    call unite#taskwarrior#new(split(lines[0]))
   else 
     if a:args == ""
       call unite#taskwarrior#new(input('Task: '))
