@@ -33,7 +33,7 @@ function! s:kind.action_table.edit.func(candidate)
   endif
 endfunction
 
-let s:kind.action_table.edit_tag = {'description' : 'edit tags'}
+let s:kind.action_table.edit_tag = {'description' : 'edit tags', 'is_selectable': 1}
 function! s:kind.action_table.edit_tag.func(candidates)
   let tags = []
   for candidate in a:candidates
@@ -51,7 +51,7 @@ function! s:kind.action_table.edit_tag.func(candidates)
   endif
 endfunction
 
-let s:kind.action_table.edit_proj = {'description' : 'edit project'}
+let s:kind.action_table.edit_proj = {'description' : 'edit project', 'is_selectable': 1}
 function! s:kind.action_table.edit_proj.func(candidates)
   let projs = []
   for candidate in a:candidates
@@ -69,28 +69,28 @@ function! s:kind.action_table.edit_proj.func(candidates)
   endif
 endfunction
 
-let s:kind.action_table.do = {'description' : 'complete task'}
+let s:kind.action_table.do = {'description' : 'complete task', 'is_selectable': 1}
 function! s:kind.action_table.do.func(candidates)
   for candidate in a:candidates
     call unite#taskwarrior#do(candidate.source__data)
   endfor
 endfunction
 
-let s:kind.action_table.delete = {'description' : 'delete task'}
+let s:kind.action_table.delete = {'description' : 'delete task', 'is_selectable': 1}
 function! s:kind.action_table.delete.func(candidates)
   for candidate in a:candidates
     call unite#taskwarrior#delete(candidate.source__data)
   endfor
 endfunction
 
-let s:kind.action_table.toggle = { 'description' : 'toggle status'}
+let s:kind.action_table.toggle = { 'description' : 'toggle status', 'is_selectable': 1}
 function! s:kind.action_table.toggle.func(candidates)
   for candidate in a:candidates
     call unite#taskwarrior#toggle(candidate.source__data)
   endfor
 endfunction
 
-let s:kind.action_table.modify = {'description': 'modify task'}
+let s:kind.action_table.modify = {'description': 'modify task', 'is_selectable': 1}
 function! s:kind.action_table.modify.func(candidates)
   let raw = unite#taskwarrior#trim(input("Modify: "))
   for candidate in a:candidates
@@ -98,7 +98,7 @@ function! s:kind.action_table.modify.func(candidates)
   endfor
 endfunction
 
-let s:kind.action_table.annotate = {'description': 'annotate task'}
+let s:kind.action_table.annotate = {'description': 'annotate task', 'is_selectable': 1}
 function! s:kind.action_table.annotate.func(candidates)
   let raw = unite#taskwarrior#trim(input("Annotate: "))
   for candidate in a:candidates
@@ -126,7 +126,7 @@ function! s:kind.action_table.yank_uri.func(candidate)
   return unite#taskwarrior#yank_uri(a:candidate.source__data)
 endfunction
 
-let s:kind.action_table.view = {'description': 'view a task'}
+let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0}
 function! s:kind.action_table.view.func(candidate)
   let task = a:candidate.source__data
   echo unite#taskwarrior#run(task, 'information')
