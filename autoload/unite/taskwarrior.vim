@@ -15,9 +15,17 @@ let g:unite_taskwarrior_note_suffix = get(g:,
       \ 'unite_taskwarrior_note_suffix',
       \ 'mkd')
 
+let g:unite_taskwarrior_note_formatter = get(g:,
+      \ 'unite_taskwarrior_note_formatter',
+      \ 'unite#taskwarrior#notes#simple_format')
+
 let g:unite_taskwarrior_format_string = get(g:,
       \ "unite_taskwarrior_format_string",
       \ "[%s] %s\t%s (%s)")
+
+let g:unite_taskwarrior_taskwiki_format = get(g:,
+      \ "unite_taskwarrior_taskwiki_format",
+      \ "* [ ] %s  #%s")
 
 let g:unite_taskwarrior_tag_format_string = get(g:,
       \ 'unite_taskwarrior_tag_format_string',
@@ -248,7 +256,9 @@ endfunction
 
 function! unite#taskwarrior#open(task)
   if !filereadable(a:task.note)
-    call writefile([a:task.description], a:task.note)
+    let content = call(g:unite_taskwarrior_note_formatter, [a:task])
+    echomsg string(content)
+    call writefile(content, a:task.note)
   endif
   execute ':edit ' . a:task.note
 endfunction
