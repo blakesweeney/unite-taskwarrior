@@ -6,7 +6,7 @@ let s:kind = {
       \ 'default_action' : 'toggle',
       \ 'action_table': {},
       \ 'is_selectable': 1,
-      \ 'parents': ['openable'],
+      \ 'parents': ['common', 'openable'],
       \ }
 
 let s:kind.action_table.open = {'description' : 'open note', 'is_selectable': 0}
@@ -18,7 +18,7 @@ let s:kind.action_table.preview = {'description' : 'preview note', 'is_selectabl
 function! s:kind.action_table.preview.func(candidate)
   let todo = a:candidate.source__data
   if filereadable(todo.note)
-    execute ':pedit ' . todo.note
+    call unite#view#_preview_file(todo.note)
   endif
 endfunction
 
