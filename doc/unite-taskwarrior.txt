@@ -120,11 +120,21 @@ This is the string to use for formatting tasks.
 
 *g:unite_taskwarrior_tag_format_string*
 
-This is the string to use when formatting for the taskwarrior/tags source.
+This is the string to use when formatting for the taskwarrior/tags source. The
+string will be used as the format string for |printf()| and the arguments are the
+tag name and the count. The default creates a 20 character column for the name,
+a tab, and then a 5 character column for the count.
+
+Default: "20s\t%5s"
 
 *g:unite_taskwarrior_project_format_string*
 
 This is the string to use when formatting for the taskwarrior/project source.
+The string will be used as the format string for |printf()| with the project
+name and count.  The default creates a 20 character project column followed by
+a tab and then a 5 character column for the count.
+
+Default: "%20s\t%5s"
 
 *g:unite_taskwarrior_formatter*
 
@@ -132,15 +142,25 @@ This should be a string of the function name to use for formatting a task for
 display in unite. The function specified should take as input a task dictionary
 and return the string to display.
 
+Default: "unite#taskwarrior#format"
+
 *g:unite_taskwarrior_tag_formatter*
 
 The name of the function to use for formatting tags for display in the
-taskwarrior/tags source.
+taskwarrior/tags source. This function should take a tag data structure and
+return a string to display. The default function uses
+|g:unite_taskwarrior_tag_format_string|
+
+Default: "unite#taskwarrior#tags#format"
 
 *g:unite_taskwarrior_project_formatter*
 
 The name of the function to use for formatting projects for display in the
-taskwarrior/projects source.
+taskwarrior/projects source. The function should take a project dictionary and
+return the string to display. The default function uses the
+|g:unite_taskwarrior_project_format_string|
+
+Default: "unite#taskwarrior#projects#format"
 
 *g:unite_taskwarrior_filter*
 
