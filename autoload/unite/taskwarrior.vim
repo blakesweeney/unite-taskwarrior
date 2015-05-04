@@ -137,7 +137,7 @@ function! unite#taskwarrior#filter(strings, project)
       call add(filters, 'project:' . strpart(entry, 1))
     endif
   endfor
-  
+
   if a:project ==? 'infer'
     if filereadable("./unite-taskwarior")
       let config = unite#taskwarrior#load_config("./unite-taskwarior")
@@ -163,6 +163,12 @@ function! unite#taskwarrior#format(task)
         \ project,
         \ a:task.description,
         \ join(tags, ' '))
+endfunction
+
+function! unite#taskwarrior#format_taskwiki(task) abort
+  return printf(g:unite_taskwarrior_taskwiki_format,
+        \ a:task.description,
+        \ strpart(a:task, 0, 8))
 endfunction
 
 function! unite#taskwarrior#parse(raw)
@@ -200,6 +206,9 @@ function! unite#taskwarrior#parse(raw)
     let data.stopped = 1
   endif
 
+  let data.short = strpart(data.uuid, 0, 8)
+  let data.uri = printf(g:unite_taskwarrior_uri_format, data.uuid)
+
   return data
 endfunction
 
@@ -226,10 +235,10 @@ function! unite#taskwarrior#new(data)
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
-  if a:use_range 
+  if a:use_range
     let lines = join(getline(a:line1, a:line2))
     call unite#taskwarrior#new(split(lines))
-  else 
+  else
     if a:args == ""
       call unite#taskwarrior#new(input('Task: '))
     else
@@ -286,12 +295,12 @@ function! unite#taskwarrior#stop(task)
   return unite#taskwarrior#run(a:task, "stop")
 endfunction
 
-function! unite#taskwarrior#yank_uri(task)
-  let @@ = printf(g:unite_taskwarrior_uri_format, a:task.uuid)
-endfunction
-
-function! unite#taskwarrior#yank_id(task)
-  let @@ = a:task.uuid
+function! unite#taskwarrior#yank(task, formatter) abort
+  if has_key(a:task, a:formatter)
+    let @@ = get(a:task, a:formatter)
+  else
+    let @@ = call(a:formatter, a:task)
+  endif
 endfunction
 
 let &cpo = s:save_cpo
