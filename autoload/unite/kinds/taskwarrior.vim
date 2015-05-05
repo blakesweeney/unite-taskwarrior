@@ -55,7 +55,7 @@ let s:kind.action_table.edit_proj = {'description' : 'edit project', 'is_selecta
 function! s:kind.action_table.edit_proj.func(candidates)
   let projs = []
   for candidate in a:candidates
-    call extend(projs, candidate.source__data.project)
+    call add(projs, candidate.source__data.project)
   endfor
   let projs = uniq(projs)
   let before = join(projs, ',')
