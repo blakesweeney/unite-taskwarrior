@@ -213,7 +213,13 @@ function! unite#taskwarrior#parse(raw)
 endfunction
 
 function! unite#taskwarrior#select(pattern)
-  let args = [g:unite_taskwarrior_filter, "export"]
+  let args = []
+  if type(g:unite_taskwarrior_filter) == type([])
+    call extend(args, g:unite_taskwarrior_filter)
+  else
+    call add(args, g:unite_taskwarrior_filter)
+  endif
+  call add(args, "export")
   call extend(args, a:pattern)
   let raw = call("unite#taskwarrior#call", args)
   let lines = split(raw, "\n")

@@ -164,7 +164,13 @@ Default: "unite#taskwarrior#projects#format"
 
 *g:unite_taskwarrior_filter*
 
-The default filter string to use for loading tasks.
+The default filter to use for loading tasks. If more than one filter is
+desired it is safest to use an array of strings instead of one long string.
+For example:
+
+>
+let g:unite_taskwarrior_filter = ['status:pending', 'tags.hasnt:long-term']
+<
 
 Default: "status:pending"
 
