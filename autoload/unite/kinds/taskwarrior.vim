@@ -60,6 +60,9 @@ function! s:kind.action_table.edit_proj.func(candidates)
   let projs = uniq(projs)
   let before = join(projs, ',')
   let prompt = 'Project: ' . before . ': '
+  if before == ''
+    let prompt = 'Project: '
+  endif
   let after = unite#taskwarrior#trim(input(prompt, before))
   if !empty(after)
     for candidate in a:candidates
