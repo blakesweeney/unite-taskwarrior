@@ -228,7 +228,7 @@ function! unite#taskwarrior#select(pattern)
   else
     call add(args, g:unite_taskwarrior_filter)
   endif
-  call add(args, "export")
+  call extend(args, ["export", "rc.json.array=off"])
   call extend(args, a:pattern)
   let raw = call("unite#taskwarrior#call", args)
   let lines = split(raw, "\n")
