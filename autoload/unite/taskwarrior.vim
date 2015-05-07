@@ -218,7 +218,7 @@ function! unite#taskwarrior#parse(raw)
 endfunction
 
 function! unite#taskwarrior#urgency_sorter(task1, task2) abort
-  return float2nr(a:task1.urgency - a:task2.urgency)
+  return float2nr(get(a:task2, 'urgency', 0.0) - get(a:task1, 'urgency', 0.0))
 endfunction
 
 function! unite#taskwarrior#select(pattern)
