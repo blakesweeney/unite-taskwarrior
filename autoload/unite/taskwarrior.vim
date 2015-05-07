@@ -23,10 +23,6 @@ let g:unite_taskwarrior_format_string = get(g:,
       \ "unite_taskwarrior_format_string",
       \ "[%s] %s\t%s (%s)")
 
-let g:unite_taskwarrior_taskwiki_format = get(g:,
-      \ "unite_taskwarrior_taskwiki_format",
-      \ "* [ ] %s  #%s")
-
 let g:unite_taskwarrior_tag_format_string = get(g:,
       \ 'unite_taskwarrior_tag_format_string',
       \ "%20s\t%5s")
@@ -166,9 +162,18 @@ function! unite#taskwarrior#format(task)
 endfunction
 
 function! unite#taskwarrior#format_taskwiki(task) abort
-  return printf(g:unite_taskwarrior_taskwiki_format,
-        \ a:task.description,
-        \ strpart(a:task, 0, 8))
+  let format = "* [ ] %s%s  #%s"
+  let date = ''
+  let due = get(a:task, 'due', '')
+  if due != ''
+    let date = printf(" (%s-%s-%s %s:%s)",
+          \ strpart(due, 0, 4),
+          \ strpart(due, 4, 2),
+          \ strpart(due, 6, 2),
+          \ strpart(due, 9, 2),
+          \ strpart(due, 11, 2))
+  endif
+  return printf(format, a:task.description, date, a:task.short)
 endfunction
 
 function! unite#taskwarrior#parse(raw)
