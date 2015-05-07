@@ -119,14 +119,14 @@ function! s:kind.action_table.stop.func(candidate)
   return unite#taskwarrior#stop(a:candidate.source__data)
 endfunction
 
-let s:kind.action_table.yank = {'description': 'yank a task uuid', 'is_selectable': 0, 'is_quit': 1}
-function! s:kind.action_table.yank.func(candidate)
-  return unite#taskwarrior#yank_id(a:candidate.source__data)
+let s:kind.action_table.yank_id = {'description': 'yank a task uuid', 'is_selectable': 0, 'is_quit': 1}
+function! s:kind.action_table.yank_id.func(candidate)
+  return unite#taskwarrior#yank(a:candidate.source__data, 'id')
 endfunction
 
 let s:kind.action_table.yank_uri = {'description': 'yank a task uri', 'is_selectable': 0, 'is_quit': 1}
 function! s:kind.action_table.yank_uri.func(candidate)
-  return unite#taskwarrior#yank_uri(a:candidate.source__data)
+  return unite#taskwarrior#yank(a:candidate.source__data, 'uri')
 endfunction
 
 let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0}
