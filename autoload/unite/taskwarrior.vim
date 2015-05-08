@@ -9,7 +9,7 @@ let g:unite_taskwarrior_command = get(g:,
 
 let g:unite_taskwarrior_note_directory = get(g:,
       \ 'unite_taskwarrior_note_directory',
-      \ expand('~/.task/note'))
+      \ '~/.task/note')
 
 let g:unite_taskwarrior_note_suffix = get(g:,
       \ 'unite_taskwarrior_note_suffix',
@@ -112,6 +112,7 @@ function! unite#taskwarrior#run(task, cmd, ...)
 endfunction
 
 function! unite#taskwarrior#init()
+  let g:unite_taskwarrior_note_directory = expand(g:unite_taskwarrior_note_directory)
   if !isdirectory(g:unite_taskwarrior_note_directory)
     call mkdir(g:unite_taskwarrior_note_directory, 'p')
   endif
@@ -282,7 +283,6 @@ endfunction
 function! unite#taskwarrior#open(task)
   if !filereadable(a:task.note)
     let content = call(g:unite_taskwarrior_note_formatter, [a:task])
-    echomsg string(content)
     call writefile(content, a:task.note)
   endif
   execute ':edit ' . a:task.note
