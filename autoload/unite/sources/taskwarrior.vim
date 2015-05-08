@@ -5,7 +5,9 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior',
-      \ 'syntax': 'TaskWarrior'
+      \ 'syntax': 'TaskWarrior',
+      \ 'hooks': {},
+      \ 'source__name': 'taskwarrior'
       \ }
 
 " Consider using async
@@ -24,6 +26,18 @@ function! s:source.gather_candidates(args, context)
     unlet todo
   endfor
   return candidates
+endfunction
+
+function! s:source.hooks.on_syntax(args, context) abort
+  if get(g:, 'unite_taskwarrior_define_mappings', 0) == 0
+    return
+  endif
+
+  nnoremap <silent><buffer><expr> <TAB>       unite#do_action('toggle')
+  nnoremap <silent><buffer><expr> <CR>        unite#do_action('view')
+  nnoremap <silent><buffer><expr> d           unite#do_action('do')
+  nnoremap <silent><buffer><expr> D           unite#do_action('delete')
+  nnoremap <silent><buffer><expr> P           unite#do_action('edit_proj')
 endfunction
 
 let s:source_cmd = {
