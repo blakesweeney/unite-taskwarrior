@@ -27,5 +27,21 @@ for s:kind in g:unite_taskwarrior_add_annotations
   call unite#custom#action(s:kind, 'annotate', s:annotate)
 endfor
 
+function! s:taskwarrior_settings() abort
+  if get(g:, 'unite_taskwarrior_define_mappings', 0) ==  1
+    return 0
+  endif
+
+  if get(unite#get_context(), 'source', '') == 'taskwarrior'
+    nmap <buffer><expr> <TAB>       <Plug>(unite#do_action('toggle'))
+    nmap <buffer><expr> <CR>        <Plug>(unite#do_action('view'))
+    nmap <buffer><expr> d           <Plug>(unite#do_action('do'))
+    nmap <buffer><expr> D           <Plug>(unite#do_action('delete'))
+    nmap <buffer><expr> P           <Plug>(unite#do_action('edit_proj'))
+  endif
+endfunction
+
+autocmd FileType unite call s:taskwarrior_settings()
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
