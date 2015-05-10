@@ -53,7 +53,7 @@ This is a general overview of the functionality here, for details about this
 see the docs in doc/unite-taskwarrior.txt.
 
 This doesn't come with any key bindings added by default, you should add your
-own as needed. My configuration is:
+own as needed. Some useful configuration is:
 
 ```vim
 " vimrc
@@ -64,6 +64,7 @@ call unite#custom#source('taskwarrior', 'sorters', 'sorter_rank')
 nnoremap <silent>  <Leader>T  :Unite taskwarrior -winheight=50<CR>
 nnoremap           <Leader>Ta :UniteTaskWarriorAdd<CR>
 vnoremap <silent>  <Leader>Ta :B UniteTaskWarriorAdd<CR>
+nnoremap <silent>  <Leader>Tp :Unite taskwarrior/tags -vertical -winwidth=40
 
 " ftplugin/unite.vim
 inoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
@@ -90,6 +91,11 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 :Unite taskwarrior/projects        " Show a project listing
 :UniteTaskwarriorAdd               " Add a task
 ```
+
+The `taskwarrior/tags` and `taskwarrior/projects` sources generally produce
+long and narrow output. For these it's useful to open them with `-vertical` and
+`-winwidth=` to create nice vertical mapping. In the mappings above there is an
+example of doing this for projects.
 
 ### Project list actions
 
