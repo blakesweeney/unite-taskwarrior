@@ -69,6 +69,8 @@ nnoremap <silent>  <Leader>Tp :Unite taskwarrior/tags -vertical -winwidth=40
 " ftplugin/unite.vim
 inoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
 nnoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
+inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
 ```
 
 The `:B` is from
@@ -150,11 +152,6 @@ example of doing this for projects.
 
     By default is called by `p`.
 
-* `search`
-    Search all tasks.
-
-    TODO: Implement me
-
 * `similar`
     Show all similar tasks.
 
@@ -174,7 +171,9 @@ example of doing this for projects.
 This provides some simple tasknote functionality. In the list of tasks you can
 open a file for a task using 'o' by default. This will be created with the
 description of the task.  You can modify and save this file and re open it
-later.
+later. In some cases it's better to open the notes in a vsplit. Above in the
+mappings section there is a `nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')`, 
+which opens a note in a vertical split.
 
 # Running tests
 
