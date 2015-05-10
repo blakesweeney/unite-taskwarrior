@@ -10,6 +10,9 @@ function! unite#taskwarrior#tags#select(args)
 
   for task in tasks
     for tag in task.tags
+      if tag == ''
+        continue
+      endif
       let data = get(tags, tag, {'name': tag, 'count': 0})
       let data.count += 1
       let tags[tag] = data
