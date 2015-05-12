@@ -166,6 +166,34 @@ example of doing this for projects.
 * `view`
     Provide a detailed view of the task.
 
+### Keybindings
+
+There are some very experimental keybindings which are only available when
+using the taskwarrior source. These can be activated by adding:
+
+```vim
+let g:unite_taskwarrior_define_mappings = 1
+```
+
+to your vimrc. This provides the following normal mode mappings:
+
+```vim
+nnoremap <silent><buffer><expr> <TAB>       unite#do_action('toggle')
+nnoremap <silent><buffer><expr> <CR>        unite#do_action('view')
+nnoremap <silent><buffer><expr> d           unite#do_action('do')
+nnoremap <silent><buffer><expr> D           unite#do_action('delete')
+nnoremap <silent><buffer><expr> P           unite#do_action('edit_proj')
+nnoremap <silent><buffer><expr> A           unite#do_action('annotate')
+nnoremap <silent><buffer><expr> m           unite#do_action('modify')
+nnoremap <silent><buffer><expr> e           unite#do_action('edit')
+nnoremap <silent><buffer><expr> +           unite#do_action('start')
+nnoremap <silent><buffer><expr> -           unite#do_action('stop')
+```
+
+There are examples in unite.vim's help of how to add other keybindings. If you
+want to add other bindings specific to a source you'll need to modify it with
+the example at https://github.com/Shougo/unite.vim/issues/924.
+
 ## Notes files
 
 This provides some simple tasknote functionality. In the list of tasks you can
