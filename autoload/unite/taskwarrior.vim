@@ -78,6 +78,10 @@ let g:unite_taskwarrior_uri_format = get(g:,
       \ 'unite_taskwarrior_uri_format',
       \ '<task:%s>')
 
+let g:unite_taskwarrior_missing_project = get(g:,
+      \'unite_taskwarrior_missing_project', 
+      \ '(none)')
+
 function! unite#taskwarrior#trim(str)
   return substitute(a:str, '^\s\+\|\s\+$', '', 'g')
 endfunction

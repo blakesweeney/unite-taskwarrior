@@ -11,7 +11,7 @@ function! unite#taskwarrior#projects#select(args)
   for task in tasks
     let project = task.project
     if empty(project)
-      continue
+      let project = g:unite_taskwarrior_missing_project
     endif
 
     let data =  get(projects, project, {'name': project, 'count': 0})
