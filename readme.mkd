@@ -106,12 +106,18 @@ example of doing this for projects.
 
     This can be run on several projects.
 
+* `rename`
+    Rename the project.
+
 ### Tag list actions
 
 * `open`
     Show all tasks with the given tag.
 
     This can be run on several tags.
+
+* `rename`
+    Rename the tag.
 
 ### Task list actions
 
