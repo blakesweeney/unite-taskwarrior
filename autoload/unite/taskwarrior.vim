@@ -21,7 +21,7 @@ let g:unite_taskwarrior_note_formatter = get(g:,
 
 let g:unite_taskwarrior_format_string = get(g:,
       \ "unite_taskwarrior_format_string",
-      \ "[%s] %s\t%s (%s)")
+      \ "[%s] %15s\t%s (%s)")
 
 let g:unite_taskwarrior_tag_format_string = get(g:,
       \ 'unite_taskwarrior_tag_format_string',
@@ -237,8 +237,8 @@ function! unite#taskwarrior#select(pattern)
   call extend(args, a:pattern)
   let raw = call("unite#taskwarrior#call", args)
   let lines = split(raw, "\n")
-  return sort(map(lines, 'unite#taskwarrior#parse(v:val)'),
-        \ "unite#taskwarrior#urgency_sorter")
+  let data = map(lines, 'unite#taskwarrior#parse(v:val)')
+  return sort(data, "unite#taskwarrior#urgency_sorter")
 endfunction
 
 function! unite#taskwarrior#all()
