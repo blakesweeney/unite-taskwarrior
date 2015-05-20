@@ -59,7 +59,8 @@ let g:unite_taskwarrior_status_mapping = get(g:,
       \ 'waiting': '-',
       \ 'completed': '✓',
       \ 'deleted': 'x',
-      \ 'recurring': '+'
+      \ 'recurring': '+',
+      \ 'unknown': 'N'
       \ })
 
 let g:unite_taskwarrior_projects_abbr = get(g:,
@@ -79,14 +80,14 @@ let g:unite_taskwarrior_uri_format = get(g:,
       \ '<task:%s>')
 
 let g:unite_taskwarrior_missing_project = get(g:,
-      \'unite_taskwarrior_missing_project', 
+      \'unite_taskwarrior_missing_project',
       \ '(none)')
 
 function! unite#taskwarrior#trim(str)
   return substitute(a:str, '^\s\+\|\s\+$', '', 'g')
 endfunction
 
-" Take from https://gist.github.com/dahu/3322468
+" Taken from https://gist.github.com/dahu/3322468
 function! unite#taskwarrior#flatten(list) abort
   let val = []
   for elem in a:list
@@ -110,7 +111,8 @@ function! unite#taskwarrior#call(filter, cmd, ...)
 endfunction
 
 function! unite#taskwarrior#run(task, cmd, ...)
-  let args = [a:task.uuid, a:cmd]
+  let task = unite#taskwarrior#new(a:task)
+  let args = [l:task.uuid, a:cmd]
   call extend(args, a:000)
   return call('unite#taskwarrior#call', args)
 endfunction
@@ -222,6 +224,24 @@ function! unite#taskwarrior#parse(raw)
   return data
 endfunction
 
+function! unite#taskwarrior#new_dict(raw) abort
+  return {
+        \ 'description': a:raw,
+        \ 'status': 'unknown',
+        \ 'tags': [],
+        \ 'project': '',
+        \ 'start_time': '',
+        \ 'started': 0,
+        \ 'stop_time': '',
+        \ 'stopped': 0,
+        \ 'short': '',
+        \ 'uuid': '',
+        \ 'uri': '',
+        \ 'urgency': 0.0,
+        \ 'note': ''
+        \ }
+endfunction
+
 function! unite#taskwarrior#urgency_sorter(task1, task2) abort
   return float2nr(get(a:task2, 'urgency', 0.0) - get(a:task1, 'urgency', 0.0))
 endfunction
@@ -251,8 +271,21 @@ function! unite#taskwarrior#new(data)
     call extend(args, unite#taskwarrior#flatten(a:data))
   elseif type(a:data) == type("")
     call extend(args, split(a:data))
+  elseif type(a:data) == type({})
+    if a:data.status != 'unknown'
+      return a:data
+    endif
+    call extend(args, split(a:data.description))
   endif
-  return call("unite#taskwarrior#call", args)
+  call call("unite#taskwarrior#call", args)
+  return unite#taskwarrior#newest()
+endfunction
+
+function! unite#taskwarrior#newest() abort
+  let tasks = split(unite#taskwarrior#call("", "newest"), "\n")
+  let task_id = split(tasks[2])[0]
+  let raw = unite#taskwarrior#call("export", task_id)
+  return unite#taskwarrior#parse(raw)
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
@@ -285,11 +318,12 @@ function! unite#taskwarrior#rename(task)
 endfunction
 
 function! unite#taskwarrior#open(task)
-  if !filereadable(a:task.note)
-    let content = call(g:unite_taskwarrior_note_formatter, [a:task])
-    call writefile(content, a:task.note)
+  let task = unite#taskwarrior#new(a:task)
+  if !filereadable(l:task.note)
+    let content = call(g:unite_taskwarrior_note_formatter, [l:task])
+    call writefile(content, l:task.note)
   endif
-  execute ':edit ' . a:task.note
+  execute ':edit ' . l:task.note
 endfunction
 
 function! unite#taskwarrior#toggle(task)
