@@ -99,6 +99,23 @@ long and narrow output. For these it's useful to open them with `-vertical` and
 `-winwidth=` to create nice vertical mapping. In the mappings above there is an
 example of doing this for projects.
 
+It may also be useful to have simple commands to open the taskwarrior listing.
+An example of such a command is:
+
+```vim
+function! s:call_taskwarrior(args) abort
+  let source = ['taskwarrior']
+  call extend(source, split(a:args))
+  call unite#start([source])
+endfunction
+
+command! -nargs=* -range=0 Tw call s:call_taskwarrior(<q-args>)
+```
+
+This adds a `:Tw` command that accepts arguments like `:Unite taskwarrior` does
+and opens the same listing. So `:Tw @tag`, `:Tw $proj` and such would work like
+`:Unite taskwarrior:@tag` and `:Unite taskwarrior:$proj`.
+
 ### Project list actions
 
 * `open`
