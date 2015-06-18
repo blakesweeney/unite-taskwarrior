@@ -109,6 +109,11 @@ function! s:kind.action_table.annotate.func(candidates)
   endfor
 endfunction
 
+let s:kind.action_table.undo = {'description': 'undo an action', 'is_selectable': 0, 'is_quit': 1}
+function! s:kind.action_table.undo.func(candidate) abort
+  return unite#taskwarrior#undo()
+endfunction
+
 let s:kind.action_table.start = {'description': 'start a task', 'is_selectable': 0}
 function! s:kind.action_table.start.func(candidate)
   return unite#taskwarrior#start(a:candidate.source__data)

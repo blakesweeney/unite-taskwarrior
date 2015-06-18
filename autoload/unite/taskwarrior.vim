@@ -341,6 +341,10 @@ function! unite#taskwarrior#annotate(task, text)
   return unite#taskwarrior#run(a:task, "annotate", a:text)
 endfunction
 
+function! unite#taskwarrior#undo() abort
+  return unite#taskwarrior#call('', 'undo')
+endfunction
+
 function! unite#taskwarrior#start(task)
   return unite#taskwarrior#run(a:task, "start")
 endfunction

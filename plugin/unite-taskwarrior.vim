@@ -9,6 +9,9 @@ set cpo&vim
 command! -nargs=* -range=0 UniteTaskWarriorAdd
       \ call unite#taskwarrior#input(<q-args>, <count>, <line1>, <line2>)
 
+command -nargs=0 -range=0 UniteTaskWarriorUndo
+      \ call unite#taskwarrior#undo()
+
 let g:unite_taskwarrior_add_annotations = get(g:,
       \ "unite_taskwarrior_add_annotations",
       \ ["common"])

@@ -41,6 +41,7 @@ function! s:source.hooks.on_syntax(args, context) abort
   nnoremap <silent><buffer><expr> A           unite#do_action('annotate')
   nnoremap <silent><buffer><expr> m           unite#do_action('modify')
   nnoremap <silent><buffer><expr> e           unite#do_action('edit')
+  nnoremap <silent><buffer><expr> u           unite#do_action('undo')
   nnoremap <silent><buffer><expr> +           unite#do_action('start')
   nnoremap <silent><buffer><expr> -           unite#do_action('stop')
   " nnoremap <silent><buffer><expr> DA           unite#do_action('denotate')
