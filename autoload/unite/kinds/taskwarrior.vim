@@ -144,6 +144,12 @@ function! s:kind.action_table.view.func(candidate)
   echo unite#taskwarrior#run(task, 'information')
 endfunction
 
+let s:kind.action_table.edit_annotation = {'description': 'edit annotation', 'is_selectable': 1}
+function! s:kind.action_table.edit_annotation.func(candidates) abort
+  let tasks = map(a:candidates, "v:val.source__data")
+  return unite#taskwarrior#edit_annotations(tasks)
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,

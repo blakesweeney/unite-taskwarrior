@@ -313,6 +313,11 @@ function! unite#taskwarrior#modify(task, data)
   return unite#taskwarrior#run(a:task, "modify", a:data)
 endfunction
 
+function! unite#taskwarrior#tags(task, tags) abort
+  let l:tags = unite#taskwarrior#filter(a:tags)
+  return unite#taskwarrior#modify(a:task, l:tags)
+endfunction
+
 function! unite#taskwarrior#rename(task)
   return unite#taskwarrior#modify(a:task, "description:'" . a:task.description . "'")
 endfunction
@@ -359,6 +364,17 @@ function! unite#taskwarrior#yank(task, formatter) abort
   else
     let @@ = call(a:formatter, a:task)
   endif
+endfunction
+
+function! unite#taskwarrior#edit_annotation(tasks) abort
+  let content = []
+  let filename = tmpname()
+  call writefile(content, filename)
+  execute ':edit' filename
+  setlocal buftype=nofile
+  setlocal bufhidden=wipe
+  setlocal nobuflisted
+  autocmd BufWrite <buffer> call unite#taswarrior#store_annotation
 endfunction
 
 let &cpo = s:save_cpo
