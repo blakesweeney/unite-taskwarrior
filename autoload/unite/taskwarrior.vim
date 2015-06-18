@@ -69,7 +69,7 @@ let g:unite_taskwarrior_projects_abbr = get(g:,
 
 let g:unite_taskwarrior_tags_abbr = get(g:,
       \ "unite_taskwarrior_tags_abbr",
-      \ "@")
+      \ "+")
 
 let g:unite_taskwarrior_fallback_match = get(g:,
       \ "unite_taskwarrior_fallback_match",
