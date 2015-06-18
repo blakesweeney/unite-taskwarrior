@@ -137,7 +137,7 @@ function! unite#taskwarrior#filter(strings, project)
       call add(filters, 'tag:' . strpart(entry, 1))
     endif
     if strpart(entry, 0, 1) == '$'
-      call add(filters, 'project:' . strpart(entry, 1))
+      call add(filters, 'project.is:' . strpart(entry, 1))
     endif
   endfor
 
