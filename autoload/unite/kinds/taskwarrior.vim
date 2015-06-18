@@ -109,7 +109,11 @@ function! s:kind.action_table.annotate.func(candidates)
   endfor
 endfunction
 
-let s:kind.action_table.undo = {'description': 'undo an action', 'is_selectable': 0, 'is_quit': 1}
+let s:kind.action_table.undo = {
+      \ 'description': 'undo an action',
+      \ 'is_selectable': 0,
+      \ 'is_quit': 0,
+      \ 'is_invalidate_cache': 1}
 function! s:kind.action_table.undo.func(candidate) abort
   return unite#taskwarrior#undo()
 endfunction
