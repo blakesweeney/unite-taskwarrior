@@ -40,13 +40,13 @@ function! s:kind.action_table.edit_tag.func(candidates)
     call extend(tags, candidate.source__data.tags)
   endfor
   let tags = uniq(tags)
-  let before = join(tags, ',')
+  let before = join(tags, ' ')
   let prompt = 'Tags modifications' . before . ': '
-  let after = unite#taskwarrior#trim(input(prompt, before))
+  let after = split(unite#taskwarrior#trim(input(prompt, before)))
   if !empty(after)
     for candidate in a:candidates
       let task = candidate.source__data
-      call unite#taskwarrior#modify(task, after)
+      call unite#taskwarrior#edit_tags(task, after)
     endfor
   endif
 endfunction

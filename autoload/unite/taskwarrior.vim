@@ -313,6 +313,12 @@ function! unite#taskwarrior#modify(task, data)
   return unite#taskwarrior#run(a:task, "modify", a:data)
 endfunction
 
+function! unite#taskwarrior#edit_tags(task, tags) abort
+  let args = [a:task, 'modify']
+  call extend(args, a:tags)
+  return call('unite#taskwarrior#run', args)
+endfunction
+
 function! unite#taskwarrior#rename(task)
   return unite#taskwarrior#modify(a:task, "description:'" . a:task.description . "'")
 endfunction
