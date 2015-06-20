@@ -7,7 +7,8 @@ let s:source = {
       \ 'name': 'taskwarrior',
       \ 'syntax': 'TaskWarrior',
       \ 'hooks': {},
-      \ 'source__name': 'taskwarrior'
+      \ 'source__name': 'taskwarrior',
+      \ 'sorters': 'sorter_task_urgency'
       \ }
 
 " Consider using async

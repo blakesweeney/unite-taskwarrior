@@ -242,10 +242,6 @@ function! unite#taskwarrior#new_dict(raw) abort
         \ }
 endfunction
 
-function! unite#taskwarrior#urgency_sorter(task1, task2) abort
-  return float2nr(get(a:task2, 'urgency', 0.0) - get(a:task1, 'urgency', 0.0))
-endfunction
-
 function! unite#taskwarrior#select(pattern)
   let args = []
   if type(g:unite_taskwarrior_filter) == type([])
@@ -258,7 +254,7 @@ function! unite#taskwarrior#select(pattern)
   let raw = call("unite#taskwarrior#call", args)
   let lines = split(raw, "\n")
   let data = map(lines, 'unite#taskwarrior#parse(v:val)')
-  return sort(data, "unite#taskwarrior#urgency_sorter")
+  return data
 endfunction
 
 function! unite#taskwarrior#all()
