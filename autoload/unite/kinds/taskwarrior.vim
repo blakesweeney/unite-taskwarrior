@@ -103,10 +103,8 @@ endfunction
 
 let s:kind.action_table.annotate = {'description': 'annotate task', 'is_selectable': 1}
 function! s:kind.action_table.annotate.func(candidates)
-  let raw = unite#taskwarrior#trim(input("Annotate: "))
-  for candidate in a:candidates
-    call unite#taskwarrior#annotate(candidate.source__data, raw)
-  endfor
+  let tasks = map(a:candidates, 'v:val.source__data')
+  call unite#taskwarrior#annotate(tasks)
 endfunction
 
 let s:kind.action_table.undo = {
@@ -114,7 +112,7 @@ let s:kind.action_table.undo = {
       \ 'is_selectable': 0,
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1}
-function! s:kind.action_table.undo.func(candidate) abort
+function! s:kind.action_table.undo.func(task) abort
   return unite#taskwarrior#undo()
 endfunction
 
@@ -142,12 +140,6 @@ let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0
 function! s:kind.action_table.view.func(candidate)
   let task = a:candidate.source__data
   echo unite#taskwarrior#run(task, 'information')
-endfunction
-
-let s:kind.action_table.edit_annotation = {'description': 'edit annotation', 'is_selectable': 1}
-function! s:kind.action_table.edit_annotation.func(candidates) abort
-  let tasks = map(a:candidates, "v:val.source__data")
-  return unite#taskwarrior#edit_annotations(tasks)
 endfunction
 
 let s:parent_kind = {

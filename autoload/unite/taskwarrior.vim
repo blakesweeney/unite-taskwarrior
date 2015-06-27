@@ -342,8 +342,21 @@ function! unite#taskwarrior#project(task, project)
   return unite#taskwarrior#modify(a:task, "proj:'" . a:project . "'")
 endfunction
 
-function! unite#taskwarrior#annotate(task, text)
-  return unite#taskwarrior#run(a:task, "annotate", a:text)
+function! unite#taskwarrior#annotate(tasks)
+  new
+  setlocal buftype=nofile
+  setlocal bufhidden=wipe
+  setlocal noswapfile
+  setlocal nobuflisted
+  let b:tasks = a:tasks
+  autocmd BufLeave <buffer> call
+        \ unite#taskwarrior#store_annotation(b:tasks, getline(1, '$'))
+endfunction
+
+function! unite#taskwarrior#store_annotation(tasks, content) abort
+  let converted = tr(join(a:content, " "), "\n\t", "  ")
+  let uuids = join(map(a:tasks, 'v:val.uuid'), ",")
+  call unite#taskwarrior#call(uuids, "annotate", converted)
 endfunction
 
 function! unite#taskwarrior#undo() abort
@@ -364,17 +377,6 @@ function! unite#taskwarrior#yank(task, formatter) abort
   else
     let @@ = call(a:formatter, a:task)
   endif
-endfunction
-
-function! unite#taskwarrior#edit_annotation(tasks) abort
-  let content = []
-  let filename = tmpname()
-  call writefile(content, filename)
-  execute ':edit' filename
-  setlocal buftype=nofile
-  setlocal bufhidden=wipe
-  setlocal nobuflisted
-  autocmd BufWrite <buffer> call unite#taswarrior#store_annotation
 endfunction
 
 let &cpo = s:save_cpo
