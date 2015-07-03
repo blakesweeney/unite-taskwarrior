@@ -22,6 +22,7 @@ function! s:source.gather_candidates(args, context)
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior",
+          \ "is_multiline": 1,
           \ "source__data": todo,
           \ })
     unlet todo

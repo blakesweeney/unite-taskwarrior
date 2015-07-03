@@ -83,6 +83,10 @@ let g:unite_taskwarrior_missing_project = get(g:,
       \'unite_taskwarrior_missing_project',
       \ '(none)')
 
+let g:unite_taskwarrior_show_annotations = get(g:,
+      \ 'unite_taskwarrior_show_annotations',
+      \ 1)
+
 function! unite#taskwarrior#trim(str)
   return substitute(a:str, '^\s\+\|\s\+$', '', 'g')
 endfunction
@@ -161,11 +165,23 @@ function! unite#taskwarrior#format(task)
     call add(tags, g:unite_taskwarrior_tags_abbr . "NOTE")
   endif
 
-  return printf(g:unite_taskwarrior_format_string,
+  let formatted = printf(g:unite_taskwarrior_format_string,
         \ status,
         \ project,
         \ a:task.description,
         \ join(tags, ' '))
+
+  if g:unite_taskwarrior_show_annotations
+    let annotations = join(
+          \ map(a:task.annotations, 'printf("%20s%s", " ", v:val.description)'), 
+          \ "\n")
+
+    if !empty(annotations)
+      let formatted = printf("%s\n%s", formatted, annotations)
+    endif
+  endif
+
+  return formatted
 endfunction
 
 function! unite#taskwarrior#format_taskwiki(task) abort
