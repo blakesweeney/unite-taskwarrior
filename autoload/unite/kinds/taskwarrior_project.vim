@@ -16,7 +16,7 @@ function! s:kind.action_table.open.func(candidates)
   let args = ['taskwarrior']
   for candidate in a:candidates
     let query =  '$' . candidate.source__data.name
-    if candidate.source__data.name == g:unite_taskwarrior_missing_project
+    if candidate.source__data.name == unite#taskwarrior#config('missing_project')
       let query = '$'
     endif
     call add(args, query)

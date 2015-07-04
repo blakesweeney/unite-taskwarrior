@@ -3,89 +3,56 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:unite_taskwarrior_command = get(g:,
-      \ 'unite_taskwarrior_command',
-      \ "task")
+let s:config = {
+      \ 'command': "task",
+      \ 'note_directory': '~/.task/note',
+      \ 'note_suffix': 'mkd',
+      \ 'note_formatter': 'unite#taskwarrior#notes#simple_format',
+      \ "format_string": "[%s] %15s\t%s (%s)",
+      \ 'tag_format_string': "%20s\t%5s",
+      \ 'project_format_string': "%20s\t%5s",
+      \ "formatter": 'unite#taskwarrior#format',
+      \ "tag_formatter": 'unite#taskwarrior#tags#format',
+      \ "project_formatter": 'unite#taskwarrior#projects#format',
+      \ 'filter': 'status.not:deleted',
+      \ 'toggle_mapping': { 'pending': 'completed', 'completed': 'pending' },
+      \ "status_mapping": { 'pending': ' ', 'waiting': '-', 'recurring': '+', 'unknown': 'N' },
+      \ "projects_abbr": "$",
+      \ "tags_abbr": "+",
+      \ "fallback_match": "matcher_fuzzy",
+      \ 'uri_format': '<task:%s>',
+      \ 'missing_project': '(none)', 
+      \ 'show_annotations': 1
+      \ }
 
-let g:unite_taskwarrior_note_directory = get(g:,
-      \ 'unite_taskwarrior_note_directory',
-      \ '~/.task/note')
+function! unite#taskwarrior#config(key, ...) abort
+  if type(a:key) == type({})
+    return extend(s:config, key)
+  endif
 
-let g:unite_taskwarrior_note_suffix = get(g:,
-      \ 'unite_taskwarrior_note_suffix',
-      \ 'mkd')
+  if type(a:key) == type('')
+    let prefix = 'unite_taskwarrior_'
+    let key_name = substitute(a:key, prefix, '', "")
 
-let g:unite_taskwarrior_note_formatter = get(g:,
-      \ 'unite_taskwarrior_note_formatter',
-      \ 'unite#taskwarrior#notes#simple_format')
+    if empty(a:000)
+      let global_key = prefix . key_name
+      if has_key(g:, global_key)
+        let value = get(g:, global_key)
+      else
+        let value = s:config[key_name]
+      endif
 
-let g:unite_taskwarrior_format_string = get(g:,
-      \ "unite_taskwarrior_format_string",
-      \ "[%s] %15s\t%s (%s)")
+      if key_name == 'note_directory'
+        let value = expand(value)
+      endif
 
-let g:unite_taskwarrior_tag_format_string = get(g:,
-      \ 'unite_taskwarrior_tag_format_string',
-      \ "%20s\t%5s")
+      return value
+    endif
 
-let g:unite_taskwarrior_project_format_string = get(g:,
-      \ 'unite_taskwarrior_project_format_string',
-      \ "%20s\t%5s")
-
-let g:unite_taskwarrior_formatter = get(g:,
-      \ "unite_taskwarrior_formatter",
-      \ 'unite#taskwarrior#format')
-
-let g:unite_taskwarrior_tag_formatter = get(g:,
-      \ "unite_taskwarrior_tag_formatter",
-      \ 'unite#taskwarrior#tags#format')
-
-let g:unite_taskwarrior_project_formatter = get(g:,
-      \ "unite_taskwarrior_project_formatter",
-      \ 'unite#taskwarrior#projects#format')
-
-let g:unite_taskwarrior_filter = get(g:,
-      \ 'unite_taskwarrior_filter',
-      \ 'status.not:deleted')
-
-let g:unite_taskwarrior_toggle_mapping = get(g:,
-      \ 'unite_taskwarrior_toggle_mapping', {
-      \ 'pending': 'completed',
-      \ 'completed': 'pending'
-      \ })
-
-let g:unite_taskwarrior_status_mapping = get(g:,
-      \ "unite_taskwarrior_stats_mapping", {
-      \ 'pending': ' ',
-      \ 'waiting': '-',
-      \ 'completed': '✓',
-      \ 'deleted': 'x',
-      \ 'recurring': '+',
-      \ 'unknown': 'N'
-      \ })
-
-let g:unite_taskwarrior_projects_abbr = get(g:,
-      \ "unite_taskwarrior_projects_abbr",
-      \ "$")
-
-let g:unite_taskwarrior_tags_abbr = get(g:,
-      \ "unite_taskwarrior_tags_abbr",
-      \ "+")
-
-let g:unite_taskwarrior_fallback_match = get(g:,
-      \ "unite_taskwarrior_fallback_match",
-      \ "matcher_fuzzy")
-
-let g:unite_taskwarrior_uri_format = get(g:,
-      \ 'unite_taskwarrior_uri_format',
-      \ '<task:%s>')
-
-let g:unite_taskwarrior_missing_project = get(g:,
-      \'unite_taskwarrior_missing_project',
-      \ '(none)')
-
-let g:unite_taskwarrior_show_annotations = get(g:,
-      \ 'unite_taskwarrior_show_annotations',
-      \ 1)
+    let s:config[key_name] = a:0001
+    return s:config
+  endif
+endfunction
 
 function! unite#taskwarrior#trim(str)
   return substitute(a:str, '^\s\+\|\s\+$', '', 'g')
@@ -106,7 +73,7 @@ function! unite#taskwarrior#flatten(list) abort
 endfunction
 
 function! unite#taskwarrior#call(filter, cmd, ...)
-  let args = [g:unite_taskwarrior_command, a:filter, a:cmd]
+  let args = [unite#taskwarrior#config('command'), a:filter, a:cmd]
   call extend(args, a:000)
   if a:filter == ''
     call remove(args, 1)
@@ -122,9 +89,9 @@ function! unite#taskwarrior#run(task, cmd, ...)
 endfunction
 
 function! unite#taskwarrior#init()
-  let g:unite_taskwarrior_note_directory = expand(g:unite_taskwarrior_note_directory)
-  if !isdirectory(g:unite_taskwarrior_note_directory)
-    call mkdir(g:unite_taskwarrior_note_directory, 'p')
+  let directory = unite#taskwarrior#config('note_directory')
+  if !isdirectory(directory)
+    call mkdir(directory, 'p')
   endif
 endfunction
 
@@ -160,18 +127,18 @@ endfunction
 function! unite#taskwarrior#format(task)
   let project = unite#taskwarrior#projects#abbr(a:task.project)
   let tags = map(a:task.tags, "unite#taskwarrior#tags#abbr(v:val)")
-  let status = get(g:unite_taskwarrior_status_mapping, a:task.status, '?')
+  let status = get(unite#taskwarrior#config('status_mapping'), a:task.status, '?')
   if filereadable(a:task.note)
-    call add(tags, g:unite_taskwarrior_tags_abbr . "NOTE")
+    call add(tags, unite#taskwarrior#config('tags_abbr') . "NOTE")
   endif
 
-  let formatted = printf(g:unite_taskwarrior_format_string,
+  let formatted = printf(unite#taskwarrior#config('format_string'),
         \ status,
         \ project,
         \ a:task.description,
         \ join(tags, ' '))
 
-  if g:unite_taskwarrior_show_annotations
+  if unite#taskwarrior#config('show_annotations')
     let annotations = join(
           \ map(a:task.annotations, 'printf("%20s%s", " ", v:val.description)'), 
           \ "\n")
@@ -206,9 +173,9 @@ function! unite#taskwarrior#parse(raw)
   " TODO: Fix safe version
   " let data = pyeval("json.loads(vim.eval('a:raw'))")
   let data.note = printf('%s/%s.%s',
-        \ g:unite_taskwarrior_note_directory,
+        \ unite#taskwarrior#config('note_directory'),
         \ strpart(data.uuid, 0, 8),
-        \ g:unite_taskwarrior_note_suffix)
+        \ unite#taskwarrior#config('note_suffix'))
 
   if !has_key(data, 'tags')
     let data.tags = []
@@ -235,7 +202,7 @@ function! unite#taskwarrior#parse(raw)
   endif
 
   let data.short = strpart(data.uuid, 0, 8)
-  let data.uri = printf(g:unite_taskwarrior_uri_format, data.uuid)
+  let data.uri = printf(unite#taskwarrior#config('uri_format'), data.uuid)
 
   return data
 endfunction
@@ -260,10 +227,10 @@ endfunction
 
 function! unite#taskwarrior#select(pattern)
   let args = []
-  if type(g:unite_taskwarrior_filter) == type([])
-    call extend(args, g:unite_taskwarrior_filter)
+  if type(unite#taskwarrior#config('filter')) == type([])
+    call extend(args, unite#taskwarrior#config('filter'))
   else
-    call add(args, g:unite_taskwarrior_filter)
+    call add(args, unite#taskwarrior#config('filter'))
   endif
   call extend(args, ["export"])
   call extend(args, a:pattern)
@@ -338,14 +305,14 @@ endfunction
 function! unite#taskwarrior#open(task)
   let task = unite#taskwarrior#new(a:task)
   if !filereadable(l:task.note)
-    let content = call(g:unite_taskwarrior_note_formatter, [l:task])
+    let content = call(unite#taskwarrior#config('note_formatter'), [l:task])
     call writefile(content, l:task.note)
   endif
   execute ':edit ' . l:task.note
 endfunction
 
 function! unite#taskwarrior#toggle(task)
-  let a:task.status = get(g:unite_taskwarrior_toggle_mapping,
+  let a:task.status = get(unite#taskwarrior#config('toggle_mapping'),
         \ a:task.status,
         \ 'pending')
   return unite#taskwarrior#modify(a:task, "status:" . a:task.status)

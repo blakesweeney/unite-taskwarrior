@@ -13,7 +13,7 @@ function! s:source.gather_candidates(args, context)
   let candidates = []
   let projects = unite#taskwarrior#projects#select(a:args)
   for project in projects
-    let line = call(g:unite_taskwarrior_project_formatter, [project])
+    let line = call(unite#taskwarrior#config('project_formatter'), [project])
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior_project",

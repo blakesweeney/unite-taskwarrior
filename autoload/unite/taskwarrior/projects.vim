@@ -11,7 +11,7 @@ function! unite#taskwarrior#projects#select(args)
   for task in tasks
     let project = task.project
     if empty(project)
-      let project = g:unite_taskwarrior_missing_project
+      let project = unite#taskwarrior#config('missing_project')
     endif
 
     let data =  get(projects, project, {'name': project, 'count': 0})
@@ -23,7 +23,7 @@ function! unite#taskwarrior#projects#select(args)
 endfunction
 
 function! unite#taskwarrior#projects#format(project)
-  return printf(g:unite_taskwarrior_project_format_string, 
+  return printf(unite#taskwarrior#config('project_format_string'), 
         \ a:project.name,
         \ a:project.count)
 endfunction
@@ -33,13 +33,13 @@ function! unite#taskwarrior#projects#abbr(data)
     return ''
   endif
   if type(a:data) == type('')
-    return g:unite_taskwarrior_projects_abbr . a:data
+    return unite#taskwarrior#config('projects_abbr') . a:data
   endif
-  return g:unite_taskwarrior_projects_abbr . a:data.name
+  return unite#taskwarrior#config('projects_abbr') . a:data.name
 endfunction
 
 function! unite#taskwarrior#projects#expand(short)
-  if strpart(a:short, 0, 1) == g:unite_taskwarrior_projects_abbr
+  if strpart(a:short, 0, 1) == unite#taskwarrior#config('projects_abbr')
     return 'project:' . strpart(a:short, 1, -1)
   endif
   return 'project:' . a:short

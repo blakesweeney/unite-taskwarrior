@@ -18,7 +18,7 @@ function! s:source.gather_candidates(args, context)
   let filter = unite#taskwarrior#filter(a:args, project)
   let loaded = unite#taskwarrior#select(filter)
   for todo in loaded
-    let line = call(g:unite_taskwarrior_formatter, [todo])
+    let line = call(unite#taskwarrior#config('formatter'), [todo])
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior",
@@ -31,7 +31,7 @@ function! s:source.gather_candidates(args, context)
 endfunction
 
 function! s:source.hooks.on_syntax(args, context) abort
-  if get(g:, 'unite_taskwarrior_define_mappings', 0) == 0
+  if unite#taskwarrior#config('define_mappings') == 0
     return
   endif
 
