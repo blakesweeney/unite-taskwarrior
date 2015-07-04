@@ -49,17 +49,8 @@ function! s:source.hooks.on_syntax(args, context) abort
   " nnoremap <silent><buffer><expr> DA           unite#do_action('denotate')
 endfunction
 
-let s:source_cmd = {
-      \ 'name': 'taskwarrior/cmd',
-      \ 'default_kind': 'taskwarrior_cmd'
-      \ }
-
-function! s:source_cmd.change_candidates(args, context)
-  return [{"word": a:context.input}]
-endfunction
-
 function! unite#sources#taskwarrior#define()
-  return [s:source, s:source_cmd]
+  return s:source
 endfunction
 
 let &cpo = s:save_cpo

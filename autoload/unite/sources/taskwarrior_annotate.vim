@@ -10,7 +10,7 @@ let s:source = {
       \ 'action_table': {}
       \ }
 
-let s:taskwarrior = unite#sources#taskwarrior#define()[0]
+let s:taskwarrior = unite#sources#taskwarrior#define()
 
 function! s:source.gather_candidates(args, context)
   if empty(a:args)

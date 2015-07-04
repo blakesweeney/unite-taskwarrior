@@ -8,14 +8,16 @@ let s:kind = {
       \ }
 
 let s:kind.action_table.execute = {
-      \ 'description' : 'execute cmd',
+      \ 'description' : 'execute command',
       \ 'is_selectable': 1,
       \ 'is_quit': 1
       \ }
 
 function! s:kind.action_table.execute.func(candidates)
   for candidate in a:candidates
-    echo call('unite#taskwarrior#call', '', split(candidate.word))
+    let args = ['']
+    call extend(args, split(candidate.word))
+    echo call('unite#taskwarrior#call', args)
   endfor
 endfunction
 
