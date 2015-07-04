@@ -218,6 +218,7 @@ function! unite#taskwarrior#new_dict(raw) abort
         \ 'status': 'unknown',
         \ 'tags': [],
         \ 'project': '',
+        \ 'annotations': [],
         \ 'start_time': '',
         \ 'started': 0,
         \ 'stop_time': '',

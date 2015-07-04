@@ -17,12 +17,13 @@ function! s:source.change_candidates(args, context) abort
   endif
 
   let task = unite#taskwarrior#new_dict(input)
-  let line = call(unite#taskwarrior#config('formatter'), [task])
+  let formatter = unite#taskwarrior#config('formatter')
+  let line = call(formatter, [task])
   return [{ "word": line, "source__data": task, }]
 endfunction
 
 function! unite#sources#taskwarrior_new#define()
-  return [s:source]
+  return s:source
 endfunction
 
 function! s:source.hooks.on_syntax(args, context) abort
