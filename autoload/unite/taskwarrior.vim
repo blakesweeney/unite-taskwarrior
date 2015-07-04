@@ -108,7 +108,12 @@ function! unite#taskwarrior#filter(strings, project)
       call add(filters, 'tag:' . strpart(entry, 1))
     endif
     if strpart(entry, 0, 1) == '$'
-      call add(filters, 'project.is:' . strpart(entry, 1))
+      let name = strpart(entry, 1)
+      if name == ''
+        call add(filters, 'project:')
+      else
+        call add(filters, 'project.is:' . name)
+      endif
     endif
   endfor
 
