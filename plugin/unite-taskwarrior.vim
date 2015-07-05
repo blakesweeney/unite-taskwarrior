@@ -22,8 +22,10 @@ let s:annotate = {
       \ 'is_quit': 1
       \ }
 function! s:annotate.func(candidates)
-  let annotatations = map(a:candidates, "v:val.word")
-  call unite#start([["taskwarrior/annotate", annotatations]])
+  let annotations = map(a:candidates, "v:val.word")
+  let args = ["taskwarrior/annotate"]
+  call extend(args, annotations)
+  call unite#start([args])
 endfunction
 
 for s:kind in g:unite_taskwarrior_add_annotations

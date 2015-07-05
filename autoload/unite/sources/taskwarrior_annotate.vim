@@ -16,10 +16,9 @@ function! s:source.gather_candidates(args, context)
   if empty(a:args)
     return []
   endif
-  let annotation = a:args[0]
   let candidates = s:taskwarrior.gather_candidates([], a:context)
   for candidate in candidates
-    let candidate['source__annotations'] = annotation
+    let candidate['source__annotations'] = a:args
   endfor
   return candidates
 endfunction
