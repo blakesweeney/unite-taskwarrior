@@ -39,7 +39,7 @@ function! unite#taskwarrior#annotations#time(annotation) abort
   let stamp = a:annotation.entry
   let parts = split(substitute(stamp, 'Z', '', ''), 'T')
   let precision = unite#taskwarrior#config('annotation_precision')
-  let time = str2nr(parts[1]) / (len(precision) * 10)
+  let time = str2nr(parts[1]) / 10
   let rounded = floor(time / precision) * precision
   return printf("%sT%sZ", parts[0], string(rounded))
 endfunction
