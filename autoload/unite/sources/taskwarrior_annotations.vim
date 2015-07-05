@@ -20,7 +20,7 @@ function! s:source.gather_candidates(args, context)
   let candidates = []
   for group in unite#taskwarrior#annotations#groups(a:args)
     call add(candidates, {
-          \ 'word': group.description,
+          \ 'word': unite#taskwarrior#annotations#format(group),
           \ 'is_multiline': 1,
           \ 'source__data': group
           \ })

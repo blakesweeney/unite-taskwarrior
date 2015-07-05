@@ -22,7 +22,9 @@ let s:config = {
       \ "fallback_match": "matcher_fuzzy",
       \ 'uri_format': '<task:%s>',
       \ 'missing_project': '(none)', 
-      \ 'show_annotations': 1
+      \ 'show_annotations': 1,
+      \ 'group_annotations_by': 'time',
+      \ 'annotation_precision': 2
       \ }
 
 function! unite#taskwarrior#config(key, ...) abort
