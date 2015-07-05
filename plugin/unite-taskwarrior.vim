@@ -27,7 +27,7 @@ function! s:annotate.func(candidates)
 endfunction
 
 for s:kind in g:unite_taskwarrior_add_annotations
-  call unite#custom#action(s:kind, 'annotate', s:annotate)
+  call unite#custom#action(s:kind, 'annotate_task', s:annotate)
 endfor
 
 let &cpo = s:save_cpo
