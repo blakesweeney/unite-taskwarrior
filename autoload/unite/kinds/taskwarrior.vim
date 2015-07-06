@@ -39,9 +39,9 @@ function! s:kind.action_table.edit_tag.func(candidates)
   for candidate in a:candidates
     call extend(tags, candidate.source__data.tags)
   endfor
-  let tags = uniq(tags)
+  let tags = uniq(sort(tags))
   let before = join(tags, ' ')
-  let prompt = 'Tags modifications' . before . ': '
+  let prompt = 'Tags modifications (' . before . '): '
   let after = split(unite#taskwarrior#trim(input(prompt, before)))
   if !empty(after)
     for candidate in a:candidates
