@@ -25,7 +25,7 @@ let s:config = {
       \ "tags_abbr": "+",
       \ "fallback_match": "matcher_fuzzy",
       \ 'uri_format': '<task:%s>',
-      \ 'missing_project': '(none)', 
+      \ 'missing_project': '(none)',
       \ 'show_annotations': 1,
       \ 'group_annotations_by': 'time',
       \ 'annotation_precision': 2
@@ -155,7 +155,7 @@ function! unite#taskwarrior#format(task)
 
   if unite#taskwarrior#config('show_annotations')
     let annotations = join(
-          \ map(a:task.annotations, 'printf("%20s%s", " ", v:val.description)'), 
+          \ map(a:task.annotations, 'printf("%20s%s", " ", v:val.description)'),
           \ "\n")
 
     if !empty(annotations)
@@ -183,7 +183,7 @@ endfunction
 
 function! unite#taskwarrior#parse(raw)
   if stridx(a:raw, "The") == 0
-    throw "Could not parse taskwarrior output: " . a:raw
+    return {}
   endif
 
   let line = substitute(a:raw, "\n$", "", "")
@@ -199,6 +199,10 @@ function! unite#taskwarrior#parse(raw)
   let data.depends = split(get(data, 'depends', ''), ',')
 
   return data
+endfunction
+
+function! unite#taskwarrior#is_empty(task) abort
+  return get(a:task, 'uuid', '') == ''
 endfunction
 
 function! unite#taskwarrior#new_dict(raw) abort
@@ -233,7 +237,13 @@ function! unite#taskwarrior#select(pattern)
   let raw = call("unite#taskwarrior#call", args)
   let lines = split(raw, "\n")
   let data = map(lines, 'unite#taskwarrior#parse(v:val)')
-  return data
+  let filtered = filter(deepcopy(data), 'unite#taskwarrior#is_empty(v:val)')
+
+  if len(filtered) != len(data)
+    echomsg "Could not parse all taskwarrior output"
+  endif
+
+  return filtered
 endfunction
 
 function! unite#taskwarrior#all()
