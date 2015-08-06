@@ -202,7 +202,7 @@ function! unite#taskwarrior#parse(raw)
 endfunction
 
 function! unite#taskwarrior#is_empty(task) abort
-  return get(a:task, 'uuid', '') == ''
+  return get(a:task, 'uuid', '') != ''
 endfunction
 
 function! unite#taskwarrior#new_dict(raw) abort
@@ -237,10 +237,10 @@ function! unite#taskwarrior#select(pattern)
   let raw = call("unite#taskwarrior#call", args)
   let lines = split(raw, "\n")
   let data = map(lines, 'unite#taskwarrior#parse(v:val)')
-  let filtered = filter(deepcopy(data), 'unite#taskwarrior#is_empty(v:val)')
+  let filtered = filter(copy(data), 'unite#taskwarrior#is_empty(v:val)')
 
   if len(filtered) != len(data)
-    echomsg "Could not parse all taskwarrior output"
+    call unite#print_error("Could not parse all taskwarrior output")
   endif
 
   return filtered
