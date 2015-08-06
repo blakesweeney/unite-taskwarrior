@@ -48,6 +48,10 @@ function! unite#taskwarrior#config(key, ...) abort
         let value = expand(value)
       endif
 
+      if key_name == 'annotation_precision'
+        let value = float2nr(value)
+      endif
+
       return value
     endif
 
@@ -174,39 +178,19 @@ function! unite#taskwarrior#format_taskwiki(task) abort
 endfunction
 
 function! unite#taskwarrior#parse(raw)
+  if stridx(a:raw, "The") == 0
+    throw "Could not parse taskwarrior output: " . a:raw
+  endif
+
   let line = substitute(a:raw, "\n$", "", "")
-  " Who needs safety?
-  let data = eval(line)
-  " TODO: Fix safe version
+  " FIXME: Safe version
   " let data = pyeval("json.loads(vim.eval('a:raw'))")
+  let parsed = eval(line)
+  let data = extend(unite#taskwarrior#new_dict(parsed.description), parsed)
   let data.note = printf('%s/%s.%s',
         \ unite#taskwarrior#config('note_directory'),
         \ strpart(data.uuid, 0, 8),
         \ unite#taskwarrior#config('note_suffix'))
-
-  if !has_key(data, 'tags')
-    let data.tags = []
-  endif
-
-  if !has_key(data, 'annotations')
-    let data.annotations = []
-  endif
-
-  if !has_key(data, 'project')
-    let data.project = ''
-  endif
-
-  let data.started = 0
-  let data.start_time = ''
-  if has_key(data, 'start_time')
-    let data.started = 1
-  endif
-
-  let data.stopped = 0
-  let data.stop_time = ''
-  if has_key(data, 'stop_time')
-    let data.stopped = 1
-  endif
 
   let data.short = strpart(data.uuid, 0, 8)
   let data.uri = printf(unite#taskwarrior#config('uri_format'), data.uuid)
@@ -217,6 +201,7 @@ endfunction
 function! unite#taskwarrior#new_dict(raw) abort
   return {
         \ 'description': a:raw,
+        \ 'depends': [],
         \ 'status': 'unknown',
         \ 'tags': [],
         \ 'project': '',
@@ -352,6 +337,21 @@ function! unite#taskwarrior#yank(task, formatter) abort
   else
     let @@ = call(a:formatter, a:task)
   endif
+endfunction
+
+function! unite#taskwarrior#bindings() abort
+  nnoremap <silent><buffer><expr> <TAB>       unite#do_action('toggle')
+  nnoremap <silent><buffer><expr> <CR>        unite#do_action('view')
+  nnoremap <silent><buffer><expr> d           unite#do_action('do')
+  nnoremap <silent><buffer><expr> D           unite#do_action('delete')
+  nnoremap <silent><buffer><expr> P           unite#do_action('edit_proj')
+  nnoremap <silent><buffer><expr> A           unite#do_action('annotate')
+  nnoremap <silent><buffer><expr> m           unite#do_action('modify')
+  nnoremap <silent><buffer><expr> e           unite#do_action('edit')
+  nnoremap <silent><buffer><expr> u           unite#do_action('undo')
+  nnoremap <silent><buffer><expr> +           unite#do_action('start')
+  nnoremap <silent><buffer><expr> -           unite#do_action('stop')
+  " nnoremap <silent><buffer><expr> DA           unite#do_action('denotate')
 endfunction
 
 let &cpo = s:save_cpo
