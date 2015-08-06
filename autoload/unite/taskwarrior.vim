@@ -3,6 +3,10 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
+let s:V = vital#of('unite_taskwarrior')
+let s:JSON = s:V.load('Web.JSON')
+let s:JSON = s:JSON.Web.JSON
+
 let s:config = {
       \ 'command': "task",
       \ 'note_directory': '~/.task/note',
@@ -183,9 +187,7 @@ function! unite#taskwarrior#parse(raw)
   endif
 
   let line = substitute(a:raw, "\n$", "", "")
-  " FIXME: Safe version
-  " let data = pyeval("json.loads(vim.eval('a:raw'))")
-  let parsed = eval(line)
+  let parsed = s:JSON.decode(a:raw)
   let data = extend(unite#taskwarrior#new_dict(parsed.description), parsed)
   let data.note = printf('%s/%s.%s',
         \ unite#taskwarrior#config('note_directory'),
@@ -194,6 +196,7 @@ function! unite#taskwarrior#parse(raw)
 
   let data.short = strpart(data.uuid, 0, 8)
   let data.uri = printf(unite#taskwarrior#config('uri_format'), data.uuid)
+  let data.depends = split(get(data, 'depends', ''), ',')
 
   return data
 endfunction
@@ -201,7 +204,7 @@ endfunction
 function! unite#taskwarrior#new_dict(raw) abort
   return {
         \ 'description': a:raw,
-        \ 'depends': [],
+        \ 'depends': '',
         \ 'status': 'unknown',
         \ 'tags': [],
         \ 'project': '',
