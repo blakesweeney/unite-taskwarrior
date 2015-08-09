@@ -88,7 +88,7 @@ function! unite#taskwarrior#call(filter, cmd, ...)
   if a:filter == ''
     call remove(args, 1)
   endif
-  return  vimproc#system(args)
+  return vimproc#system(args)
 endfunction
 
 function! unite#taskwarrior#run(task, cmd, ...)
@@ -365,6 +365,13 @@ function! unite#taskwarrior#bindings() abort
   nnoremap <silent><buffer><expr> +           unite#do_action('start')
   nnoremap <silent><buffer><expr> -           unite#do_action('stop')
   " nnoremap <silent><buffer><expr> DA           unite#do_action('denotate')
+endfunction
+
+function! unite#taskwarrior#depends(task, parents) abort
+  if type(a:parents) == type([])
+    let parent_ids = join(a:parents, ',')
+  endif
+  return unite#taskwarrior#call(parent_ids, 'modify', 'depends:' . a:task.uuid)
 endfunction
 
 let &cpo = s:save_cpo
