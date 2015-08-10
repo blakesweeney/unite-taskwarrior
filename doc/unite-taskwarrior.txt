@@ -12,8 +12,13 @@ Usage                                            |unite-taskwarrior-usage|
   Variables                                      |unite-taskwarrior-variables|
   Unite Source                                   |unite-taskwarrior-sources|
     taskwarrior
-    taskwarrior/tags
+    taskwarrior/annotate
+    taskwarrior/annotations
+    taskwarrior/cmd
+    taskwarrior/depends
+    taskwarrior/new
     taskwarrior/projects
+    taskwarrior/tags
     Common Actions
   Note Files                                     |unite-taskwarrior-notes|
   Functions                                      |unite-taskwarrior-functions|
@@ -21,17 +26,24 @@ Usage                                            |unite-taskwarrior-usage|
 ==============================================================================
 About                                            *unite-taskwarrior-about*
 
-This is a unite source for taskwarrior, which provides a way to browse and
+This is a unite source for `taskwarrior`, which provides a way to browse and
 manipulate taskwarrior tasks from inside vim. It uses |unite.vim| as the
 interface.
 
-==============================================================================
-Installation                                     *unite-taskwarrior-install*
-
-Copy files into the correct places, or just use a package manager.
+This is meant to provide a way to view and manipulate tasks, as well as
+provide some common and useful features on top, such as note taking.
 
 ==============================================================================
-Usage                                            *unite-taskwarrior-usage*
+Installation                                         *unite-taskwarrior-install*
+
+Copy files into the correct places, or just use a package manager. For
+example, with |neobundle|.
+
+>
+  NeoBundle 'bsweeney/unite-taskwarrior'
+>
+==============================================================================
+Usage                                                  *unite-taskwarrior-usage*
 
 This does not come with any key bindings. Personally I find the follow ones
 very useful:
@@ -60,9 +72,9 @@ This lets me edit the tags quickly. I end up doing this a lot so it's useful
 to have.
 
 ==============================================================================
-Commands                                         *unite-taskwarrior-commands*
+Commands                                            *unite-taskwarrior-commands*
 
-UniteTaskWarriorAdd                              *UniteTaskWarriorAdd*
+*UniteTaskWarriorAdd*
 
 This command can create a new task. If run with no arguments and no visual
 selection it will prompt for a new task description, which it will then
@@ -93,8 +105,14 @@ Examples:
 These examples only show adding tags and projects but all of the normal
 taskwarrior syntax should be respected.
 
+*UniteTaskWarriorUndo*
+
+Undo the last action. This will call taskwarrior's, undo command to undo the
+last action. This does not depends on the vim interface being used to do an
+action.
+
 ==============================================================================
-Variables                                        *unite-taskwarrior-variables*
+Variables                                          *unite-taskwarrior-variables*
 
 *g:unite_taskwarrior_command*
 
@@ -184,12 +202,12 @@ Default: { "pending", "completed", "completed": "pending" }
 
 *g:unite_taskwarrior_status_mapping*
 
-This is a dictonary is used to map from a status to the symbol to use when
-displaying a task. 
+This is a dictionary is used to map from a status to the symbol to use when
+displaying a task.
 
 *g:unite_taskwarrior_projects_abbr*
 
-The string to use as an abrivation for project in the listing.
+The string to use as an abbreviation for project in the listing.
 
 Default: "$"
 
@@ -207,17 +225,82 @@ see common actions below.
 Default: ["common"]
 
 ==============================================================================
-Unite Sources                                      *unite-taskwarrior-sources*
+Unite Sources                                        *unite-taskwarrior-sources*
 
 This provides several different unite sources as well as modifying unite
-sources to add an annotation action.
+sources to add an annotation action. The full list sources is:
+
+taskwarrior                               |unite-taskwarrior-source-taskwarrior|
+  A source for displaying tasks
+
+taskwarrior/annotate                         |unite-taskwarrior-source-annotate|
+  A source for adding annotations to tasks
+
+taskwarrior/annotations                   |unite-taskwarrior-source-annotations|
+  A source for displaying annotations from tasks
+
+taskwarrior/cmd                                   |unite-taskwarrior-source-cmd|
+  A source to run specific commands
+
+taskwarrior/depends                           |unite-taskwarrior-source-depends|
+  A source for adding dependencies of tasks
+
+taskwarrior/new                                   |unite-taskwarrior-source-new|
+  A source for creating new tasks
+
+taskwarrior/projects                         |unite-taskwarrior-source-projects|
+  A source to list all projects
+
+taskwarrior/tags                                 |unite-taskwarrior-source-tags|
+  A source to list all tags
+
+In addition, this adds an action to the common source. This action allows the
+given input to be used as annotations on tasks. See
+|unite-taskwarrior-common-actions| for details.
 
 ------------------------------------------------------------------------------
-taskwarrior  *unite-taskwarrior-source-taskwarrior*
+taskwarrior                               *unite-taskwarrior-source-taskwarrior*
 
-This source shows tasks using they description, state, tags and project.
+This source shows tasks using their description, state, tags and project.
 
 Actions~
+
+add_dependency
+
+Add a dependency to the selected tasks. This will open up another unite buffer
+of all tasks. The selected tasks will be used as dependencies of the parent
+tasks.
+
+annotate
+
+Add an annotation to one or more tasks. This will prompt for some annotation and add it
+to the selected tasks.
+
+edit
+
+Edit the description of this task. This will prompt for a new description.
+
+Key: "e"
+
+delete
+
+Mark one or more tasks as deleted.
+
+do
+
+Mark one or more tasks as done.
+
+Key: "<CR>"
+
+edit_tag
+
+Edit the tags for one or more tasks. This will prompt for a comma separated
+string where each part is a tag to assign to the task.
+
+edit_proj
+
+Edit the project for one or more tasks. This will prompt for a project to
+assign to the tasks.
 
 open
 
@@ -226,52 +309,17 @@ Open a note file for this task. For details on note files, see
 
 Key: "o"
 
-preview
-
-Preview the note file for this task.
-
-Key: "p"
-
-edit
-
-Edit the description of this task. This will prompt for a new description.
-
-Key: "e"
-
-edit_tag
-
-Edit the tags for one or more tasks. This will prompt for a comma seperated
-string where each part is a tag to assign to the task.
-
-edit_proj
-
-Edit the project for one or more tasks. This will prompt for a project to
-assign to the tasks.
-
-do
-
-Mark one or more tasks as done.
-
-Key: "<CR>"
-
-delete
-
-Mark one or more tasks as deleted.
-
-toggle
-
-Toggle state of one or more tasks.
-
 modify
 
 Run a modification on one or more tasks. This will prompt for some
 modification string and pass that to taskwarrior. This should respect the
 standard taskwarrior syntax.
 
-annotate
+preview
 
-Add an annotation to one or more tasks. This will prompt for some annotation and add it
-to the selected tasks.
+Preview the note file for this task.
+
+Key: "p"
 
 start
 
@@ -280,6 +328,10 @@ Start a task. Will mark the task as started in taskwarrior.
 stop
 
 Stop a task. Will mark the task as stopped in taskwarrior.
+
+toggle
+
+Toggle state of one or more tasks.
 
 yank
 
@@ -296,7 +348,49 @@ Show detailed information about this task. The
 Key: "v"
 
 ------------------------------------------------------------------------------
-taskwarrior/tags  *unite-taskwarrior-source-tags*
+taskwarrior/depends                           *unite-taskwarrior-source-depends*
+
+A source to add dependencies of the task. This task requires a list of task
+uuids as arguments. These will be used as the parent tasks in the modifications.
+One or more tasks may be given.
+
+Actions~
+
+add_dependency
+
+Default key <CR>. This will mark the given tasks as dependencies of the tasks
+in the arguments.
+
+------------------------------------------------------------------------------
+taskwarrior/cmd                                   *unite-taskwarrior-source-cmd*
+
+This is a source to run a specific command. The entries are all known
+taskwarrior commands.
+
+------------------------------------------------------------------------------
+taskwarrior/new                                   *unite-taskwarrior-source-new*
+
+Create a new task. The given text will be send as is to taskwarrior, to create
+the task. This has all the same actions as |unite-taskwarrior-source|, but it
+will create the task as needed.
+
+------------------------------------------------------------------------------
+taskwarrior/depends                           *unite-taskwarrior-source-depends*
+
+This source allows for the addition of dependencies to tasks. This must be
+given some parent task uuids as arguments when starting the source.
+
+Actions~
+
+add_dependency
+
+Key <CR>
+
+This is the default action and will mark the selected tasks as depdending upon
+the parent tasks.
+
+------------------------------------------------------------------------------
+taskwarrior/tags                                 *unite-taskwarrior-source-tags*
 
 This shows all known tags as well as their counts. Opening a task, which is
 the default action will show all tasks with the given tag.
@@ -306,7 +400,7 @@ Actions~
 open
 
 Default key "<CR>". This will open a taskwarrior source for all tasks with this
-tag.
+tag. This is the default action.
 
 rename
 
@@ -316,7 +410,7 @@ new one to all tasks with this tag.
 Key: "r"
 
 ------------------------------------------------------------------------------
-taskwarrior/projects  *unite-taskwarrior-source-projects*
+taskwarrior/projects                         *unite-taskwarrior-source-projects*
 
 This shows all known projects and their counts. Opening a project, which is
 the default action, will show all tasks for that project.
@@ -338,7 +432,7 @@ to the new one.
 Key: "r"
 
 ------------------------------------------------------------------------------
-Common actions                                   *unite-taskwarrior-common-actions*
+Common actions                                *unite-taskwarrior-common-actions*
 
 This adds an annotate action to the unite kinds specified in
 |g:unite_taskwarrior_add_annotations| which defaults to ["common"]. The effect
@@ -346,22 +440,23 @@ of this is to make it possible to use the result of any unite source as an
 annotation for tasks. This action takes one or more entries and then applies
 them as annotations to one or more tasks. This task will open up a taskwarrior
 source with all tasks and allow the selection of tasks. Once selected they
-will be annotated. 
+will be annotated.
 
 ==============================================================================
-Note Files                                       *unite-taskwarrior-notes*
+Note Files                                             *unite-taskwarrior-notes*
 
 These are simple files to keep notes that don't fit into annotations. You can
 open these by hitting 'o' for on a task. The files are stored in
 |g:unite_taskwarrior_note_directory| and are named with the first 8 characters
-of the task uuid and then the suffix given in |g:unite_taskwarrior_note_suffix|
-Simply write any notes you desire in them and then close save. This doesn't
-provide the ability to search note files, nor does it delete them once a task is
-marked done. Searching then should be possible using a Unite grep source that
-has been pointed to the correct directory.
+of the task uuid and then the suffix given in
+|g:unite_taskwarrior_note_suffix| Simply write any notes you desire in them
+and then close save. This doesn't provide the ability to search note files,
+nor does it delete them once a task is marked done. Searching then should be
+possible using a Unite grep source that has been pointed to the correct
+directory.
 
 ==============================================================================
-Functions                                        *unite-taskwarrior-functions*
+Functions                                          *unite-taskwarrior-functions*
 
 This has some utility functions and task manipulation functions. Below is a
 listing of all functions.
@@ -372,63 +467,63 @@ Utility functions
 This is a group of functions that are just for general utility, normalizing
 strings, calling the taskwarrior program, parsing output etc.
 
-unite#taskwarrior#trim(string)                   *unite#taskwarrior#trim*
+unite#taskwarrior#trim(string)                          *unite#taskwarrior#trim*
 
 Strip off leading and trailing whitespace from some string.
 
-unite#taskwarrior#call(filter, cmd, ...)         *unite#taskwarrior#call*
+unite#taskwarrior#call(filter, cmd, ...)                 *unite#taskwarrior#call*
 
 Call the taskwarrior script using the given filter and command with any number
 of arguments. The filter will be removed if it is "".
 
-unite#taskwarrior#run({task}, cmd, ...)          *unite#taskwarrior#run*
+unite#taskwarrior#run({task}, cmd, ...)                  *unite#taskwarrior#run*
 
-Run a task command on the given task. The task is a task dictonary and the
-command and other arguments are passed to *unite#taskwarrior#call*
+Run a task command on the given task. The task is a task dictionary and the
+command and other arguments are passed to |unite#taskwarrior#call|.
 
-unite#taskwarrior#init()                         *unite#taskwarrior#init*
+unite#taskwarrior#init()                                 *unite#taskwarrior#init*
 
 Setup things that are generally needed for taskwarrior. This should not need
 to be called manually and will instead be called as needed. Right now all this
 does is create the note directory as needed.
 
-unite#taskwarrior#filter([strings], project)     *unite#taskwarrior#filter*
+unite#taskwarrior#filter([strings], project)            *unite#taskwarrior#filter*
 
 Create a list of filter strings from the given arguments. This will expand
 things like "@bob" to "tag:bob" and "$name" to "project:name". If the project is
 set to infer then it will add a filter string with
 project:current-directory-name.
 
-unite#taskwarrior#format({task})                 *unite#taskwarrior#format*
+unite#taskwarrior#format({task})                        *unite#taskwarrior#format*
 
 Turn a task into a string. This uses the format string in
 |g:unite_taskwarrior_format_string| to generate a string to display.
 
-unite#taskwarrior#parse(raw)                     *unite#taskwarrior#parse*
+unite#taskwarrior#parse(raw)                             *unite#taskwarrior#parse*
 
 Parse the output of taskwarrior export to create a task dictionary. The
 dictionary will contain all keys provided by export, but the tags and
 annotations will be an empty list if none are given. In addition, the project
-will be set to an empty string if none is provided. 
+will be set to an empty string if none is provided.
 
-unite#taskwarrior#select([pattern])                *unite#taskwarrior#select*
+unite#taskwarrior#select([pattern])                     *unite#taskwarrior#select*
 
 Load all tasks that match the given patterns. This will generate the filter
 string for the given pattern using |unite#taskwarrior#filter| then export all
-tasks and parse them using |unite#taskwarrior#parse| into a list of dictonaries.
+tasks and parse them using |unite#taskwarrior#parse| into a list of dictionaries.
 This will add the filter defined in |g:unite_taskwarrior_filter|
 
-unite#taskwarrior#all()                          *unite#taskwarrior#all*
+unite#taskwarrior#all()                                    *unite#taskwarrior#all*
 
 Load all tasks. This respects the default filter in |g:unite_taskwarrior_filter|
 
-unite#taskwarrior#new(data)                      *unite#taskwarrior#new*
+unite#taskwarrior#new(data)                                *unite#taskwarrior#new*
 
 Create a new task with the given data. The data may be a list or a string. If it
 is a string it string, it is split on whitespace and then used to generate the
 tasks. If it is a list it is flattened and then used to generate the tasks.
 
-                                                 *unite#taskwarrior#input*
+                                                         *unite#taskwarrior#input*
 unite#taskwarrior#input(args, use_range, line1, line2)
 
 This is what is called by the |UniteTaskWarriorAdd| command. It will prompt for
@@ -441,32 +536,32 @@ These are a set of functions which are use to manipulate tasks. In general
 they take a task dictionary, and potentially other arguments, and then run
 some task command. The task dictionary is the result of parsing the output of
 export using *unite#taskwarrior#parse* and is not generally modified by these
-functions. 
+functions.
 
-unite#taskwarrior#do({task})                     *unite#taskwarrior#do*
+unite#taskwarrior#do({task})                              *unite#taskwarrior#do*
 
 Mark a task as done.
 
-unite#taskwarrior#delete({task})                 *unite#taskwarrior#delete*
+unite#taskwarrior#delete({task})                       *unite#taskwarrior#delete*
 
 Mark a task as deleted.
 
-unite#taskwarrior#modify({task}, [data])         *unite#taskwarrior#modify*
+unite#taskwarrior#modify({task}, [data])               *unite#taskwarrior#modify*
 
 Run the modify command on one task. The data should be a list of strings which
 are the arguments to the modify command.
 
-unite#taskwarrior#rename({task}, description)    *unite#taskwarrior#rename*
+unite#taskwarrior#rename({task}, description)          *unite#taskwarrior#rename*
 
 Change the tasks description. The given description must be a string and will
 be used as new description
 
-unite#taskwarrior#open({task})                   *unite#taskwarrior#open*
+unite#taskwarrior#open({task})                           *unite#taskwarrior#open*
 
 Open the note file associated with a task. If such a file does not exist it
 will be created with a single line, the task description.
 
-unite#taskwarrior#toggle({task})                 *unite#taskwarrior#toggle*
+unite#taskwarrior#toggle({task})                       *unite#taskwarrior#toggle*
 
 Toggle the status of a task. This is the default action. The toggling between
 states is defined in |g:unite_taskwarrior_toggle_mapping| with a default of
