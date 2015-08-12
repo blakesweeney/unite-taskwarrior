@@ -188,7 +188,11 @@ function! unite#taskwarrior#parse(raw)
 
   let line = substitute(a:raw, "\n$", "", "")
   let parsed = s:JSON.decode(a:raw)
-  let data = extend(unite#taskwarrior#new_dict(parsed.description), parsed)
+  return unite#taskwarrior#defaults(parsed)
+endfunction
+
+function! unite#taskwarrior#defaults(parsed) abort
+  let data = extend(unite#taskwarrior#new_dict(a:parsed.description), a:parsed)
   let data.note = printf('%s/%s.%s',
         \ unite#taskwarrior#config('note_directory'),
         \ strpart(data.uuid, 0, 8),
@@ -235,8 +239,14 @@ function! unite#taskwarrior#select(pattern)
   call extend(args, ["export"])
   call extend(args, a:pattern)
   let raw = call("unite#taskwarrior#call", args)
-  let lines = split(raw, "\n")
-  let data = map(lines, 'unite#taskwarrior#parse(v:val)')
+  let data = []
+  if strpart(raw, 0, 1) == "["
+    let data = s:JSON.decode(raw)
+    let data = map(data, 'unite#taskwarrior#defaults(v:val)')
+  else
+    let lines = split(raw, "\n")
+    let data = map(lines, 'unite#taskwarrior#parse(v:val)')
+  endif
   let filtered = filter(copy(data), 'unite#taskwarrior#is_empty(v:val)')
 
   if len(filtered) != len(data)
