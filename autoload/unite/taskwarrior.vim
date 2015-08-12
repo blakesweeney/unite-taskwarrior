@@ -204,7 +204,12 @@ function! unite#taskwarrior#defaults(parsed) abort
 
   let data.short = strpart(data.uuid, 0, 8)
   let data.uri = printf(unite#taskwarrior#config('uri_format'), data.uuid)
-  let data.depends = split(get(data, 'depends', ''), ',')
+  let deps = get(data, 'depends', '')
+  if type(deps) == ''
+    let data.depends = split(deps, ',')
+  else
+    let data.depends = deps
+  endif
 
   return data
 endfunction
