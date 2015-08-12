@@ -188,6 +188,10 @@ function! unite#taskwarrior#parse(raw)
 
   let line = substitute(a:raw, "\n$", "", "")
   let parsed = s:JSON.decode(a:raw)
+  if type(parsed) == type([])
+    return map(parsed, 'unite#taskwarrior#defaults(v:val)')
+  endif
+
   return unite#taskwarrior#defaults(parsed)
 endfunction
 
@@ -210,8 +214,13 @@ function! unite#taskwarrior#is_empty(task) abort
 endfunction
 
 function! unite#taskwarrior#new_dict(raw) abort
+  let desc = a:raw
+  if type(desc) == type([])
+    let desc = join(desc, ' ')
+  endif
+
   return {
-        \ 'description': a:raw,
+        \ 'description': desc,
         \ 'depends': '',
         \ 'status': 'unknown',
         \ 'tags': [],
@@ -280,19 +289,17 @@ function! unite#taskwarrior#newest() abort
   let tasks = split(unite#taskwarrior#call("", "newest"), "\n")
   let task_id = split(tasks[2])[0]
   let raw = unite#taskwarrior#call("export", task_id)
-  return unite#taskwarrior#parse(raw)
+  return unite#taskwarrior#parse(raw)[0]
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
   if a:use_range
     let lines = join(getline(a:line1, a:line2))
     call unite#taskwarrior#new(split(lines))
+  elseif a:args == ""
+    call unite#taskwarrior#new(input('Task: '))
   else
-    if a:args == ""
-      call unite#taskwarrior#new(input('Task: '))
-    else
-      call unite#taskwarrior#new(a:args)
-    endif
+    call unite#taskwarrior#new(a:args)
   endif
 endfunction
 
@@ -374,7 +381,6 @@ function! unite#taskwarrior#bindings() abort
   nnoremap <silent><buffer><expr> u           unite#do_action('undo')
   nnoremap <silent><buffer><expr> +           unite#do_action('start')
   nnoremap <silent><buffer><expr> -           unite#do_action('stop')
-  " nnoremap <silent><buffer><expr> DA           unite#do_action('denotate')
 endfunction
 
 function! unite#taskwarrior#depends(task, parents) abort
