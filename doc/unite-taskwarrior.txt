@@ -51,7 +51,6 @@ very useful:
 In my |vimrc|:
 >
   call unite#custom#source('taskwarrior', 'matchers', 'matcher_fuzzy')
-  call unite#custom#source('taskwarrior', 'sorters', 'sorter_rank')
 
   nnoremap <silent>  <Leader>T :Unite taskwarrior -winheight=50<CR>
   nnoremap           <Leader>Ta :UniteTaskWarriorAdd<CR>
@@ -66,8 +65,8 @@ In `ftplugin/unite.vim`:
 >
   inoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
   nnoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
+  nnoremap <silent><buffer><expr> <C-D> unite#do_action('add_dependency')
 <
-
 This lets me edit the tags quickly. I end up doing this a lot so it's useful
 to have.
 

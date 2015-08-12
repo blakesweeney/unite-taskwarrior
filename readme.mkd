@@ -67,10 +67,11 @@ vnoremap <silent>  <Leader>Ta :B UniteTaskWarriorAdd<CR>
 nnoremap <silent>  <Leader>Tp :Unite taskwarrior/tags -vertical -winwidth=40
 
 " ftplugin/unite.vim
-inoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
-nnoremap <silent><buffer><expr> <C-t> unite#do_action('edit_tag')
-inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+inoremap <silent><buffer><expr> <C-T> unite#do_action('edit_tag')
+nnoremap <silent><buffer><expr> <C-T> unite#do_action('edit_tag')
+nnoremap <silent><buffer><expr> <C-D> unite#do_action('add_dependency')
+inoremap <silent><buffer><expr> <C-V> unite#do_action('vsplit')
+nnoremap <silent><buffer><expr> <C-V> unite#do_action('vsplit')
 ```
 
 The `:B` is from
