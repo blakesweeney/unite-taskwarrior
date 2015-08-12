@@ -153,6 +153,13 @@ function! s:kind.action_table.add_dependency.func(candidates) abort
   call unite#start([args])
 endfunction
 
+let s:kind.action_table.previous  = {'description': 'open last unite buffer'}
+function! s:kind.action_table.previous.func(candidate) abort
+  let history = unite#sources#history_unite#define()
+  let candidates = history.gather_candidates([], {})
+  call history.action_table.start.func(candidates[0])
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
