@@ -111,7 +111,7 @@ function! unite#taskwarrior#load_config(filename)
   return eval(lines)
 endfunction
 
-function! unite#taskwarrior#filter(strings, project)
+function! unite#taskwarrior#filter(strings, project, ...)
   let filters = []
   for entry in a:strings
     if strpart(entry, 0, 1) == '@'
@@ -126,6 +126,16 @@ function! unite#taskwarrior#filter(strings, project)
       endif
     endif
   endfor
+
+  if a:000 != []
+    call extend(filters, a:000)
+  else
+    if type(unite#taskwarrior#config('filter')) == type([])
+      call extend(filters, unite#taskwarrior#config('filter'))
+    else
+      call add(filters, unite#taskwarrior#config('filter'))
+    endif
+  endif
 
   if a:project ==? 'infer'
     if filereadable("./unite-taskwarior")
@@ -245,11 +255,6 @@ endfunction
 
 function! unite#taskwarrior#select(pattern)
   let args = []
-  if type(unite#taskwarrior#config('filter')) == type([])
-    call extend(args, unite#taskwarrior#config('filter'))
-  else
-    call add(args, unite#taskwarrior#config('filter'))
-  endif
   call extend(args, ["export"])
   call extend(args, a:pattern)
   let raw = call("unite#taskwarrior#call", args)

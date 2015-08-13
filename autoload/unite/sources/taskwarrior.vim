@@ -15,7 +15,13 @@ let s:source = {
 function! s:source.gather_candidates(args, context)
   let candidates = []
   let project = get(a:context, 'custom_project', '')
-  let filter = unite#taskwarrior#filter(a:args, project)
+
+  if has_key(a:context, 'custom_filter')
+    let filter = unite#taskwarrior#filter(a:args, project, a:context.custom_filter)
+  else
+    let filter = unite#taskwarrior#filter(a:args, project)
+  endif
+
   let loaded = unite#taskwarrior#select(filter)
   for todo in loaded
     let line = call(unite#taskwarrior#config('formatter'), [todo])
