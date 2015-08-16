@@ -39,8 +39,8 @@ function! unite#taskwarrior#annotations#time(annotation) abort
   let stamp = a:annotation.entry
   let parts = split(substitute(stamp, 'Z', '', ''), 'T')
   let precision = unite#taskwarrior#config('annotation_precision')
-  let time = str2nr(parts[1]) / 10
-  let rounded = floor(time / precision) * precision
+  let time = str2float(parts[1]) / 10
+  let rounded = float2nr(floor(time / precision) * precision)
   return printf("%sT%sZ", parts[0], string(rounded))
 endfunction
 
@@ -48,16 +48,17 @@ function! unite#taskwarrior#annotations#content(annotation) abort
   return a:annotation.description
 endfunction
 
-
 function! unite#taskwarrior#annotations#edit(annotation) abort
-  let new_description = ''
-  call unite#taskwarrior#annotations#update(a:annotation, new_description)
+  call unite#taskwarrior#scratch#edit(a:annotation.description, 
+        \ 'unite#taskwarrior#annotations#update', a:annotation)
 endfunction
 
-function! unite#taskwarrior#annotations#update(annotation, new_description) abort
-  let uuids = map(a:annotation.tasks, 'v:val.uuid')
-  call unite#taskwarrior#call(uuids, "denote", a:annotation.description)
-  call unite#taskwarrior#call(uuids, "annotate", a:new_description)
+function! unite#taskwarrior#annotations#update(descriptions, annotation) abort
+  let uuids = join(map(a:annotation.tasks, 'v:val.uuid'), ',')
+  call unite#taskwarrior#call([uuids, "denote", a:annotation.description])
+  for description in split(a:descriptions, "\n")
+    call unite#taskwarrior#call([uuids, "annotate", a:new_description])
+  endfor
 endfunction
 
 let &cpo = s:save_cpo

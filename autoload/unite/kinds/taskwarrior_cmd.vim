@@ -17,7 +17,7 @@ function! s:kind.action_table.execute.func(candidates)
   for candidate in a:candidates
     let args = ['']
     call extend(args, split(candidate.word))
-    echo call('unite#taskwarrior#call', args)
+    echo call('unite#taskwarrior#call', [args])
   endfor
 endfunction
 

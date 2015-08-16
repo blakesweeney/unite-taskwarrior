@@ -10,7 +10,7 @@ let s:source = {
 
 function! s:source.gather_candidates(args, context)
   let candidates = []
-  let commands = split(unite#taskwarrior#call('', '_commands'), "\n")
+  let commands = split(unite#taskwarrior#call('_commands'), "\n")
   for command in commands
     call add(candidates, {
           \ 'word': command,

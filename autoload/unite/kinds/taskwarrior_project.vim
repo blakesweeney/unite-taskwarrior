@@ -33,7 +33,7 @@ function! s:kind.action_table.rename.func(candidate)
   let filter = unite#taskwarrior#projects#expand(name)
   let name = unite#taskwarrior#trim(input("Name ( " . name . "): ", name))
   let proj = unite#taskwarrior#projects#expand(name)
-  call unite#taskwarrior#call(filter, "modify", proj)
+  call unite#taskwarrior#call([filter, "modify", proj])
 endfunction
 
 function! unite#kinds#taskwarrior_project#define()

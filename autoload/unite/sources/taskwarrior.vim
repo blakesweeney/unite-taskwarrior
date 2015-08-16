@@ -41,18 +41,7 @@ function! s:source.hooks.on_syntax(args, context) abort
     return
   endif
 
-  nnoremap <silent><buffer><expr> <TAB>       unite#do_action('toggle')
-  nnoremap <silent><buffer><expr> <CR>        unite#do_action('view')
-  nnoremap <silent><buffer><expr> d           unite#do_action('do')
-  nnoremap <silent><buffer><expr> D           unite#do_action('delete')
-  nnoremap <silent><buffer><expr> P           unite#do_action('edit_proj')
-  nnoremap <silent><buffer><expr> A           unite#do_action('annotate')
-  nnoremap <silent><buffer><expr> m           unite#do_action('modify')
-  nnoremap <silent><buffer><expr> e           unite#do_action('edit')
-  nnoremap <silent><buffer><expr> u           unite#do_action('undo')
-  nnoremap <silent><buffer><expr> +           unite#do_action('start')
-  nnoremap <silent><buffer><expr> -           unite#do_action('stop')
-  " nnoremap <silent><buffer><expr> DA           unite#do_action('denotate')
+  call unite#taskwarrior#bindings() 
 endfunction
 
 function! unite#sources#taskwarrior#define()

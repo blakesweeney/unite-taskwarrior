@@ -55,7 +55,7 @@ describe 'basic unite#taskwarrior actions'
   end
 
   it 'can run an task command'
-    let result = unite#taskwarrior#call('', 'report')
+    let result = unite#taskwarrior#call('report')
     Expect 0 <= len(result)
   end
 

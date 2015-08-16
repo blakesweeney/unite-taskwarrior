@@ -15,6 +15,7 @@ let s:config = {
       \ "format_string": "[%s] %15s\t%s (%s)",
       \ 'tag_format_string': "%20s\t%5s",
       \ 'project_format_string': "%20s\t%5s",
+      \ 'context_format_string': '%20s\t%5s',
       \ "formatter": 'unite#taskwarrior#format',
       \ "tag_formatter": 'unite#taskwarrior#tags#format',
       \ "project_formatter": 'unite#taskwarrior#projects#format',
@@ -82,12 +83,15 @@ function! unite#taskwarrior#flatten(list) abort
   return val
 endfunction
 
-function! unite#taskwarrior#call(filter, cmd, ...)
-  let args = [unite#taskwarrior#config('command'), a:filter, a:cmd]
-  call extend(args, a:000)
-  if a:filter == ''
-    call remove(args, 1)
+function! unite#taskwarrior#call(given)
+  let command = unite#taskwarrior#config('command')
+  if type(a:given) == type([])
+    let args = [command]
+    call extend(args, a:given)
+  else
+    let args = printf('%s %s', command, a:given)
   endif
+
   return vimproc#system(args)
 endfunction
 
@@ -95,7 +99,7 @@ function! unite#taskwarrior#run(task, cmd, ...)
   let task = unite#taskwarrior#new(a:task)
   let args = [l:task.uuid, a:cmd]
   call extend(args, a:000)
-  return call('unite#taskwarrior#call', args)
+  return unite#taskwarrior#call(args)
 endfunction
 
 function! unite#taskwarrior#init()
@@ -257,7 +261,7 @@ function! unite#taskwarrior#select(pattern)
   let args = []
   call extend(args, ["export"])
   call extend(args, a:pattern)
-  let raw = call("unite#taskwarrior#call", args)
+  let raw = unite#taskwarrior#call(args)
   let data = []
   if strpart(raw, 0, 1) == "["
     let data = s:JSON.decode(raw)
@@ -280,25 +284,25 @@ function! unite#taskwarrior#all()
 endfunction
 
 function! unite#taskwarrior#new(data)
-  let args = ["", "add"]
+  let args = ["add"]
   if type(a:data) == type([])
     call extend(args, unite#taskwarrior#flatten(a:data))
   elseif type(a:data) == type("")
-    call extend(args, split(a:data))
+    let args = 'add ' . data
   elseif type(a:data) == type({})
     if a:data.status != 'unknown'
       return a:data
     endif
     call extend(args, split(a:data.description))
   endif
-  call call("unite#taskwarrior#call", args)
+  call unite#taskwarrior#call(args)
   return unite#taskwarrior#newest()
 endfunction
 
 function! unite#taskwarrior#newest() abort
-  let tasks = split(unite#taskwarrior#call("", "newest"), "\n")
+  let tasks = split(unite#taskwarrior#call("newest"), "\n")
   let task_id = split(tasks[2])[0]
-  let raw = unite#taskwarrior#call("export", task_id)
+  let raw = unite#taskwarrior#call(["export", task_id])
   return unite#taskwarrior#parse(raw)[0]
 endfunction
 
@@ -360,7 +364,7 @@ function! unite#taskwarrior#annotate(task, text)
 endfunction
 
 function! unite#taskwarrior#undo() abort
-  return unite#taskwarrior#call('', 'undo')
+  return unite#taskwarrior#call(['undo'])
 endfunction
 
 function! unite#taskwarrior#start(task)
@@ -382,6 +386,8 @@ endfunction
 function! unite#taskwarrior#bindings() abort
   nnoremap <silent><buffer><expr> <TAB>       unite#do_action('toggle')
   nnoremap <silent><buffer><expr> <CR>        unite#do_action('view')
+  nnoremap <silent><buffer><expr> <BS>        unite#do_action('previous')
+  nnoremap <silent><buffer><expr> <C-D>       unite#do_action('add_dependency')
   nnoremap <silent><buffer><expr> d           unite#do_action('do')
   nnoremap <silent><buffer><expr> D           unite#do_action('delete')
   nnoremap <silent><buffer><expr> P           unite#do_action('edit_proj')
@@ -397,7 +403,12 @@ function! unite#taskwarrior#depends(task, parents) abort
   if type(a:parents) == type([])
     let parent_ids = join(a:parents, ',')
   endif
-  return unite#taskwarrior#call(parent_ids, 'modify', 'depends:' . a:task.uuid)
+  return unite#taskwarrior#call([parent_ids, 'modify', 'depends:' . a:task.uuid])
+endfunction
+
+function! unite#taskwarrior#count(query) abort
+  let count = unite#taskwarrior#call(query . ' count')
+  return str2nr(count)
 endfunction
 
 let &cpo = s:save_cpo
