@@ -225,6 +225,9 @@ function! unite#taskwarrior#defaults(parsed) abort
     let data.depends = deps
   endif
 
+  let data.started = has_key(data, 'start')
+  let data.stopped = !data.started
+
   return data
 endfunction
 
@@ -263,17 +266,23 @@ function! unite#taskwarrior#select(pattern)
   call extend(args, a:pattern)
   let raw = unite#taskwarrior#call(args)
   let data = []
-  if strpart(raw, 0, 1) == "["
+  try
     let data = s:JSON.decode(raw)
     let data = map(data, 'unite#taskwarrior#defaults(v:val)')
-  else
-    let lines = split(raw, "\n")
-    let data = map(lines, 'unite#taskwarrior#parse(v:val)')
-  endif
-  let filtered = filter(copy(data), 'unite#taskwarrior#is_empty(v:val)')
+  catch
+    try
+      let lines = split(raw, "\n")
+      let data = map(lines, 'unite#taskwarrior#parse(v:val)')
+    catch
+      " call unite#print_error("Could not parse taskwarrior output")
+      return []
+    endtry
+  endtry
 
+  let filtered = filter(copy(data), 'unite#taskwarrior#is_empty(v:val)')
   if len(filtered) != len(data)
-    call unite#print_error("Could not parse all taskwarrior output")
+    " call unite#print_error("Could not parse all taskwarrior output")
+    return []
   endif
 
   return filtered
@@ -284,18 +293,18 @@ function! unite#taskwarrior#all()
 endfunction
 
 function! unite#taskwarrior#new(data)
-  let args = ["add"]
   if type(a:data) == type([])
-    call extend(args, unite#taskwarrior#flatten(a:data))
+    let args = ["add"]
+    call unite#taskwarrior#call(extend(args, unite#taskwarrior#flatten(a:data)))
   elseif type(a:data) == type("")
-    let args = 'add ' . data
+    call unite#taskwarrior#call('add ' . a:data)
+    let args = 'add ' . a:data
   elseif type(a:data) == type({})
     if a:data.status != 'unknown'
       return a:data
     endif
-    call extend(args, split(a:data.description))
+    call unite#taskwarrior#call('add ' . a:data)
   endif
-  call unite#taskwarrior#call(args)
   return unite#taskwarrior#newest()
 endfunction
 
@@ -303,7 +312,11 @@ function! unite#taskwarrior#newest() abort
   let tasks = split(unite#taskwarrior#call("newest"), "\n")
   let task_id = split(tasks[2])[0]
   let raw = unite#taskwarrior#call(["export", task_id])
-  return unite#taskwarrior#parse(raw)[0]
+  let parsed = unite#taskwarrior#parse(raw)
+  if type(parsed) == type([])
+    return parsed[0]
+  endif
+  return parsed
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
