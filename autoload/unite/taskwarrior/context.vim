@@ -5,26 +5,65 @@ set cpo&vim
 
 function! unite#taskwarrior#context#select() abort
   let raw = unite#taskwarrior#call('_show')
+  let active = ''
   let contexts = []
   for line in split(raw, '\n')
-    let matches = matchlist(name, '^context\.\(\w\+\)=\(.\+\)$')
+
+    let active_matches = matchlist(line, 'context=\(.\+\)')
+    if active_matches != []
+      let active = active_matches[1]
+      call unite#taskwarrior#call(['context', 'none'])
+    endif
+
+    let matches = matchlist(line, '^context\.\(.\+\)=\(.\+\)$')
     if matches != []
       let name = matches[1]
       let def = matches[2]
-      call append(contexts, {
+      let status = 'inactive'
+
+      if name == active
+        let status = 'active'
+      endif
+
+      let counts = unite#taskwarrior#count(def . ' and status.not:completed')
+      call add(contexts, {
             \ 'name': name,
-            \ 'count': unite#taskwarrior#count(def),
-            \ 'definition': def
+            \ 'count': counts,
+            \ 'definition': def,
+            \ 'status': status
             \ })
-    endfor
-  endif
+    endif
+  endfor
+
+  call unite#taskwarrior#call(['context', active])
+
   return contexts
 endfunction
 
-function unite#taskwarrior#context#basic_format(context) abort
-  return printf("unite#taskwarrior#config('context_format_string'),
+function! unite#taskwarrior#context#format(context) abort
+  let mapping = unite#taskwarrior#config('context_status_mapping')
+  let status_flag = get(mapping, a:context.status, '?')
+  return printf(unite#taskwarrior#config('context_format_string'),
+        \ status_flag,
         \ a:context.name,
         \ a:context.count)
+endfunction
+
+function! unite#taskwarrior#context#set(context) abort
+  call unite#taskwarrior#call(['context', a:context.name])
+endfunction
+
+function! unite#taskwarrior#context#delete(context) abort
+  call unite#taskwarrior#call(['context', 'delete', a:context.name])
+endfunction
+
+function! unite#taskwarrior#context#rename(context) abort
+  call unite#taskwarrior#context#define(name, a:context.definition)
+  call unite#taskwarrior#context#delete(a:context.name)
+endfunction
+
+function! unite#taskwarrior#context#define(name, def) abort
+  call unite#taskwarrior#call(printf('context define %s %s', a:name, a:def))
 endfunction
 
 let &cpo = s:save_cpo

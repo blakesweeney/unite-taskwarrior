@@ -15,10 +15,12 @@ let s:config = {
       \ "format_string": "[%s] %15s\t%s (%s)",
       \ 'tag_format_string': "%20s\t%5s",
       \ 'project_format_string': "%20s\t%5s",
-      \ 'context_format_string': '%20s\t%5s',
+      \ 'context_format_string': '%s%10s%5s',
+      \ 'context_status_mapping': {'active': '>', 'inactive': ' '},
       \ "formatter": 'unite#taskwarrior#format',
       \ "tag_formatter": 'unite#taskwarrior#tags#format',
       \ "project_formatter": 'unite#taskwarrior#projects#format',
+      \ 'context_formatter': 'unite#taskwarrior#context#format',
       \ 'filter': 'status.not:deleted',
       \ 'toggle_mapping': { 'pending': 'completed', 'completed': 'pending' },
       \ "status_mapping": { 'pending': ' ', 'waiting': '-', 'recurring': '+', 'unknown': 'N' },
@@ -424,8 +426,9 @@ function! unite#taskwarrior#depends(task, parents) abort
 endfunction
 
 function! unite#taskwarrior#count(query) abort
-  let count = unite#taskwarrior#call(query . ' count')
-  return str2nr(count)
+  let result = unite#taskwarrior#call(printf('%s %s', a:query, ' count'))
+  let result = split(result, '\n')[0]
+  return str2nr(result)
 endfunction
 
 function! unite#taskwarrior#version() abort

@@ -13,6 +13,7 @@ let s:source = {
 " Consider using async
 function! s:source.gather_candidates(args, context)
   let loaded = unite#taskwarrior#context#select()
+  let candidates = []
   for todo in loaded
     let line = call(unite#taskwarrior#config('context_formatter'), [todo])
     call add(candidates, {
