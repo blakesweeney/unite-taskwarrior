@@ -5,6 +5,7 @@ let s:kind = {
       \ 'name' : 'taskwarrior_tag',
       \ 'default_action' : 'open',
       \ 'action_table': {},
+      \ 'parents': ['taskwarrior_base'],
       \ }
 
 let s:kind.action_table.open = {

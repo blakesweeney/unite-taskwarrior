@@ -3,17 +3,15 @@ set cpo&vim
 
 let s:kind = {
       \ 'name' : 'taskwarrior_base',
-      \ 'default_action' : 'open',
+      \ 'default_action' : 'previous',
       \ 'action_table': {},
-      \ 'is_selectable': 1,
-      \ 'parents': ['common', 'openable'],
       \ }
 
-let s:kind.action_table.previous  = {'description': 'open last unite buffer'}
-function! s:kind.action_table.previous.func(candidate) abort
+let s:kind.action_table.previous  = {'description': 'open last unite buffer', 'is_selectable': 1}
+function! s:kind.action_table.previous.func(candidates) abort
   let history = unite#sources#history_unite#define()
-  let candidates = history.gather_candidates([], {})
-  call history.action_table.start.func(candidates[0])
+  let past = history.gather_candidates([], {})
+  call history.action_table.start.func(past[0])
 endfunction
 
 function! unite#kinds#taskwarrior_base#define()

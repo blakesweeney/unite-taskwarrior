@@ -5,6 +5,7 @@ let s:kind = {
       \ 'name' : 'taskwarrior_annotations',
       \ 'default_action' : 'edit',
       \ 'action_table': {},
+      \ 'parents': ['taskwarrior_base'],
       \ }
 
 function! unite#kinds#taskwarrior_annotations#define()

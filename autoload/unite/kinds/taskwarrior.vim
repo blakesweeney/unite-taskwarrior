@@ -6,7 +6,7 @@ let s:kind = {
       \ 'default_action' : 'toggle',
       \ 'action_table': {},
       \ 'is_selectable': 1,
-      \ 'parents': ['common', 'openable'],
+      \ 'parents': ['common', 'openable', 'taskwarrior_base'],
       \ }
 
 let s:kind.action_table.open = {'description' : 'open note', 'is_selectable': 0}
@@ -151,13 +151,6 @@ function! s:kind.action_table.add_dependency.func(candidates) abort
     call add(args, candidate.source__data.uuid)
   endfor
   call unite#start([args])
-endfunction
-
-let s:kind.action_table.previous  = {'description': 'open last unite buffer'}
-function! s:kind.action_table.previous.func(candidate) abort
-  let history = unite#sources#history_unite#define()
-  let candidates = history.gather_candidates([], {})
-  call history.action_table.start.func(candidates[0])
 endfunction
 
 let s:parent_kind = {
