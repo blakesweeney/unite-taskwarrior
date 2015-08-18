@@ -6,7 +6,13 @@ set cpo&vim
 function! unite#taskwarrior#context#select() abort
   let raw = unite#taskwarrior#call('_show')
   let active = ''
-  let contexts = []
+  let contexts = [{
+        \ 'name': 'none',
+        \ 'count': unite#taskwarrior#count(''),
+        \ 'definition': '',
+        \ 'status': 'active',
+        \ }]
+
   for line in split(raw, '\n')
 
     let active_matches = matchlist(line, 'context=\(.\+\)')
@@ -23,9 +29,10 @@ function! unite#taskwarrior#context#select() abort
 
       if name == active
         let status = 'active'
+        let contexts[0].status = 'inactive'
       endif
 
-      let counts = unite#taskwarrior#count(def . ' and status.not:completed')
+      let counts = unite#taskwarrior#count(def . ' and +PENDING')
       call add(contexts, {
             \ 'name': name,
             \ 'count': counts,
