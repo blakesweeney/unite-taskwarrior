@@ -9,27 +9,27 @@ let s:kind = {
 
 let s:kind.action_table.use = {'description': 'set and show the given context'}
 function! s:kind.action_table.use.func(candidate)
-  call unite#taskwarrior#context#set(a:candidate.__source_data)
+  call unite#taskwarrior#context#set(a:candidate.source__data)
   call unite#start([['taskwarrior']])
 endfunction
 
 let s:kind.action_table.rename = {'description' : 'rename a context'}
 function! s:kind.action_table.rename.func(candidate)
-  let name = a:candidate.__source_data.name
-  let name = unite#taskwarrior#trim(input("Name ( " . name . "): ", name))
-  call unite#taskwarrior#context#rename(name, a:candidate.__source_data)
+  let name = a:candidate.source__data.name
+  let name = unite#taskwarrior#trim(input("Name (" . name . "): ", name))
+  call unite#taskwarrior#context#rename(name, a:candidate.source__data)
 endfunction
 
 let s:kind.action_table.edit = {'description' : 'edit definition of a context'}
-function! s:kind.action_table.edit.function(candidate)
-  let def = a:candidate.__source_data.definition
-  let def = unite#taskwarrior#trim(input("Definition ( " . def . "): ", def))
-  call unite#taskwarrior#context#define(a:candidate.__source_data.name, def)
+function! s:kind.action_table.edit.func(candidate)
+  let def = a:candidate.source__data.definition
+  let def = unite#taskwarrior#trim(input("Definition (" . def . "): ", def))
+  call unite#taskwarrior#context#define(a:candidate.source__data.name, def)
 endfunction
 
 let s:kind.action_table.delete = {'description' : 'delete a context'}
-function! s:kind.action_table.delete.function(candidate)
-  call unite#taskwarrior#context#delete(a:candidate.__source_data)
+function! s:kind.action_table.delete.func(candidate)
+  call unite#taskwarrior#context#delete(a:candidate.source__data)
 endfunction
 
 function! unite#kinds#taskwarrior_context#define()
