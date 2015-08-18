@@ -1,5 +1,6 @@
 *unite-taskwarrior.txt*  For |Vim version 7.3|         Last change: 2015 May 1
 
+Version: 0.0.1
 Author: Blake Sweeney
 License: Same terms as vim itself (see |license|)
 

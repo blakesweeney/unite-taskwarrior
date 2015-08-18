@@ -424,5 +424,9 @@ function! unite#taskwarrior#count(query) abort
   return str2nr(count)
 endfunction
 
+function! unite#taskwarrior#version() abort
+  return '0.0.1'
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
