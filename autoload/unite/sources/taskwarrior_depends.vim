@@ -12,14 +12,23 @@ let s:source = {
 
 let s:taskwarrior = unite#sources#taskwarrior#define()
 
+function! s:filter(uuids)
+  let raw = unite#taskwarrior#call([join(a:uuids, ','), '_projects'])
+  let projects = uniq(sort(split(raw, '\n')))
+  return map(projects, '"$" . v:val')
+endfunction
+
 function! s:source.gather_candidates(args, context)
   if empty(a:args)
     return []
   endif
-  let candidates = s:taskwarrior.gather_candidates([], a:context)
+
+  let filter = s:filter(a:args)
+  let candidates = s:taskwarrior.gather_candidates(filter, a:context)
   for candidate in candidates
     let candidate['source__parent'] = a:args
   endfor
+
   return candidates
 endfunction
 
