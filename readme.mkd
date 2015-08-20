@@ -88,8 +88,8 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 ```vim
 :Unite taskwarrior                 " Show all tasks not marked as deleted
 :Unite taskwarrior:$proj           " Show all tasks for the given project
-:Unite taskwarrior:@tag            " Show all tasks with the given tag
-:Unite taskwarrior:@tag:@other-tag " Show all tasks with tag and other-tag
+:Unite taskwarrior:+tag            " Show all tasks with the given tag
+:Unite taskwarrior:+tag:+other-tag " Show all tasks with tag and other-tag
 :Unite taskwarrior/new             " Create a new task with a description
 :Unite taskwarrior/tags            " Show a tag listing
 :Unite taskwarrior/projects        " Show a project listing
@@ -115,8 +115,8 @@ command! -nargs=* -range=0 Tw call s:call_taskwarrior(<q-args>)
 ```
 
 This adds a `:Tw` command that accepts arguments like `:Unite taskwarrior` does
-and opens the same listing. So `:Tw @tag`, `:Tw $proj` and such would work like
-`:Unite taskwarrior:@tag` and `:Unite taskwarrior:$proj`.
+and opens the same listing. So `:Tw +tag`, `:Tw $proj` and such would work like
+`:Unite taskwarrior:+tag` and `:Unite taskwarrior:$proj`.
 
 ### Project list actions
 
