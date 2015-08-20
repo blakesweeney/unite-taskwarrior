@@ -65,8 +65,8 @@ function! unite#taskwarrior#context#delete(context) abort
 endfunction
 
 function! unite#taskwarrior#context#rename(new_name, context) abort
-  call unite#taskwarrior#context#define(new_name, a:context.definition)
-  call unite#taskwarrior#context#delete(a:context.name)
+  call unite#taskwarrior#context#define(a:new_name, a:context.definition)
+  call unite#taskwarrior#context#delete(a:context)
 endfunction
 
 function! unite#taskwarrior#context#define(name, def) abort
