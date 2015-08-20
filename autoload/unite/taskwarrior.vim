@@ -362,6 +362,10 @@ function! unite#taskwarrior#open(task)
 endfunction
 
 function! unite#taskwarrior#toggle(task)
+  if get(a:task, 'status') == 'unknown'
+    return unite#taskwarrior#new(a:task)
+  endif
+
   let a:task.status = get(unite#taskwarrior#config('toggle_mapping'),
         \ a:task.status,
         \ 'pending')
