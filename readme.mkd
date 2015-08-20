@@ -93,6 +93,7 @@ nnoremap <C-t> :call unite#do_action('edit_tag')
 :Unite taskwarrior/new             " Create a new task with a description
 :Unite taskwarrior/tags            " Show a tag listing
 :Unite taskwarrior/projects        " Show a project listing
+:Unite taskwarrior/context         " Show a context listing
 :UniteTaskwarriorAdd               " Add a task
 ```
 
@@ -190,6 +191,20 @@ and opens the same listing. So `:Tw +tag`, `:Tw $proj` and such would work like
 
 * `view`
     Provide a detailed view of the task.
+
+### Context list Actions
+
+* `use`
+    Use this context.
+
+* `delete`
+    Delete the context.
+
+* `rename`
+    Rename the context.
+
+* `edit`
+    Edit the definition of this project.
 
 ### New task actions
 
