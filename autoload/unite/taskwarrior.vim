@@ -303,7 +303,7 @@ function! unite#taskwarrior#new(data)
     if a:data.status != 'unknown'
       return a:data
     endif
-    call unite#taskwarrior#call('add ' . a:data)
+    call unite#taskwarrior#call('add ' . a:data.description)
   endif
   return unite#taskwarrior#newest()
 endfunction
