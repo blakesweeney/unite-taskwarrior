@@ -153,6 +153,16 @@ function! s:kind.action_table.add_dependency.func(candidates) abort
   call unite#start([args])
 endfunction
 
+let s:kind.action_table.similar = {'description': 'list similar tasks', 'is_selectable': 1}
+function! s:kind.action_table.similar.func(candidates) abort
+  let data = map(a:candidates, 'v:val.source__data')
+  let args = ['taskwarrior']
+  let context = {
+        \ 'custom_filter': unite#taskwarrior#similar(data),
+        \ }
+  call unite#start([args], context)
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,

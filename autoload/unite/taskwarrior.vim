@@ -432,5 +432,17 @@ function! unite#taskwarrior#version() abort
   return '0.0.1'
 endfunction
 
+function! unite#taskwarrior#similar(tasks)
+  let tags = []
+  for task in a:tasks
+    for tag in task.tags
+      call add(tags, 'tag:' . strpart(tag, 1))
+    endfor
+  endfor
+  let projects = join(map(a:tasks, '"project:" . v:val.project'), " or ")
+
+  return printf("( %s ) and ( %s )", projects, join(tags, ' or '))
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
