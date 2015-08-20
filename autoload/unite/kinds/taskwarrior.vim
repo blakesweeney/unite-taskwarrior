@@ -157,10 +157,16 @@ let s:kind.action_table.similar = {'description': 'list similar tasks', 'is_sele
 function! s:kind.action_table.similar.func(candidates) abort
   let data = map(a:candidates, 'v:val.source__data')
   let args = ['taskwarrior']
-  let context = {
-        \ 'custom_filter': unite#taskwarrior#similar(data),
-        \ }
-  call unite#start([args], context)
+  let filter = unite#taskwarrior#similar(data)
+
+  let default_filter = unite#taskwarrior#config('filter')
+  if type(default_filter) == type([])
+    let filter = filter . ' ' . join(default_filter, ' and ')
+  else
+    let filter = filter . ' ' . default_filter
+  endif
+
+  call unite#start([args], {'custom_filter': filter})
 endfunction
 
 let s:parent_kind = {
