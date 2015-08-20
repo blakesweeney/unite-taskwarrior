@@ -5,7 +5,8 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/projects',
-      \ 'syntax': 'TaskWarrior'
+      \ 'syntax': 'TaskWarrior',
+      \ 'sorters': 'sorter_count'
       \ }
 
 " Consider using async
