@@ -14,15 +14,17 @@ let s:source = {
 function! s:source.gather_candidates(args, context)
   let loaded = unite#taskwarrior#context#select()
   let candidates = []
-  for todo in loaded
-    let line = call(unite#taskwarrior#config('context_formatter'), [todo])
+
+  for context in loaded
+    let line = call(unite#taskwarrior#config('context_formatter'), [context])
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior_context",
-          \ "source__data": todo,
+          \ "source__data": context
           \ })
-    unlet todo
+    unlet context
   endfor
+
   return candidates
 endfunction
 

@@ -427,7 +427,6 @@ endfunction
 
 function! unite#taskwarrior#count(query) abort
   let result = unite#taskwarrior#call(printf('%s %s', a:query, ' count'))
-  let result = split(result, '\n')[0]
   return str2nr(result)
 endfunction
 
