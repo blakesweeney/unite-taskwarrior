@@ -263,10 +263,14 @@ function! unite#taskwarrior#new_dict(raw) abort
 endfunction
 
 function! unite#taskwarrior#select(pattern)
-  let args = []
-  call extend(args, ["export"])
-  call extend(args, a:pattern)
-  let raw = unite#taskwarrior#call(args)
+  let raw = ''
+  if type(a:pattern) == type([])
+    let args = extend(['export'], a:pattern)
+    let raw = unite#taskwarrior#call(args)
+  elseif type(a:pattern) == type('')
+    let raw = unite#taskwarrior#call('export ' . a:pattern)
+  endif
+
   let data = []
   try
     let data = s:JSON.decode(raw)

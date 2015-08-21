@@ -47,6 +47,24 @@ function! unite#taskwarrior#context#select() abort
   return contexts
 endfunction
 
+function! unite#taskwarrior#context#filter(context) abort
+  let default = unite#taskwarrior#config('filter')
+  let filter = a:context.definition
+
+  if empty(default)
+    return filter
+  endif
+
+  let simple = ''
+  if type(default) == type('')
+    let simple = default
+  elseif type(default) == type([])
+    let simple = join(default, ' and ')
+  endif
+
+  return printf('( %s ) and ( %s )', filter, simple)
+endfunction
+
 function! unite#taskwarrior#context#format(context) abort
   let mapping = unite#taskwarrior#config('context_status_mapping')
   let status_flag = get(mapping, a:context.status, '?')

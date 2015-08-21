@@ -22,7 +22,13 @@ function! s:source.gather_candidates(args, context)
     let filter = unite#taskwarrior#filter(a:args, project)
   endif
 
-  let loaded = unite#taskwarrior#select(filter)
+  let loaded = []
+  if len(filter) == 1
+    let loaded = unite#taskwarrior#select(filter[0])
+  else
+    let loaded = unite#taskwarrior#select(filter)
+  endif
+
   for todo in loaded
     let line = call(unite#taskwarrior#config('formatter'), [todo])
     call add(candidates, {

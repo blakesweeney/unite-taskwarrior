@@ -10,7 +10,8 @@ let s:kind = {
 let s:kind.action_table.use = {'description': 'set and show the given context'}
 function! s:kind.action_table.use.func(candidate)
   call unite#taskwarrior#context#set(a:candidate.source__data)
-  call unite#start([['taskwarrior']])
+  let filter = unite#taskwarrior#context#filter(a:candidate.source__data)
+  call unite#start([['taskwarrior']], {'custom_filter': filter})
 endfunction
 
 let s:kind.action_table.rename = {'description' : 'rename a context'}
