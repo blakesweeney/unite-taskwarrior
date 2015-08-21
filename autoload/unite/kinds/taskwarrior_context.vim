@@ -15,6 +15,9 @@ endfunction
 
 let s:kind.action_table.rename = {'description' : 'rename a context'}
 function! s:kind.action_table.rename.func(candidate)
+  if a:candidate.name == 'none'
+    return 0
+  endif
   let name = a:candidate.source__data.name
   let name = unite#taskwarrior#trim(input("Name (" . name . "): ", name))
   call unite#taskwarrior#context#rename(name, a:candidate.source__data)
@@ -22,6 +25,9 @@ endfunction
 
 let s:kind.action_table.edit = {'description' : 'edit definition of a context'}
 function! s:kind.action_table.edit.func(candidate)
+  if a:candidate.name == 'none'
+    return 0
+  endif
   let def = a:candidate.source__data.definition
   let def = unite#taskwarrior#trim(input("Definition (" . def . "): ", def))
   call unite#taskwarrior#context#define(a:candidate.source__data.name, def)
@@ -29,6 +35,9 @@ endfunction
 
 let s:kind.action_table.delete = {'description' : 'delete a context'}
 function! s:kind.action_table.delete.func(candidate)
+  if a:candidate.name == 'none'
+    return 0
+  endif
   call unite#taskwarrior#context#delete(a:candidate.source__data)
 endfunction
 
