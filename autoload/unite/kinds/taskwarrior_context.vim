@@ -3,9 +3,15 @@ set cpo&vim
 
 let s:kind = {
       \ 'name' : 'taskwarrior_context',
-      \ 'default_action' : 'use',
+      \ 'default_action' : 'open',
       \ 'action_table': {},
       \ }
+
+let s:kind.action_table.open = {'description': 'open all tasks for the given context'}
+function! s:kind.action_table.open.func(candidate)
+  let filter = unite#taskwarrior#context#filter(a:candidate.source__data)
+  call unite#start([['taskwarrior']], {'custom_filter': filter})
+endfunction
 
 let s:kind.action_table.use = {'description': 'set and show the given context'}
 function! s:kind.action_table.use.func(candidate)
