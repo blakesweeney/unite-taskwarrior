@@ -362,6 +362,36 @@ Default key <CR>. This will mark the given tasks as dependencies of the tasks
 in the arguments.
 
 ------------------------------------------------------------------------------
+taskwarrior/context                           *unite-taskwarrior-source-context*
+
+This is a source to show and manipulate task contexts. This will list all
+known contexts and the counts of pending tasks in each context. It also lists
+the "none" context, a special taskwarrior context that refers to having no
+context set.
+
+Actions~
+
+open
+
+Open all tasks with this context.
+
+use
+
+Open a task list and set the context to this context.
+
+rename
+
+Rename the context.
+
+delete
+
+Deletes the context.
+
+edit
+
+Alter the definition for this context.
+
+------------------------------------------------------------------------------
 taskwarrior/cmd                                   *unite-taskwarrior-source-cmd*
 
 This is a source to run a specific command. The entries are all known
