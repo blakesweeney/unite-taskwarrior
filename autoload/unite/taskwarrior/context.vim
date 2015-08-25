@@ -8,7 +8,7 @@ function! unite#taskwarrior#context#select() abort
   let active = ''
   let contexts = [{
         \ 'name': 'none',
-        \ 'count': unite#taskwarrior#count(''),
+        \ 'count': unite#taskwarrior#count('+PENDING'),
         \ 'definition': '',
         \ 'status': 'active',
         \ }]
