@@ -32,7 +32,7 @@ function! unite#taskwarrior#context#select() abort
         let contexts[0].status = 'inactive'
       endif
 
-      let counts = unite#taskwarrior#count(def . ' and +PENDING')
+      let counts = unite#taskwarrior#count('( ' . def . ' ) and +PENDING')
       call add(contexts, {
             \ 'name': name,
             \ 'count': counts,
