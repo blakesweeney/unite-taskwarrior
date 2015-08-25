@@ -194,8 +194,13 @@ and opens the same listing. So `:Tw +tag`, `:Tw $proj` and such would work like
 
 ### Context list Actions
 
+* `open`
+    This will show a tasklist of all tasks in this context. This is the default
+    action.
+
 * `use`
-    Use this context.
+    Use this context. This will set it to active and display a tasklist of
+    tasks in this context.
 
 * `delete`
     Delete the context.
