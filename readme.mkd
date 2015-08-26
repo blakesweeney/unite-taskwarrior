@@ -83,6 +83,10 @@ recommend it as well. In `ftplugin/unite.vim` I use:
 nnoremap <C-t> :call unite#do_action('edit_tag')
 ```
 
+A useful command for finding all sources is `:Unite source -input=taskwarrior`
+This will list all taskwarrior sources. Below I describe the most useful
+sources, but there are many included.
+
 ### Commands:
 
 ```vim
