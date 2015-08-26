@@ -12,6 +12,7 @@ let s:config = {
       \ 'note_directory': '~/.task/note',
       \ 'note_suffix': 'mkd',
       \ 'note_formatter': 'unite#taskwarrior#notes#simple_format',
+      \ 'notes_header_lines': 1,
       \ "format_string": "[%s] %15s\t%s (%s)",
       \ 'tag_format_string': "%20s\t%5s",
       \ 'project_format_string': "%20s\t%5s",
