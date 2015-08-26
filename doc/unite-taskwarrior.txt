@@ -18,6 +18,7 @@ Usage                                            |unite-taskwarrior-usage|
     taskwarrior/cmd
     taskwarrior/depends
     taskwarrior/new
+    taskwarrior/notes
     taskwarrior/projects
     taskwarrior/tags
     Common Actions
@@ -248,6 +249,9 @@ taskwarrior/depends                           |unite-taskwarrior-source-depends|
 taskwarrior/new                                   |unite-taskwarrior-source-new|
   A source for creating new tasks
 
+taskwarrior/notes                                     |taskwarrior-source-notes|
+  A source for browsing task notes
+
 taskwarrior/projects                         |unite-taskwarrior-source-projects|
   A source to list all projects
 
@@ -403,6 +407,24 @@ taskwarrior/new                                   *unite-taskwarrior-source-new*
 Create a new task. The given text will be send as is to taskwarrior, to create
 the task. This has all the same actions as |unite-taskwarrior-source|, but it
 will create the task as needed.
+
+------------------------------------------------------------------------------
+taskwarrior/notes                                     *taskwarrior-source-notes*
+
+A source that lets you browse the notes created by this plugin. This is
+basically just the file kind from unite with some additions. For details on
+that kind please look at |unite-kind-file|. One thing to note is that this
+plugin does not delete notes on it's own. Because tasks can and are
+manipulated outside this plugin I feel it is better to use a taskwarrior hook
+to keep notes in sync with task status. This means the note list may be very
+large and have many notes in it for old tasks. 
+
+Below are the new actions available in this source.
+
+view
+
+Show the task associated with this note. It will will show all the information
+for that task.
 
 ------------------------------------------------------------------------------
 taskwarrior/depends                           *unite-taskwarrior-source-depends*
