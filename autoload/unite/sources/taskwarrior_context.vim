@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/context',
+      \ 'description': 'Show a listing of all contexts',
       \ 'syntax': 'TaskWarrior',
       \ 'hooks': {},
       \ 'source__name': 'taskwarrior/context',

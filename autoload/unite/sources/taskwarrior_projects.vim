@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/projects',
+      \ 'description': 'Show a listing of know projects',
       \ 'syntax': 'TaskWarrior',
       \ 'sorters': 'sorter_count'
       \ }

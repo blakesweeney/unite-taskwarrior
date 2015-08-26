@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/cmd',
+      \ 'description': 'Execute a taskwarrior command',
       \ 'default_kind': 'taskwarrior_cmd'
       \ }
 

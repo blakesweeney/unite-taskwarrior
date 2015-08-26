@@ -5,12 +5,12 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/annotations',
+      \ 'description': 'Show a listing of all annotations',
       \ 'syntax': 'TaskWarrior',
       \ 'default_action': 'edit',
       \ 'default_kind': 'taskwarrior_annotations',
       \ 'action_table': {}
       \ }
-
 
 function! unite#sources#taskwarrior_annotations#define()
   return s:source

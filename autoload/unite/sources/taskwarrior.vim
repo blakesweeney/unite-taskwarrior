@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior',
+      \ 'description': 'Show a list of tasks',
       \ 'syntax': 'TaskWarrior',
       \ 'hooks': {},
       \ 'source__name': 'taskwarrior',

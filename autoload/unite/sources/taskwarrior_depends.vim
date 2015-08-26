@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/depends',
+      \ 'description': 'Add a dependency to a task',
       \ 'sorters': 'sorter_task_urgency',
       \ 'default_action': 'depends',
       \ 'action_table': {}

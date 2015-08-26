@@ -5,6 +5,7 @@ call unite#taskwarrior#init()
 
 let s:source = {
       \ 'name': 'taskwarrior/annotate',
+      \ 'description': 'Modify annotations of tasks',
       \ 'syntax': 'TaskWarrior',
       \ 'default_action': 'annotate',
       \ 'action_table': {}
