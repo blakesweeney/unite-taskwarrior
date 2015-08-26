@@ -22,7 +22,7 @@ function! unite#taskwarrior#notes#select(context) abort
 
     call add(data, {
           \ 'header': header,
-          \ 'preview': printf("%s\n   %s", header, file),
+          \ 'preview': header,
           \ 'uuid': fnamemodify(file, ':t:r'),
           \ 'path': file,
           \ })
