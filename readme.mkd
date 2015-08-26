@@ -98,6 +98,7 @@ sources, but there are many included.
 :Unite taskwarrior/tags            " Show a tag listing
 :Unite taskwarrior/projects        " Show a project listing
 :Unite taskwarrior/context         " Show a context listing
+:Unite taskwarrior/notes           " Show a listing of all task notes
 :UniteTaskwarriorAdd               " Add a task
 ```
 
@@ -219,6 +220,33 @@ and opens the same listing. So `:Tw +tag`, `:Tw $proj` and such would work like
 
 These are all the same as the normal task actions with the exception that it
 will first create the task.
+
+### Task note actions
+
+In general this is just the file source for unite but running on the directory
+with task notes. For complete details on it do `:help unite-source-file` and
+`:help unite-kind-file`. Here I'll just point out some highlights, and the
+custom additions.
+
+* `open`
+    Open the note file for editing and the like.
+
+* `preview`
+    Preview the note file.
+
+* `view`
+    Show the task associated with this note file. This will show the
+    information for whatever task is associated with the file.
+
+This does not provide a method to delete note files. If you want to do this
+see, you can use this snippet from `unite-faq`:
+
+```vim
+call unite#custom#alias('file', 'delete', 'vimfiler__delete')
+```
+
+Set this in your vimrc or other configuration file to have a delete method when
+browsing files. This will be bound to `d` and will prompt before deleting.
 
 ### Keybindings
 
