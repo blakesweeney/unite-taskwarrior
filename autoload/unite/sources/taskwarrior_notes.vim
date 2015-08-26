@@ -8,7 +8,8 @@ let s:parent = unite#sources#file#get_file_source()
 let s:source = {
       \ 'name': 'taskwarrior/notes',
       \ 'description': 'get a listing of all note files',
-      \ 'default_kind': 'file'
+      \ 'default_kind': 'file',
+      \ 'action_table': {},
       \ }
 
 function! s:source.gather_candidates(args, context)
@@ -25,6 +26,12 @@ function! s:source.gather_candidates(args, context)
   endfor
 
   return candidates
+endfunction
+
+let s:source.action_table.view = {'description': 'show the associated task'}
+function! s:source.action_table.view.func(candidate) abort
+  let uuid = a:candidate.source__data.uuid
+  echo unite#taskwarrior#call([uuid, 'information'])
 endfunction
 
 function! unite#sources#taskwarrior_notes#define()
