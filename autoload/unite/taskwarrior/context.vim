@@ -91,5 +91,28 @@ function! unite#taskwarrior#context#define(name, def) abort
   call unite#taskwarrior#call(printf('context define %s %s', a:name, a:def))
 endfunction
 
+function! unite#taskwarrior#context#current() abort
+  let raw = unite#taskwarrior#call('_show')
+  let active = ''
+  for line in split(raw, '\n')
+    let matches = matchlist(line, 'context=\(.\+\)')
+    if !empty(matches)
+      let active = matches[1]
+    endif
+
+    if !empty(active)
+      let matches = matchlist(line, '^context' . active . '=\(.\+\)$')
+      if !empty(matches)
+        return {
+              \ 'name': active,
+              \ 'definition': matches[1]
+              \ }
+      endif
+    endif
+  endfor
+
+  return {}
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
