@@ -93,6 +93,7 @@ function! unite#taskwarrior#call(given)
   if type(a:given) == type([])
     let args = [command]
     call extend(args, a:given)
+    let args = unite#taskwarrior#flatten(args)
   else
     let args = printf('%s %s', command, a:given)
   endif
