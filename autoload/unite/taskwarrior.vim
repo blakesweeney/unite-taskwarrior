@@ -7,7 +7,7 @@ let s:V = vital#of('unite_taskwarrior')
 let s:JSON = s:V.load('Web.JSON')
 let s:JSON = s:JSON.Web.JSON
 
-let s:config = {
+let s:defaults = {
       \ 'command': "task",
       \ 'note_directory': '~/.task/note',
       \ 'note_suffix': 'mkd',
@@ -35,9 +35,11 @@ let s:config = {
       \ 'annotation_precision': 2
       \ }
 
+let s:config = deepcopy(s:defaults)
+
 function! unite#taskwarrior#config(key, ...) abort
   if type(a:key) == type({})
-    return extend(s:config, key)
+    return extend(s:config, a:key)
   endif
 
   if type(a:key) == type('')
@@ -56,16 +58,16 @@ function! unite#taskwarrior#config(key, ...) abort
         let value = expand(value)
       endif
 
-      if key_name == 'annotation_precision'
-        let value = float2nr(value)
-      endif
-
       return value
     endif
 
-    let s:config[key_name] = a:0001
+    let s:config[key_name] = a:1
     return s:config
   endif
+endfunction
+
+function! unite#taskwarrior#reset_config()
+  let s:config = deepcopy(s:defaults)
 endfunction
 
 function! unite#taskwarrior#trim(str)
