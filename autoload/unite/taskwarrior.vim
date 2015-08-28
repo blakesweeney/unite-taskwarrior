@@ -115,12 +115,6 @@ function! unite#taskwarrior#init()
   endif
 endfunction
 
-function! unite#taskwarrior#load_config(filename)
-  let file = vimproc#open(a:filename)
-  let lines = file.read()
-  return eval(lines)
-endfunction
-
 function! unite#taskwarrior#filter(strings, project, ...)
   let filters = []
   for entry in a:strings
@@ -202,12 +196,23 @@ function! unite#taskwarrior#format_taskwiki(task) abort
 endfunction
 
 function! unite#taskwarrior#parse(raw)
-  if stridx(a:raw, "The") == 0
+  if stridx(a:raw, "The") == 0 || empty(a:raw)
     return {}
   endif
 
   let line = substitute(a:raw, "\n$", "", "")
-  let parsed = s:JSON.decode(a:raw)
+  try
+    let parsed = s:JSON.decode(a:raw)
+  catch
+    let lines = split(a:raw, "\n")
+    try
+      let parsed = map(lines, 's:JSON.decode(v:val)')
+    catch
+      throw printf("Could not parse taskwarrior output: '%s' (%s)", 
+            \ a:raw, string(v:exception))
+    endtry
+  endtry
+
   if type(parsed) == type([])
     return map(parsed, 'unite#taskwarrior#defaults(v:val)')
   endif
