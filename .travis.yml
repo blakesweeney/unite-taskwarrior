@@ -1,4 +1,6 @@
 language: ruby
+before_script:
+  - sudo apt-get install task
 rvm:
     - 1.9.3
 script: rake ci
