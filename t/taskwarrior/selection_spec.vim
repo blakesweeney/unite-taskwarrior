@@ -10,12 +10,12 @@ describe 'basic unite#taskwarrior actions'
 
  it 'can list all projects'
     let projects = unite#taskwarrior#projects#select([])
-    Expect len(projects) == 2
+    Expect projects == [{"name": "proj-1", "count": 2}, {"name": "proj-2", "count": 2}]
   end
 
   it 'can list all tags'
-    let projects = unite#taskwarrior#tags#select([])
-    Expect len(projects) == 2
+    let tags = unite#taskwarrior#tags#select([])
+    Expect tags == [{"name": "boring", "count": 1}, {"name": "a-tag", "count": 2}]
   end
 
   it 'can get tasks by projects'
