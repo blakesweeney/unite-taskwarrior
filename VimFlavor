@@ -1,1 +1,2 @@
-flavor 'Shougo/vimproc.vim'
+flavor 'Shougo/vimproc.vim', branch: 'master'
+flavor 'Shougo/unite.vim', branch: 'master'
