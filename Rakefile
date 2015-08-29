@@ -11,6 +11,9 @@ end
 task :install do
   sh 'bundle install'
   sh 'bundle exec vim-flavor install'
+  Dir.chdir("#{ENV['HOME']}/.vim/flavors/Shougo_vimproc.vim") do
+    sh 'make'
+  end
 end
 
 task :reset do
