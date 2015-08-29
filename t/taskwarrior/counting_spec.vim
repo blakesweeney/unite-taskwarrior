@@ -1,6 +1,6 @@
 describe 'counting'
   before
-    call vimproc#system('./run setup')
+    call vimproc#system('rake reset')
   end
 
   it 'can get the count given a query string'

@@ -29,7 +29,7 @@ task :reset do
 end
 
 task :test => [:compile] do
-  sh 'bundle exec vim-flavor test t'
+  sh 'bundle exec vim-flavor test t/**/*_spec.vim'
 end
 
 task :ci => [:dump, :test]
