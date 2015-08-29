@@ -11,4 +11,6 @@ tar -xvf $TAR
 cd $VERSION
 cmake -DCMAKE_BUILD_TYPE=release .
 make
-sudo make install
+cd -
+mkdir bin
+find "$VERSION" -name task | xargs -I % cp % bin/

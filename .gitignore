@@ -6,3 +6,5 @@ GTAGS
 Gemfile.lock
 VimFlavor.lock
 .ruby-version
+task-*
+bin/

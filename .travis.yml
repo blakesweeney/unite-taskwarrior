@@ -3,6 +3,8 @@ addons:
   apt:
     packages:
       - uuid-dev
+env:
+  - PATH=$PATH:.:./bin
 before_script:
   - ./install_task.sh
   - rake compile
