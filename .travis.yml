@@ -2,6 +2,10 @@ language: ruby
 before_script:
   - sudo apt-get install task
   - rake install
+  - ls *
+  - ls .vim-flavor
+  - ls .vim-flavor/*
+  - ls .vim-flavor/**/*
   - cd .vim-flavor/deps/Shougo_vimproc.vim/ && make
 rvm:
     - 1.9.3
