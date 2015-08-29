@@ -1,4 +1,8 @@
 language: ruby
+addons:
+  apt:
+    packages:
+      - uuid-dev
 before_script:
   - ./install_task.sh
   - rake compile
