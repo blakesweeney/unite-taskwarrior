@@ -1,0 +1,13 @@
+language: ruby
+addons:
+  apt:
+    packages:
+      - uuid-dev
+env:
+  - PATH=$PATH:.:./bin TASKDATA=./t/tasks TASKRC=./t/taskrc
+before_script:
+  - ./install_task.sh
+  - rake compile
+rvm:
+    - 2.1.5
+script: rake ci

@@ -1,7 +1,6 @@
 describe 'Calling taskwarrior'
   before
-    call unite#taskwarrior#config('command', './run')
-    call vimproc#system("./run setup")
+    call vimproc#system("rake setup")
   end
 
   describe 'with command line arguments'
