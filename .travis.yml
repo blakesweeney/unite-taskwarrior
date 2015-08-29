@@ -1,6 +1,6 @@
 language: ruby
 before_script:
-  - sudo apt-get install task
+  - install_task.sh
   - rake compile
 rvm:
     - 2.1.5
