@@ -26,7 +26,66 @@ describe 'building a task object'
     end
   end
 
-  describe 'setting comptued values'
+  describe 'comptuing properities'
+    before
+      call unite#taskwarrior#reset_config()
+    end
+
+    it 'computes short based on uuid'
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250"}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.short == '54970203'
+    end
+
+    it 'computes note based on configured directory, extension, short'
+      call unite#taskwarrior#config('note_directory', 'bob')
+      call unite#taskwarrior#config('note_suffix', 'tsv')
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250",
+            \ 'depends': []}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.note == 'bob/54970203.tsv'
+    end
+
+    it 'can handle a string of comma seperated deps'
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250",
+            \ 'depends': '1,2', 'start': ''}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.depends == ['1', '2']
+    end
+
+    it 'can handle a ist of dependencies'
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250",
+            \ 'depends': [1, 2], 'start': ''}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.depends == [1, 2]
+    end
+
+    it 'computes uri based upon uri format and uuid'
+      call unite#taskwarrior#config('uri_format', 'task:%s')
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250",
+            \ 'depends': [1, 2], 'start': ''}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.uri == 'task:54970203-8725-45a8-a700-aeecac453250'
+    end
+
+    it 'marks as started if given started'
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250",
+            \ 'depends': [], 'start': ''}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.started == 1
+      Expect obj.stopped == 0
+    end
+
+    it 'marks as stopped if not started'
+      let base = {'uuid': "54970203-8725-45a8-a700-aeecac453250",
+            \ 'depends': []}
+      let obj = unite#taskwarrior#defaults(base)
+      Expect obj.started == 0
+      Expect obj.stopped == 1
+    end
+  end
+
+  describe 'a full parse'
 
     it 'loads properties and computes data'
       let ans = {

@@ -221,7 +221,8 @@ function! unite#taskwarrior#parse(raw)
 endfunction
 
 function! unite#taskwarrior#defaults(parsed) abort
-  let data = extend(unite#taskwarrior#new_dict(a:parsed.description), a:parsed)
+  let desc = get(a:parsed, 'description', '')
+  let data = extend(unite#taskwarrior#new_dict(desc), a:parsed)
   let data.note = printf('%s/%s.%s',
         \ unite#taskwarrior#config('note_directory'),
         \ strpart(data.uuid, 0, 8),
