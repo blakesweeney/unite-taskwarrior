@@ -2,7 +2,7 @@ language: ruby
 before_script:
   - sudo apt-get install task
   - rake install
-  - cd /home/travis/.vim/flavors/Shougo_vimproc.vim && make
+  - cd /home/travis/.vim/flavors/Shougo_vimproc.vim && make -f make_unix.mak
   - cd -
 rvm:
     - 2.1.5
