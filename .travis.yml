@@ -2,7 +2,7 @@ language: ruby
 before_script:
   - sudo apt-get install task
   - rake install
-  - ls *
+  - ls -a *
   - ls .vim-flavor
   - ls .vim-flavor/*
   - ls .vim-flavor/**/*
