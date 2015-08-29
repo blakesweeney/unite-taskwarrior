@@ -5,7 +5,7 @@ describe 'basic unite#taskwarrior actions'
 
   it 'can list all tasks'
    let tasks = unite#taskwarrior#select([])
-   Expect len(tasks) == 4
+   Expect tasks == 4
  end
 
  it 'can list all projects'
