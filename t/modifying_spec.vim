@@ -1,10 +1,6 @@
 describe 'Modifying the tasks'
   before
-    call vimproc#system("./run setup")
-  end
-
-  after
-    call vimproc#system("./run setup")
+    call vimproc#system("rake reset")
   end
 
   it 'can add and delete a task'

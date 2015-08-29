@@ -14,7 +14,7 @@ task :install do
 end
 
 task :reset do
-  sh "git reset --hard #{ENV['TASKDATA']}"
+  sh "git checkout #{ENV['TASKDATA']}"
 end
 
 task :test do
