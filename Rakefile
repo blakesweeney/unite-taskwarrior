@@ -17,7 +17,7 @@ task :install do
   sh 'bundle exec vim-flavor install'
 end
 
-task :compile => [:install] do
+task :compile do
   sh 'bundle exec vim-flavor test t/dummy_spec.vim'
   Dir.chdir(".vim-flavor/deps/Shougo_vimproc.vim") do
     sh 'make'
@@ -28,7 +28,7 @@ task :reset do
   sh "git checkout #{ENV['TASKDATA']}"
 end
 
-task :test => [:compile] do
+task :test do
   sh 'bundle exec vim-flavor test t/**/*_spec.vim'
 end
 
