@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 VERSION='task-2.4.4'
-TAR="$VERSION-tar.gz"
+TAR="$VERSION.tar.gz"
 
 wget http://taskwarrior.org/download/$TAR
 tar -xvf $TAR
