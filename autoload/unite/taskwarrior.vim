@@ -440,7 +440,7 @@ function! unite#taskwarrior#depends(task, parents) abort
 endfunction
 
 function! unite#taskwarrior#count(query) abort
-  let result = unite#taskwarrior#call(printf('%s %s', a:query, ' count'))
+  let result = unite#taskwarrior#call([a:query, 'count'])
   return str2nr(result)
 endfunction
 
