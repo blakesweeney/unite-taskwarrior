@@ -3,6 +3,7 @@ before_script:
   - sudo apt-get install task
   - rake install
   - cd /home/travis/.vim/flavors/Shougo_vimproc.vim && make
+  - cd -
 rvm:
     - 2.1.5
 script: rake ci
