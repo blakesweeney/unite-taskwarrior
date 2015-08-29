@@ -1,4 +1,6 @@
-# Unite-taskwarrior
+# Unite-taskwarrior 
+
+[![Build Status](https://travis-ci.org/blakesweeney/unite-taskwarrior.png)](https://travis-ci.org/blakesweeney/unite-taskwarrior)
 
 A unite.vim interface to task warrior.
 
@@ -287,20 +289,14 @@ which opens a note in a vertical split.
 
 # Running tests
 
-First install the required packages with [vim-flavor](kana/vim-flavor). You
-should only need to do `run install` to install everything needed. 
-Then compile vimproc with:
+Tests can be run using `rake test`. The tests are written using
+[vim-flavor](https://github.com/kana/vim-flavor), and
+[vim-vspec](https://github.com/kana/vim-vspec). They are in the `t/` directory.
 
-```sh
-$ cd .vim-flavor/deps/Shougo_vimproc.vim/
-$ make -f make_mac.mak # If you have a mac
-# If you don't have mac you'll have to choose the correct make file.
-```
-
-If `run install` doesn't install everything then install vim-flavor with bundler
-and use vim-flavor to install vim-vspec.
-
-You can then run tests by doing `./run test`. The script makes sure we use the
-correct task configuration and data directory.
+There is a bit of setup required for running tests. Make sure
+[rake](http://docs.seattlerb.org/rake/) and [bundler](http://bundler.io/) are
+installed and then do `rake compile`. This will use vim-flavor to get the
+correct versions of vim plugins and then compile the vimproc plugin. Once this
+is done you can run `rake test` to run all tests.
 
 [taskwarrior]: http://taskwarrior.org/
