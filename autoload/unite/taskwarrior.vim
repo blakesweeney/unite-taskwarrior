@@ -157,9 +157,6 @@ function! unite#taskwarrior#format(task)
   let project = unite#taskwarrior#projects#abbr(a:task.project)
   let tags = map(a:task.tags, "unite#taskwarrior#tags#abbr(v:val)")
   let status = get(unite#taskwarrior#config('status_mapping'), a:task.status, '?')
-  if filereadable(a:task.note)
-    call add(tags, unite#taskwarrior#config('tags_abbr') . "NOTE")
-  endif
 
   let formatted = printf(unite#taskwarrior#config('format_string'),
         \ status,
@@ -370,6 +367,7 @@ endfunction
 
 function! unite#taskwarrior#open(task)
   let task = unite#taskwarrior#new(a:task)
+  call unite#taskwarrior#edit_tags(task, ['+note'])
   if !filereadable(l:task.note)
     let content = call(unite#taskwarrior#config('note_formatter'), [l:task])
     call writefile(content, l:task.note)
