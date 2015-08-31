@@ -26,6 +26,7 @@ end
 
 task :reset do
   sh "git checkout #{ENV['TASKDATA']}"
+  sh "git checkout #{ENV['TASKRC']}"
 end
 
 task :test do
