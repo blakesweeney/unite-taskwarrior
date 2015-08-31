@@ -3,6 +3,10 @@ describe 'Modifying the tasks'
     call vimproc#system("rake reset")
   end
 
+  after
+    call vimproc#system('rake reset')
+  end
+
   it 'can add and delete a task'
 
     Expect 4 == len(unite#taskwarrior#all())

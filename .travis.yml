@@ -7,7 +7,6 @@ env:
   - PATH=$PATH:.:./bin TASKDATA=./t/tasks TASKRC=./t/taskrc
 before_script:
   - ./install_task.sh
-  - task ac5ca2e6-869d-4af7-964a-e24e8b49e60c delete
   - rake compile
 rvm:
     - 2.1.5
