@@ -5,6 +5,7 @@ describe 'Modifying the tasks'
 
   after
     call vimproc#system('rake reset')
+    Expect vimproc#get_last_status() == 0
   end
 
   it 'can add and delete a task'
@@ -50,6 +51,7 @@ describe 'Modifying the tasks'
     Expect 1 == len(task)
     Expect 1 == task[0].stopped
     Expect 0 != task[0].stop_time
+    Expect 0 == vimproc#system('rake reset')
   end
 
   it 'can modify the title of a task'
