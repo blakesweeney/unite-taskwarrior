@@ -169,6 +169,11 @@ function! s:kind.action_table.similar.func(candidates) abort
   call unite#start([args], {'custom_filter': filter})
 endfunction
 
+let s:kind.action_table.wiki = {'description': 'open wiki file for this task'}
+function! s:kind.action_table.wiki.func(candidate) abort
+  execute ':edit ' . unite#taskwarrior#taskwiki#filename(a:candidate.source__data)
+endfunction
+
 let s:parent_kind = {
       \ 'is_quit': 0,
       \ 'is_invalidate_cache': 1,
