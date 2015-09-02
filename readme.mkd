@@ -186,9 +186,8 @@ and opens the same listing. So `:Tw +tag`, `:Tw $proj` and such would work like
     By default is called by `p`.
 
 * `similar`
-    Show all similar tasks.
-
-    TODO: Implement me
+    Show all similar tasks. Tasks are similar if they have the same project and
+    at least one tag in common.
 
 * `toggle`
     Will toggle the task status. This is the default action. By default is called by
