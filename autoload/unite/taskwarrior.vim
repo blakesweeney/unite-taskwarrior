@@ -18,7 +18,7 @@ let s:defaults = {
       \ 'project_format_string': "%20s\t%5s",
       \ 'context_format_string': '%s%10s%5s',
       \ 'context_status_mapping': {'active': '>', 'inactive': ' '},
-      \ "formatter": 'unite#taskwarrior#format',
+      \ "formatter": 'unite#taskwarrior#formatters#simple',
       \ "tag_formatter": 'unite#taskwarrior#tags#format',
       \ "project_formatter": 'unite#taskwarrior#projects#format',
       \ 'context_formatter': 'unite#taskwarrior#context#format',
@@ -40,7 +40,8 @@ let s:defaults = {
       \ 'missing_project': '(none)',
       \ 'show_annotations': 1,
       \ 'group_annotations_by': 'time',
-      \ 'annotation_precision': 2
+      \ 'annotation_precision': 2,
+      \ 'use_taskwiki': 0
       \ }
 
 let s:config = deepcopy(s:defaults)
@@ -64,6 +65,10 @@ function! unite#taskwarrior#config(key, ...) abort
 
       if key_name == 'note_directory'
         let value = expand(value)
+      endif
+
+      if key_name == 'formatter' && unite#taskwarrior#config('use_taskwiki')
+        let value = 'unite#taskwarrior#formatters#taskwiki'
       endif
 
       return value
@@ -162,27 +167,8 @@ function! unite#taskwarrior#filter(strings, project, ...)
 endfunction
 
 function! unite#taskwarrior#format(task)
-  let project = unite#taskwarrior#projects#abbr(a:task.project)
-  let tags = map(a:task.tags, "unite#taskwarrior#tags#abbr(v:val)")
-  let status = get(unite#taskwarrior#config('status_mapping'), a:task.status, '?')
-
-  let formatted = printf(unite#taskwarrior#config('format_string'),
-        \ status,
-        \ project,
-        \ a:task.description,
-        \ join(tags, ' '))
-
-  if unite#taskwarrior#config('show_annotations')
-    let annotations = join(
-          \ map(a:task.annotations, 'printf("%20s%s", " ", v:val.description)'),
-          \ "\n")
-
-    if !empty(annotations)
-      let formatted = printf("%s\n%s", formatted, annotations)
-    endif
-  endif
-
-  return formatted
+  let formatter = unite#taskwarrior#config('formatter')
+   return call(formatter, [a:task])
 endfunction
 
 function! unite#taskwarrior#parse(raw)

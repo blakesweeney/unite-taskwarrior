@@ -57,4 +57,27 @@ describe 'Dealing with configuration values'
     call unite#taskwarrior#config('note_directory', '~/.notes')
     Expect expand('~/.notes') == unite#taskwarrior#config('note_directory')
   end
+
+  describe 'getting a formatter'
+    it 'defaults to simple'
+      Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#simple'
+    end
+
+    it 'will use the given formatter'
+      call unite#taskwarrior#config('formatter', 'a')
+      Expect unite#taskwarrior#config('formatter') == 'a'
+    end
+
+    it 'will use taskwiki formatter if g:unite_taskwarrior_use_taskwiki set'
+      let g:unite_taskwarrior_use_taskwiki = 1
+      Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+      unlet g:unite_taskwarrior_use_taskwiki
+    end
+
+    it 'will use taskwiki formatter if use_taskwiki set in config'
+      call unite#taskwarrior#config('formatter', 'unite#taskwarrior#formatters#taskwiki')
+      Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+    end
+  end
+
 end
