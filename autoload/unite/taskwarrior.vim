@@ -11,7 +11,7 @@ let s:defaults = {
       \ 'command': "task",
       \ 'note_directory': '~/.task/note',
       \ 'note_suffix': 'mkd',
-      \ 'note_formatter': 'unite#taskwarrior#notes#simple_format',
+      \ 'note_formatter': 'unite#taskwarrior#formatters#description',
       \ 'notes_header_lines': 1,
       \ "format_string": "[%s] %15s\t%s (%s)",
       \ 'tag_format_string': "%20s\t%5s",
@@ -67,7 +67,8 @@ function! unite#taskwarrior#config(key, ...) abort
         let value = expand(value)
       endif
 
-      if key_name == 'formatter' && unite#taskwarrior#config('use_taskwiki')
+      if (key_name == 'formatter' || key_name == 'note_formatter')
+            \ && unite#taskwarrior#config('use_taskwiki')
         let value = 'unite#taskwarrior#formatters#taskwiki'
       endif
 
@@ -348,7 +349,7 @@ function! unite#taskwarrior#open(task)
   let task = unite#taskwarrior#new(a:task)
   call unite#taskwarrior#edit_tags(task, ['+note'])
   if !filereadable(l:task.note)
-    let content = call(unite#taskwarrior#config('note_formatter'), [l:task])
+    let content = unite#taskwarrior#notes#format(l:task)
     call writefile(content, l:task.note)
   endif
   execute ':edit ' . l:task.note

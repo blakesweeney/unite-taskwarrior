@@ -59,24 +59,51 @@ describe 'Dealing with configuration values'
   end
 
   describe 'getting a formatter'
-    it 'defaults to simple'
-      Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#simple'
+    describe 'for tasks'
+      it 'defaults to simple'
+        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#simple'
+      end
+
+      it 'will use the given formatter'
+        call unite#taskwarrior#config('formatter', 'a')
+        Expect unite#taskwarrior#config('formatter') == 'a'
+      end
+
+      it 'will use taskwiki formatter if g:unite_taskwarrior_use_taskwiki set'
+        let g:unite_taskwarrior_use_taskwiki = 1
+        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+        unlet g:unite_taskwarrior_use_taskwiki
+      end
+
+      it 'will use taskwiki formatter if use_taskwiki set in config'
+        call unite#taskwarrior#config('use_taskwiki', 1)
+        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+      end
     end
 
-    it 'will use the given formatter'
-      call unite#taskwarrior#config('formatter', 'a')
-      Expect unite#taskwarrior#config('formatter') == 'a'
-    end
+    describe 'for notes'
+      it 'defaults to description'
+        let ans = 'unite#taskwarrior#formatters#description'
+        Expect unite#taskwarrior#config('note_formatter') == ans
+      end
 
-    it 'will use taskwiki formatter if g:unite_taskwarrior_use_taskwiki set'
-      let g:unite_taskwarrior_use_taskwiki = 1
-      Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
-      unlet g:unite_taskwarrior_use_taskwiki
-    end
+      it 'will get the set note formatter'
+        call unite#taskwarrior#config('note_formatter', 'bob')
+        Expect unite#taskwarrior#config('note_formatter') == 'bob'
+      end
 
-    it 'will use taskwiki formatter if use_taskwiki set in config'
-      call unite#taskwarrior#config('formatter', 'unite#taskwarrior#formatters#taskwiki')
-      Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+      it 'will use taskwiki if global is set'
+        let g:unite_taskwarrior_use_taskwiki = 1
+        let ans = 'unite#taskwarrior#formatters#taskwiki'
+        Expect unite#taskwarrior#config('note_formatter') == ans
+        unlet g:unite_taskwarrior_use_taskwiki
+      end
+
+      it 'will use taskwiki if config is set'
+        call unite#taskwarrior#config('use_taskwiki', 1)
+        let ans = 'unite#taskwarrior#formatters#taskwiki'
+        Expect unite#taskwarrior#config('note_formatter') == ans
+      end
     end
   end
 
