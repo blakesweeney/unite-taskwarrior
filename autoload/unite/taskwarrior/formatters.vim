@@ -67,5 +67,19 @@ function! unite#taskwarrior#formatters#markdown(task, ...) abort
   return printf("# %s #", a:task.description)
 endfunction
 
+function! unite#taskwarrior#formatters#size_summary(tasks) abort
+  let summary = {'project': [], 'description': []}
+
+  for task in a:tasks
+    call add(summary.project, len(get(task, 'project', '')))
+    call add(summary.description, len(get(task, 'description', '')))
+  endfor
+
+  return {
+        \ 'project': max(summary.project),
+        \ 'description': max(summary.description)
+        \ }
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -89,4 +89,18 @@ describe 'Formatting'
     end
 
   end
+
+  describe 'summarizing sizes'
+    it 'gets the max size of projects'
+      let tasks = [{'project': 'a'}, {'project': 'aaa'}, {'project': 'aa'}]
+      let val = unite#taskwarrior#formatters#size_summary(tasks)
+      Expect val.project == 3
+    end
+
+    it 'gets the max size of descriptions'
+      let tasks = [{'description': 'aaa'}, {'description': 'aaaa'}, {'description': 'aaaa'}]
+      let val = unite#taskwarrior#formatters#size_summary(tasks)
+      Expect val.description == 4
+    end
+  end
 end
