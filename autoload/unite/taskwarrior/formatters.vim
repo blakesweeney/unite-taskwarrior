@@ -44,7 +44,7 @@ function! unite#taskwarrior#formatters#taskwiki(task, ...) abort
       let date = date . ' ' . datetime.format('%H:%M')
     endif
 
-    let date = '(' . date . ')'
+    let date = printf('(%s)', date)
   endif
 
   let mapping = unite#taskwarrior#config('status_mapping')
@@ -57,6 +57,14 @@ function! unite#taskwarrior#formatters#taskwiki(task, ...) abort
         \ a:task.description, 
         \ date, 
         \ a:task.short)
+endfunction
+
+function! unite#taskwarrior#formatters#description(task, ...) abort
+  return a:task.description
+endfunction
+
+function! unite#taskwarrior#formatters#markdown(task, ...) abort
+  return printf("# %s #", a:task.description)
 endfunction
 
 let &cpo = s:save_cpo

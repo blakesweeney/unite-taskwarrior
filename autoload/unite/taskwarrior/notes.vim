@@ -2,15 +2,6 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#taskwarrior#notes#simple_format(task) abort
-  return [a:task.description]
-endfunction
-
-function! unite#taskwarrior#notes#markdown_format(task) abort
-  let header = printf("# %s #", a:task.description)
-  return [header]
-endfunction
-
 function! unite#taskwarrior#notes#select(context) abort
   let dir = unite#taskwarrior#config('note_directory')
   let files = vimproc#readdir(dir)
