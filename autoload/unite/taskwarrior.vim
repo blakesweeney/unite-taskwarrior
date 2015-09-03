@@ -185,21 +185,6 @@ function! unite#taskwarrior#format(task)
   return formatted
 endfunction
 
-function! unite#taskwarrior#format_taskwiki(task) abort
-  let format = "* [ ] %s%s  #%s"
-  let date = ''
-  let due = get(a:task, 'due', '')
-  if due != ''
-    let date = printf(" (%s-%s-%s %s:%s)",
-          \ strpart(due, 0, 4),
-          \ strpart(due, 4, 2),
-          \ strpart(due, 6, 2),
-          \ strpart(due, 9, 2),
-          \ strpart(due, 11, 2))
-  endif
-  return printf(format, a:task.description, date, a:task.short)
-endfunction
-
 function! unite#taskwarrior#parse(raw)
   if stridx(a:raw, "The") == 0 || empty(a:raw)
     return {}
