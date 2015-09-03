@@ -166,9 +166,9 @@ function! unite#taskwarrior#filter(strings, project, ...)
   return filters
 endfunction
 
-function! unite#taskwarrior#format(task)
+function! unite#taskwarrior#format(task, summary)
   let formatter = unite#taskwarrior#config('formatter')
-   return call(formatter, [a:task])
+  return call(formatter, [a:task, a:summary])
 endfunction
 
 function! unite#taskwarrior#parse(raw)

@@ -30,8 +30,9 @@ function! s:source.gather_candidates(args, context)
     let loaded = unite#taskwarrior#select(filter)
   endif
 
+  let summary = unite#taskwarrior#formatters#size_summary(loaded)
   for todo in loaded
-    let line = call(unite#taskwarrior#config('formatter'), [todo])
+    let line = unite#taskwarrior#format(todo, summary)
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior",
