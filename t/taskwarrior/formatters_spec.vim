@@ -10,7 +10,7 @@ describe 'Formatting'
             \ 'status': 'pending'
             \ }
       let options = {'project': 3}
-      let ans = '[ ] bob A description                                                   :one:two:'
+      let ans = '- [ ] bob A description                                                 :one:two:'
       Expect ans == unite#taskwarrior#formatters#simple(task, options)
     end
 
@@ -22,7 +22,7 @@ describe 'Formatting'
             \ 'status': 'pending'
             \ }
       let options = {'project': 5}
-      let ans = '[ ] bob   A description                                                 :one:two:'
+      let ans = '- [ ] bob   A description                                               :one:two:'
       Expect ans == unite#taskwarrior#formatters#simple(task, options)
     end
 
@@ -33,7 +33,7 @@ describe 'Formatting'
             \ 'tags': ['one', 'two'],
             \ 'status': 'pending'
             \ }
-      let ans = '[ ] bob        A description                                            :one:two:'
+      let ans = '- [ ] bob        A description                                          :one:two:'
       Expect unite#taskwarrior#formatters#simple(task) == ans
     end
 
@@ -44,7 +44,7 @@ describe 'Formatting'
             \ 'tags': ['one', 'two'],
             \ 'status': 'pending'
             \ }
-      let ans = '[ ] bob        A description A description A description A description  :one:two:'
+      let ans = '- [ ] bob        A description A description A description A descriptio :one:two:'
       Expect unite#taskwarrior#formatters#simple(task) == ans
     end
   end
