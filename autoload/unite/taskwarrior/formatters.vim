@@ -19,13 +19,16 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
   let total = get(options, 'total', 80)
   let project_size = get(options, 'project', 10)
 
-  let description_size = total - (project_size + 5 + len(tags))
+  let leader = index(a:task.tags, 'note') == -1 ?  '-' : '+'
+
+  let description_size = total - (project_size + 7 + len(tags))
   let description_format = '%-' . description_size . 's'
   if len(a:task.description) > description_size
     let description_format = '%-.' . description_size . 's'
   endif
 
-  let formatted = printf("[%s] %-" . project_size . "S " . description_format . " %S",
+  let formatted = printf("%s [%s] %-" . project_size . "S " . description_format . " %S",
+        \ leader,
         \ status,
         \ a:task.project,
         \ a:task.description,
