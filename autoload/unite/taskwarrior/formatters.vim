@@ -20,6 +20,10 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
   let project_size = get(options, 'project', 10)
 
   let leader = index(a:task.tags, 'note') == -1 ?  '-' : '+'
+  if a:task.started
+    let mapping = unite#taskwarrior#config('status_mapping')
+    let leader = mapping.active
+  endif
 
   let description_size = total - (project_size + 7 + len(tags))
   let description_format = '%-' . description_size . 's'
