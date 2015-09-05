@@ -11,20 +11,28 @@ let s:defaults = {
       \ 'command': "task",
       \ 'note_directory': '~/.task/note',
       \ 'note_suffix': 'mkd',
-      \ 'note_formatter': 'unite#taskwarrior#notes#simple_format',
+      \ 'note_formatter': 'unite#taskwarrior#formatters#description',
       \ 'notes_header_lines': 1,
       \ "format_string": "[%s] %15s\t%s (%s)",
       \ 'tag_format_string': "%20s\t%5s",
       \ 'project_format_string': "%20s\t%5s",
       \ 'context_format_string': '%s%10s%5s',
       \ 'context_status_mapping': {'active': '>', 'inactive': ' '},
-      \ "formatter": 'unite#taskwarrior#format',
+      \ "formatter": 'unite#taskwarrior#formatters#simple',
       \ "tag_formatter": 'unite#taskwarrior#tags#format',
       \ "project_formatter": 'unite#taskwarrior#projects#format',
       \ 'context_formatter': 'unite#taskwarrior#context#format',
       \ 'filter': 'status.not:deleted',
       \ 'toggle_mapping': { 'pending': 'completed', 'completed': 'pending' },
-      \ "status_mapping": { 'pending': ' ', 'waiting': '-', 'recurring': '+', 'unknown': 'N' },
+      \ "status_mapping": { 
+      \   'pending': ' ', 
+      \   'deleted': 'D',
+      \   'completed': 'X',
+      \   'waiting': 'W', 
+      \   'recurring': 'R', 
+      \   'started': 'S',
+      \   'unknown': 'N', 
+      \ },
       \ "projects_abbr": "$",
       \ "tags_abbr": "+",
       \ "fallback_match": "matcher_fuzzy",
@@ -32,7 +40,8 @@ let s:defaults = {
       \ 'missing_project': '(none)',
       \ 'show_annotations': 1,
       \ 'group_annotations_by': 'time',
-      \ 'annotation_precision': 2
+      \ 'annotation_precision': 2,
+      \ 'use_taskwiki': 0
       \ }
 
 let s:config = deepcopy(s:defaults)
@@ -56,6 +65,11 @@ function! unite#taskwarrior#config(key, ...) abort
 
       if key_name == 'note_directory'
         let value = expand(value)
+      endif
+
+      if (key_name == 'formatter' || key_name == 'note_formatter')
+            \ && unite#taskwarrior#config('use_taskwiki')
+        let value = 'unite#taskwarrior#formatters#taskwiki'
       endif
 
       return value
@@ -153,43 +167,9 @@ function! unite#taskwarrior#filter(strings, project, ...)
   return filters
 endfunction
 
-function! unite#taskwarrior#format(task)
-  let project = unite#taskwarrior#projects#abbr(a:task.project)
-  let tags = map(a:task.tags, "unite#taskwarrior#tags#abbr(v:val)")
-  let status = get(unite#taskwarrior#config('status_mapping'), a:task.status, '?')
-
-  let formatted = printf(unite#taskwarrior#config('format_string'),
-        \ status,
-        \ project,
-        \ a:task.description,
-        \ join(tags, ' '))
-
-  if unite#taskwarrior#config('show_annotations')
-    let annotations = join(
-          \ map(a:task.annotations, 'printf("%20s%s", " ", v:val.description)'),
-          \ "\n")
-
-    if !empty(annotations)
-      let formatted = printf("%s\n%s", formatted, annotations)
-    endif
-  endif
-
-  return formatted
-endfunction
-
-function! unite#taskwarrior#format_taskwiki(task) abort
-  let format = "* [ ] %s%s  #%s"
-  let date = ''
-  let due = get(a:task, 'due', '')
-  if due != ''
-    let date = printf(" (%s-%s-%s %s:%s)",
-          \ strpart(due, 0, 4),
-          \ strpart(due, 4, 2),
-          \ strpart(due, 6, 2),
-          \ strpart(due, 9, 2),
-          \ strpart(due, 11, 2))
-  endif
-  return printf(format, a:task.description, date, a:task.short)
+function! unite#taskwarrior#format(task, summary)
+  let formatter = unite#taskwarrior#config('formatter')
+  return call(formatter, [a:task, a:summary])
 endfunction
 
 function! unite#taskwarrior#parse(raw)
@@ -369,7 +349,7 @@ function! unite#taskwarrior#open(task)
   let task = unite#taskwarrior#new(a:task)
   call unite#taskwarrior#edit_tags(task, ['+note'])
   if !filereadable(l:task.note)
-    let content = call(unite#taskwarrior#config('note_formatter'), [l:task])
+    let content = unite#taskwarrior#notes#format(l:task)
     call writefile(content, l:task.note)
   endif
   execute ':edit ' . l:task.note
