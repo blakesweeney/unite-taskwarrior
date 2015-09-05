@@ -14,8 +14,9 @@ let s:source = {
 function! s:source.gather_candidates(args, context)
   let candidates = []
   let tags = unite#taskwarrior#tags#select(a:args)
+  let summary = unite#taskwarrior#formatters#size_summary(tags)
   for tag in tags
-    let line = call(unite#taskwarrior#config('tag_formatter'), [tag])
+    let line = unite#taskwarrior#tags#format(tag, summary)
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior_tag",

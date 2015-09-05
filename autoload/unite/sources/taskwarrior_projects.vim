@@ -14,8 +14,9 @@ let s:source = {
 function! s:source.gather_candidates(args, context)
   let candidates = []
   let projects = unite#taskwarrior#projects#select(a:args)
+  let summary = unite#taskwarrior#formatters#size_summary(projects)
   for project in projects
-    let line = call(unite#taskwarrior#config('project_formatter'), [project])
+    let line = unite#taskwarrior#projects#format(project, summary)
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior_project",

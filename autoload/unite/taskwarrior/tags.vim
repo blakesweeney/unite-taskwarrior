@@ -22,10 +22,9 @@ function! unite#taskwarrior#tags#select(args)
   return values(tags)
 endfunction
 
-function! unite#taskwarrior#tags#format(tag)
-  return printf(unite#taskwarrior#config('tag_format_string'), 
-        \ a:tag.name,
-        \ a:tag.count)
+function! unite#taskwarrior#tags#format(tag, summary) abort
+  let formatter = unite#taskwarrior#config('tag_formatter')
+  return call(formatter, [a:tag, a:summary])
 endfunction
 
 function! unite#taskwarrior#tags#abbr(data)

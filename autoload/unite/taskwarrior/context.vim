@@ -65,15 +65,6 @@ function! unite#taskwarrior#context#filter(context) abort
   return printf('( %s ) and ( %s )', filter, simple)
 endfunction
 
-function! unite#taskwarrior#context#format(context) abort
-  let mapping = unite#taskwarrior#config('context_status_mapping')
-  let status_flag = get(mapping, a:context.status, '?')
-  return printf(unite#taskwarrior#config('context_format_string'),
-        \ status_flag,
-        \ a:context.name,
-        \ a:context.count)
-endfunction
-
 function! unite#taskwarrior#context#set(context) abort
   call unite#taskwarrior#call(['context', a:context.name])
 endfunction
@@ -112,6 +103,11 @@ function! unite#taskwarrior#context#current() abort
   endfor
 
   return {}
+endfunction
+
+function! unite#taskwarrior#context#format(context, summary) abort
+  let formatter = unite#taskwarrior#config('context_formatter')
+  return call(formatter, [a:context, a:summary])
 endfunction
 
 let &cpo = s:save_cpo

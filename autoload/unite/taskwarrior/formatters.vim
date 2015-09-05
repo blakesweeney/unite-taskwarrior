@@ -81,17 +81,38 @@ function! unite#taskwarrior#formatters#markdown(task, ...) abort
   return printf("# %s #", a:task.description)
 endfunction
 
+function! unite#taskwarrior#formatters#named(entry, ...) abort
+  let config = get(a:000, 0, {})
+  let name_size = get(config, 'name', 30)
+  let format_string = "%-" . name_size . "s  %s"
+
+  return printf(format_string, a:entry.name, a:entry.count)
+endfunction
+
+function! unite#taskwarrior#formatters#named_status(entry, ...) abort
+  let config = get(a:000, 0, {})
+  let mapping = get(config, 'mapping', 
+        \ unite#taskwarrior#config('status_mapping'))
+  let name_size = get(config, 'name', 30)
+  let format_string = "%s %-" . name_size . "s  %s"
+  let status_flag = get(mapping, a:entry.status, '?')
+
+  return printf(format_string, status_flag, a:entry.name, a:entry.count)
+endfunction
+
 function! unite#taskwarrior#formatters#size_summary(tasks) abort
-  let summary = {'project': [], 'description': []}
+  let summary = {'project': [], 'description': [], 'name': []}
 
   for task in a:tasks
     call add(summary.project, len(get(task, 'project', '')))
     call add(summary.description, len(get(task, 'description', '')))
+    call add(summary.name, len(get(task, 'name', '')))
   endfor
 
   return {
         \ 'project': max(summary.project),
-        \ 'description': max(summary.description)
+        \ 'description': max(summary.description),
+        \ 'name': max(summary.name)
         \ }
 endfunction
 

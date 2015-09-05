@@ -22,10 +22,9 @@ function! unite#taskwarrior#projects#select(args)
   return values(projects)
 endfunction
 
-function! unite#taskwarrior#projects#format(project)
-  return printf(unite#taskwarrior#config('project_format_string'), 
-        \ a:project.name,
-        \ a:project.count)
+function! unite#taskwarrior#projects#format(project, summary) abort
+  let formatter = unite#taskwarrior#config('project_formatter')
+  return call(formatter, [a:project, a:summary])
 endfunction
 
 function! unite#taskwarrior#projects#abbr(data)

@@ -16,8 +16,9 @@ function! s:source.gather_candidates(args, context)
   let loaded = unite#taskwarrior#context#select()
   let candidates = []
 
+  let summary = unite#taskwarrior#formatters#size_summary(loaded)
   for context in loaded
-    let line = call(unite#taskwarrior#config('context_formatter'), [context])
+    let line = unite#taskwarrior#context#format(context, summary)
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior_context",
