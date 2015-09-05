@@ -67,7 +67,7 @@ function! unite#taskwarrior#config(key, ...) abort
         let value = expand(value)
       endif
 
-      if (key_name == 'formatter' || key_name == 'note_formatter')
+      if key_name == 'note_formatter'
             \ && unite#taskwarrior#config('use_taskwiki')
         let value = 'unite#taskwarrior#formatters#taskwiki'
       endif

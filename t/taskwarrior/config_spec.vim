@@ -69,15 +69,15 @@ describe 'Dealing with configuration values'
         Expect unite#taskwarrior#config('formatter') == 'a'
       end
 
-      it 'will use taskwiki formatter if g:unite_taskwarrior_use_taskwiki set'
+      it 'will use default formatter if g:unite_taskwarrior_use_taskwiki set'
         let g:unite_taskwarrior_use_taskwiki = 1
-        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#simple'
         unlet g:unite_taskwarrior_use_taskwiki
       end
 
-      it 'will use taskwiki formatter if use_taskwiki set in config'
+      it 'will use default formatter if use_taskwiki set in config'
         call unite#taskwarrior#config('use_taskwiki', 1)
-        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#taskwiki'
+        Expect unite#taskwarrior#config('formatter') == 'unite#taskwarrior#formatters#simple'
       end
     end
 
