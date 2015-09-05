@@ -20,7 +20,7 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
   let project_size = get(options, 'project', 10)
 
   let leader = index(a:task.tags, 'note') == -1 ?  '-' : '+'
-  if a:task.started
+  if get(a:task, 'started', 0)
     let mapping = unite#taskwarrior#config('status_mapping')
     let leader = mapping.active
   endif
@@ -40,7 +40,7 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
 
   if unite#taskwarrior#config('show_annotations')
     let annotations = []
-    for annotation in a:task.annotations
+    for annotation in get(a:task, 'annotations', [])
       let pretty = printf("  %.78s", annotation.description)
       call add(annotations, pretty)
     endfor
