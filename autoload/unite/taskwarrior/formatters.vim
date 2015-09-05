@@ -34,6 +34,17 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
         \ a:task.description,
         \ tags)
 
+  if unite#taskwarrior#config('show_annotations')
+    let annotations = []
+    for annotation in a:task.annotations
+      let pretty = printf("  %.78s", annotation.description)
+      call add(annotations, pretty)
+    endfor
+    if !empty(annotations)
+      let formatted = printf("%s\n%s", formatted, join(annotations, "\n"))
+    endif
+  endif
+
   return formatted
 endfunction
 
