@@ -27,10 +27,10 @@ let s:defaults = {
       \   'pending': ' ', 
       \   'deleted': 'D',
       \   'completed': 'X',
-      \   'waiting': 'W', 
-      \   'recurring': 'R', 
+      \   'waiting': 'W',
+      \   'recurring': 'R',
       \   'started': 'S',
-      \   'unknown': 'N', 
+      \   'unknown': 'N',
       \ },
       \ "projects_abbr": "$",
       \ "tags_abbr": "+",
@@ -147,7 +147,7 @@ function! unite#taskwarrior#parse(raw)
     try
       let parsed = map(lines, 's:JSON.decode(v:val)')
     catch
-      throw printf("Could not parse taskwarrior output: '%s' (%s)", 
+      throw printf("Could not parse taskwarrior output: '%s' (%s)",
             \ a:raw, string(v:exception))
     endtry
   endtry
