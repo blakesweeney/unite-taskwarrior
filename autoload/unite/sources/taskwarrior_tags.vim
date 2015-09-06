@@ -7,7 +7,8 @@ let s:source = {
       \ 'name': 'taskwarrior/tags',
       \ 'description': 'Show a listing of all known tags',
       \ 'syntax': 'TaskWarrior',
-      \ 'sorters': 'sorter_count'
+      \ 'sorters': 'sorter_count',
+      \ 'hooks': {}
       \ }
 
 " Consider using async
@@ -24,6 +25,14 @@ function! s:source.gather_candidates(args, context)
           \ })
   endfor
   return candidates
+endfunction
+
+function! s:source.hooks.on_syntax(args, context) abort
+  if unite#taskwarrior#config('define_mappings') == 0
+    return
+  endif
+
+  call unite#taskwarrior#base_mappings() 
 endfunction
 
 function! unite#sources#taskwarrior_tags#define()

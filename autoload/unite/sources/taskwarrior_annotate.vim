@@ -8,7 +8,8 @@ let s:source = {
       \ 'description': 'Modify annotations of tasks',
       \ 'syntax': 'TaskWarrior',
       \ 'default_action': 'annotate',
-      \ 'action_table': {}
+      \ 'action_table': {},
+      \ 'hooks': {}
       \ }
 
 let s:taskwarrior = unite#sources#taskwarrior#define()
@@ -35,6 +36,14 @@ function! s:source.action_table.annotate.func(candidates)
       call unite#taskwarrior#annotate(task, annotatation)
     endfor
   endfor
+endfunction
+
+function! s:source.hooks.on_syntax(args, context) abort
+  if unite#taskwarrior#config('define_mappings') == 0
+    return
+  endif
+
+  call unite#taskwarrior#base_mappings() 
 endfunction
 
 function! unite#sources#taskwarrior_annotate#define()

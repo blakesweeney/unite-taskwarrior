@@ -10,6 +10,7 @@ let s:source = {
       \ 'description': 'get a listing of all note files',
       \ 'default_kind': 'file',
       \ 'action_table': {},
+      \ 'hooks': {}
       \ }
 
 function! s:source.gather_candidates(args, context)
@@ -26,6 +27,14 @@ function! s:source.gather_candidates(args, context)
   endfor
 
   return candidates
+endfunction
+
+function! s:source.hooks.on_syntax(args, context) abort
+  if unite#taskwarrior#config('define_mappings') == 0
+    return
+  endif
+
+  call unite#taskwarrior#base_mappings() 
 endfunction
 
 let s:source.action_table.view = {'description': 'show the associated task'}

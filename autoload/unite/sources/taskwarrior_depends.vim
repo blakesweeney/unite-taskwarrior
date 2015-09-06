@@ -8,7 +8,8 @@ let s:source = {
       \ 'description': 'Add a dependency to a task',
       \ 'sorters': 'sorter_task_urgency',
       \ 'default_action': 'depends',
-      \ 'action_table': {}
+      \ 'action_table': {},
+      \ 'hooks': {}
       \ }
 
 let s:taskwarrior = unite#sources#taskwarrior#define()
@@ -42,6 +43,14 @@ function! s:source.action_table.depends.func(candidates)
     let task = candidate.source__data
     call unite#taskwarrior#depends(task, candidate.source__parent)
   endfor
+endfunction
+
+function! s:source.hooks.on_syntax(args, context) abort
+  if unite#taskwarrior#config('define_mappings') == 0
+    return
+  endif
+
+  call unite#taskwarrior#base_mappings() 
 endfunction
 
 function! unite#sources#taskwarrior_depends#define() abort

@@ -30,6 +30,14 @@ function! s:source.gather_candidates(args, context)
   return candidates
 endfunction
 
+function! s:source.hooks.on_syntax(args, context) abort
+  if unite#taskwarrior#config('define_mappings') == 0
+    return
+  endif
+
+  call unite#taskwarrior#base_mappings() 
+endfunction
+
 function! unite#sources#taskwarrior_context#define()
   return s:source
 endfunction

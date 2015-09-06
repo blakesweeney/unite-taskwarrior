@@ -392,10 +392,14 @@ function! unite#taskwarrior#yank(task, formatter) abort
   endif
 endfunction
 
+function! unite#taskwarrior#base_mappings() abort
+  nnoremap <silent><buffer><expr> <BS>        unite#do_action('previous')
+endfunction
+
 function! unite#taskwarrior#bindings() abort
+  call unite#taskwarrior#base_mappings()
   nnoremap <silent><buffer><expr> <TAB>       unite#do_action('toggle')
   nnoremap <silent><buffer><expr> <CR>        unite#do_action('view')
-  nnoremap <silent><buffer><expr> <BS>        unite#do_action('previous')
   nnoremap <silent><buffer><expr> <C-D>       unite#do_action('add_dependency')
   nnoremap <silent><buffer><expr> d           unite#do_action('do')
   nnoremap <silent><buffer><expr> D           unite#do_action('delete')

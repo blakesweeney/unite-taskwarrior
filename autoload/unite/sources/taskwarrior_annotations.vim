@@ -9,7 +9,8 @@ let s:source = {
       \ 'syntax': 'TaskWarrior',
       \ 'default_action': 'edit',
       \ 'default_kind': 'taskwarrior_annotations',
-      \ 'action_table': {}
+      \ 'action_table': {},
+      \ 'hooks': {}
       \ }
 
 function! unite#sources#taskwarrior_annotations#define()
@@ -27,6 +28,14 @@ function! s:source.gather_candidates(args, context)
     unlet group
   endfor
   return candidates
+endfunction
+
+function! s:source.hooks.on_syntax(args, context) abort
+  if unite#taskwarrior#config('define_mappings') == 0
+    return
+  endif
+
+  call unite#taskwarrior#base_mappings() 
 endfunction
 
 let &cpo = s:save_cpo
