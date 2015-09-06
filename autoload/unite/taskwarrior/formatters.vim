@@ -31,7 +31,7 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
     let description_format = '%-.' . description_size . 's'
   endif
 
-  let formatted = printf("%s [%s] %-" . project_size . "S " . description_format . " %S",
+  let formatted = printf("%s [%s] %-" . project_size . "s " . description_format . " %s",
         \ leader,
         \ status,
         \ a:task.project,
