@@ -17,6 +17,8 @@ function! s:source.gather_candidates(args, context)
   let candidates = []
 
   let summary = unite#taskwarrior#formatters#size_summary(loaded)
+  let summary.mapping = deepcopy(unite#taskwarrior#config('status_mapping'))
+  let summary.mapping.active = summary.mapping.active_context
   for context in loaded
     let line = unite#taskwarrior#context#format(context, summary)
     call add(candidates, {
