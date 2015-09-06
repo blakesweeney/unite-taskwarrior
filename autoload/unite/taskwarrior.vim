@@ -21,7 +21,7 @@ let s:defaults = {
       \ 'filter': 'status.not:deleted',
       \ 'toggle_mapping': { 'pending': 'completed', 'completed': 'pending' },
       \ "status_mapping": { 
-      \   'active': '*',
+      \   'active': '#',
       \   'inactive': ' ',
       \   'pending': ' ', 
       \   'deleted': 'D',
