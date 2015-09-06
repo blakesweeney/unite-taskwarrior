@@ -41,7 +41,12 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
   if unite#taskwarrior#config('show_annotations')
     let annotations = []
     for annotation in get(a:task, 'annotations', [])
-      let pretty = printf("  %.78s", annotation.description)
+      let annotation_spaces = 2
+      let spaces = repeat(" ", project_size + 7 + annotation_spaces)
+      let desc_size = 80 - len(spaces)
+      let pretty = printf("%s%." . desc_size . "s", 
+            \ spaces, 
+            \ annotation.description)
       call add(annotations, pretty)
     endfor
     if !empty(annotations)
