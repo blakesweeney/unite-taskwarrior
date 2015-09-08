@@ -39,16 +39,12 @@ function! unite#taskwarrior#filters#from_source(args, options) abort
   endfor
 
   if has_key(a:options, 'custom_filter')
-    call append(processed.raw, a:options.custom_filter)
+    call add(processed.raw, a:options.custom_filter)
     let processed.ignore_filter = 1
   endif
 
   if has_key(a:options, 'custom_ignore_filter')
     let processed.ignore_filter = 1
-  endif
-
-  if has_key(a:options, 'custom_context')
-    let processed.context = a:options.custom_context
   endif
 
   return unite#taskwarrior#filters#new(processed)
