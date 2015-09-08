@@ -2,4 +2,6 @@ echo.command=no
 verbose=no
 confirmation=no
 
+context.c1 = project.is:c1
+
 default.command=list
