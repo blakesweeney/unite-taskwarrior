@@ -92,13 +92,24 @@ function! unite#taskwarrior#context#current() abort
     endif
 
     if !empty(active)
-      let matches = matchlist(line, '^context' . active . '=\(.\+\)$')
+      let matches = matchlist(line, '^context\.' . active . '=\(.\+\)$')
       if !empty(matches)
-        return {
-              \ 'name': active,
-              \ 'definition': matches[1]
-              \ }
+        return { 'name': active, 'definition': matches[1] }
       endif
+    endif
+  endfor
+
+  return {}
+endfunction
+
+function! unite#taskwarrior#context#get(name) abort
+  let raw = unite#taskwarrior#call('_show')
+  let active = ''
+
+  for line in split(raw, '\n')
+    let matches = matchlist(line, '^context\.' . a:name . '=\(.\+\)$')
+    if !empty(matches)
+      return {'name': a:name, 'definition': matches[1]}
     endif
   endfor
 
