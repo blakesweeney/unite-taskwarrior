@@ -4,8 +4,8 @@ set cpo&vim
 call unite#taskwarrior#init()
 
 let s:source = {
-      \ 'name': 'taskwarrior/config',
-      \ 'description': 'list and modify taskwarrior configuration',
+      \ 'name': 'taskwarrior/settings',
+      \ 'description': 'list and modify taskwarrior settings',
       \ }
 
 function! s:source.gather_candidates(args, context)
