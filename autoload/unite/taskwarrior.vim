@@ -40,7 +40,8 @@ let s:defaults = {
       \ 'show_annotations': 1,
       \ 'group_annotations_by': 'time',
       \ 'annotation_precision': 2,
-      \ 'use_taskwiki': 0
+      \ 'use_taskwiki': 0,
+      \ 'respect_context': 0
       \ }
 
 let s:config = deepcopy(s:defaults)
