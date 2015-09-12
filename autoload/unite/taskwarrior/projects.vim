@@ -3,9 +3,8 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#taskwarrior#projects#select(args)
-  let filter = unite#taskwarrior#filter(a:args, '')
-  let tasks = unite#taskwarrior#select(filter)
+function! unite#taskwarrior#projects#select(filt)
+  let tasks = unite#taskwarrior#select(a:filt)
   let projects = {}
 
   for task in tasks
@@ -25,23 +24,6 @@ endfunction
 function! unite#taskwarrior#projects#format(project, summary) abort
   let formatter = unite#taskwarrior#config('project_formatter')
   return call(formatter, [a:project, a:summary])
-endfunction
-
-function! unite#taskwarrior#projects#abbr(data)
-  if a:data == ''
-    return ''
-  endif
-  if type(a:data) == type('')
-    return unite#taskwarrior#config('projects_abbr') . a:data
-  endif
-  return unite#taskwarrior#config('projects_abbr') . a:data.name
-endfunction
-
-function! unite#taskwarrior#projects#expand(short)
-  if strpart(a:short, 0, 1) == unite#taskwarrior#config('projects_abbr')
-    return 'project:' . strpart(a:short, 1, -1)
-  endif
-  return 'project:' . a:short
 endfunction
 
 let &cpo = s:save_cpo

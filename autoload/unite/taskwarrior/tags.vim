@@ -3,12 +3,10 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#taskwarrior#tags#select(args)
-  let filter = unite#taskwarrior#filter(a:args, '')
-  let tasks = unite#taskwarrior#select(filter)
+function! unite#taskwarrior#tags#select(filt)
   let tags = {}
 
-  for task in tasks
+  for task in unite#taskwarrior#select(a:filt)
     for tag in task.tags
       if tag == ''
         continue

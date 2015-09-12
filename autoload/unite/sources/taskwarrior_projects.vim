@@ -13,9 +13,11 @@ let s:source = {
 
 " Consider using async
 function! s:source.gather_candidates(args, context)
-  let candidates = []
-  let projects = unite#taskwarrior#projects#select(a:args)
+  let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
+  let projects = unite#taskwarrior#projects#select(filt.str())
   let summary = unite#taskwarrior#formatters#size_summary(projects)
+
+  let candidates = []
   for project in projects
     let line = unite#taskwarrior#projects#format(project, summary)
     call add(candidates, {
@@ -24,6 +26,7 @@ function! s:source.gather_candidates(args, context)
           \ "source__data": project
           \ })
   endfor
+
   return candidates
 endfunction
 

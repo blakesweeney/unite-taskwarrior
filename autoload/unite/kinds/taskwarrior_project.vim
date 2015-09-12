@@ -16,11 +16,8 @@ let s:kind.action_table.open = {
 function! s:kind.action_table.open.func(candidates)
   let args = ['taskwarrior']
   for candidate in a:candidates
-    let query =  '$' . candidate.source__data.name
-    if candidate.source__data.name == unite#taskwarrior#config('missing_project')
-      let query = '$'
-    endif
-    call add(args, query)
+    let project =  candidate.source__data
+    call add(args, project.name)
   endfor
   call unite#start([args])
 endfunction

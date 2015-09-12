@@ -14,23 +14,11 @@ let s:source = {
 
 " Consider using async
 function! s:source.gather_candidates(args, context)
-  let candidates = []
-  let project = get(a:context, 'custom_project', '')
-
-  if has_key(a:context, 'custom_filter')
-    let filter = unite#taskwarrior#filter(a:args, project, a:context.custom_filter)
-  else
-    let filter = unite#taskwarrior#filter(a:args, project)
-  endif
-
-  let loaded = []
-  if len(filter) == 1
-    let loaded = unite#taskwarrior#select(filter[0])
-  else
-    let loaded = unite#taskwarrior#select(filter)
-  endif
-
+  let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
+  let loaded = unite#taskwarrior#select(filt.str())
   let summary = unite#taskwarrior#formatters#size_summary(loaded)
+
+  let candidates = []
   for todo in loaded
     let line = unite#taskwarrior#format(todo, summary)
     call add(candidates, {
@@ -41,6 +29,7 @@ function! s:source.gather_candidates(args, context)
           \ })
     unlet todo
   endfor
+
   return candidates
 endfunction
 

@@ -13,9 +13,11 @@ let s:source = {
 
 " Consider using async
 function! s:source.gather_candidates(args, context)
-  let candidates = []
-  let tags = unite#taskwarrior#tags#select(a:args)
+  let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
+  let tags = unite#taskwarrior#tags#select(filt.str())
   let summary = unite#taskwarrior#formatters#size_summary(tags)
+
+  let candidates = []
   for tag in tags
     let line = unite#taskwarrior#tags#format(tag, summary)
     call add(candidates, {

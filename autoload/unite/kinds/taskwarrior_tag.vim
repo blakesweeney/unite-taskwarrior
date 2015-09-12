@@ -17,7 +17,7 @@ let s:kind.action_table.open = {
 function! s:kind.action_table.open.func(candidates)
   let args = ['taskwarrior']
   for candidate in a:candidates
-    call add(args, '@' . candidate.source__data.name)
+    call add(args, '+' . candidate.source__data.name)
   endfor
   call unite#start([args])
 endfunction
