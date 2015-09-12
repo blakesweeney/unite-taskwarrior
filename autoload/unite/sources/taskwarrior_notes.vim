@@ -15,8 +15,9 @@ let s:source = {
 
 function! s:source.gather_candidates(args, context)
   let candidates = []
+  let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
 
-  for file in unite#taskwarrior#notes#select(a:context)
+  for file in unite#taskwarrior#notes#select(filt.str())
     call add(candidates, {
           \ 'word': file.preview,
           \ 'source__data': file,
