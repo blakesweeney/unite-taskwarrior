@@ -19,7 +19,8 @@ endfunction
 
 function! s:source.gather_candidates(args, context)
   let candidates = []
-  for group in unite#taskwarrior#annotations#groups(a:args)
+  let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
+  for group in unite#taskwarrior#annotations#groups(filt.str())
     call add(candidates, {
           \ 'word': unite#taskwarrior#annotations#format(group),
           \ 'is_multiline': 1,

@@ -3,9 +3,8 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#taskwarrior#annotations#groups(args) abort
-  let filter = unite#taskwarrior#filter(a:args, '')
-  let tasks = unite#taskwarrior#select(filter)
+function! unite#taskwarrior#annotations#groups(filt) abort
+  let tasks = unite#taskwarrior#select(filt)
   let annotations = {}
   let method = unite#taskwarrior#config('group_annotations_by')
   let group = ''
