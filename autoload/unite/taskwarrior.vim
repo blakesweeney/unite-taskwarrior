@@ -129,44 +129,6 @@ function! unite#taskwarrior#init()
   endif
 endfunction
 
-function! unite#taskwarrior#filter(strings, project, ...)
-  let filters = []
-  for entry in a:strings
-    if strpart(entry, 0, 1) == '@'
-      call add(filters, 'tag:' . strpart(entry, 1))
-    endif
-    if strpart(entry, 0, 1) == '$'
-      let name = strpart(entry, 1)
-      if name == ''
-        call add(filters, 'project:')
-      else
-        call add(filters, 'project.is:' . name)
-      endif
-    endif
-  endfor
-
-  if a:000 != []
-    call extend(filters, a:000)
-  else
-    if type(unite#taskwarrior#config('filter')) == type([])
-      call extend(filters, unite#taskwarrior#config('filter'))
-    else
-      call add(filters, unite#taskwarrior#config('filter'))
-    endif
-  endif
-
-  if a:project ==? 'infer'
-    if filereadable("./unite-taskwarior")
-      let config = unite#taskwarrior#load_config("./unite-taskwarior")
-      call add(filters, 'project:' . config.project)
-    else
-      call add(filters, "project:" . fnamemodify(getcwd(), ":t"))
-    endif
-  endif
-
-  return filters
-endfunction
-
 function! unite#taskwarrior#format(task, summary)
   let formatter = unite#taskwarrior#config('formatter')
   return call(formatter, [a:task, a:summary])
