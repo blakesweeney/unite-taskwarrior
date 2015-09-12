@@ -6,6 +6,12 @@ describe 'Creating a simple filter'
       Expect obj._projects == ['a']
     end
 
+    it 'can infer the project from directory'
+      let obj = unite#taskwarrior#filters#new({'infer_project': 1})
+      let here = fnamemodify(getcwd(), ":t")
+      Expect obj._projects == [here]
+    end
+
     it 'can handle being given several projects'
       let obj = unite#taskwarrior#filters#new()
       let obj = obj.projects('a')

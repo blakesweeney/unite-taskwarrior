@@ -38,6 +38,10 @@ function! unite#taskwarrior#filters#from_source(args, options) abort
     endif
   endfor
 
+  if get(a:options, 'custom_infer_project', 0)
+    let processed.infer_project = 1
+  endif
+
   if has_key(a:options, 'custom_filter')
     call add(processed.raw, a:options.custom_filter)
     let processed.ignore_filter = 1
@@ -53,7 +57,7 @@ endfunction
 function! unite#taskwarrior#filters#new(...) abort
   let options = get(a:000, 0, {})
   let obj = {'_projects': [], '_tags': [], '_raw': [], '_context': ''}
-  
+
   function! obj.projects(value) abort
     return s:append_to_entry(self, '_projects', a:value)
   endfunction
@@ -76,7 +80,7 @@ function! unite#taskwarrior#filters#new(...) abort
 
   function! obj.array() abort
     let parts = []
-    
+
     if !empty(self._projects)
       let projects = map(self._projects, '"project.is:" . v:val')
       call add(parts, join(projects, ' or '))
@@ -107,6 +111,11 @@ function! unite#taskwarrior#filters#new(...) abort
     let obj = obj.context(options.context)
   elseif unite#taskwarrior#config('respect_context')
     let obj  = obj.current_context()
+  endif
+
+  if get(options, 'infer_project')
+    let current = fnamemodify(getcwd(), ":t")
+    let obj = obj.projects(current)
   endif
 
   let obj = obj.projects(get(options, 'projects', []))
