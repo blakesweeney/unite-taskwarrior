@@ -35,24 +35,24 @@ describe 'Creating a simple filter'
   end
 
   describe 'for contexts'
-    " it 'will set the context'
-    "   let obj = unite#taskwarrior#filters#new()
-    "   let obj = obj.context('@a')
-    "   Expect obj.context == '@a'
-    " end
+    it 'will set the context'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.context('@a')
+      Expect obj._context == '@a'
+    end
 
-    " it 'will only use the last set context'
-    "   let obj = unite#taskwarrior#filters#new()
-    "   let obj = obj.context('@a')
-    "   let obj = obj.context('@b')
-    "   Expect obj.context == '@b'
-    " end
+    it 'will only use the last set context'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.context('@a')
+      let obj = obj.context('@b')
+      Expect obj._context == '@b'
+    end
 
-"     it 'will use the last set one given a list'
-"       let obj = unite#taskwarrior#filters#new()
-"       let obj = obj.context(['@1', '@a'])
-"       Expect obj.context == '@a'
-    " end
+    it 'will use the last set one given a list'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.context(['@1', '@a'])
+      Expect obj._context == '@a'
+    end
   end
 
   describe 'for a raw filter'
