@@ -108,9 +108,10 @@ sources, but there are many included.
 
 ```vim
 :Unite taskwarrior                 " Show all tasks not marked as deleted
-:Unite taskwarrior:$proj           " Show all tasks for the given project
+:Unite taskwarrior:proj            " Show all tasks for the given project
 :Unite taskwarrior:+tag            " Show all tasks with the given tag
-:Unite taskwarrior:+tag:+other-tag " Show all tasks with tag and other-tag
+:Unite taskwarrior:+tag:+other.tag " Show all tasks with tag and other-tag
+:Unite taskwarrior:@context        " Show al tasks with the given context
 :Unite taskwarrior/new             " Create a new task with a description
 :Unite taskwarrior/tags            " Show a tag listing
 :Unite taskwarrior/projects        " Show a project listing
@@ -118,6 +119,8 @@ sources, but there are many included.
 :Unite taskwarrior/notes           " Show a listing of all task notes
 :UniteTaskwarriorAdd               " Add a task
 ```
+The tags, projects, and notes source all take filters like the taskwarrior
+source. For complete details on these see the documentation.
 
 The `taskwarrior/tags` and `taskwarrior/projects` sources generally produce
 long and narrow output. For these it's useful to open them with `-vertical` and
