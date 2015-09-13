@@ -34,6 +34,16 @@ function! s:kind.action_table.rename.func(candidate)
   call unite#taskwarrior#call([filter, "modify", proj])
 endfunction
 
+let s:kind.action_table.notes = {'description': 'Show notes for this project'}
+function! s:kind.action_table.notes.func(candidates) abort
+  let args = ['taskwarrior/notes']
+  for candidate in a:candidates
+    let project =  candidate.source__data
+    call add(args, project.name)
+  endfor
+  call unite#start([args])
+endfunction
+
 function! unite#kinds#taskwarrior_project#define()
   return s:kind
 endfunction
