@@ -393,15 +393,13 @@ function! unite#taskwarrior#version() abort
 endfunction
 
 function! unite#taskwarrior#similar(tasks)
-  let tags = []
+  let filt = unite#taskwarrior#filters#new()
   for task in a:tasks
-    for tag in task.tags
-      call add(tags, 'tag:' . strpart(tag, 1))
-    endfor
+    let filt = filt.tags(task.tags)
+    let filt = filt.projects(task.project)
   endfor
-  let projects = join(map(a:tasks, '"project:" . v:val.project'), " or ")
 
-  return printf("( %s ) and ( %s )", projects, join(tags, ' or '))
+  return filt.str()
 endfunction
 
 let &cpo = s:save_cpo
