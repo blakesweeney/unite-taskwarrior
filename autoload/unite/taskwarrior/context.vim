@@ -48,21 +48,9 @@ function! unite#taskwarrior#context#select() abort
 endfunction
 
 function! unite#taskwarrior#context#filter(context) abort
-  let default = unite#taskwarrior#config('filter')
-  let filter = a:context.definition
-
-  if empty(default)
-    return filter
-  endif
-
-  let simple = ''
-  if type(default) == type('')
-    let simple = default
-  elseif type(default) == type([])
-    let simple = join(default, ' and ')
-  endif
-
-  return printf('( %s ) and ( %s )', filter, simple)
+  let filt = unite#taskwarrior#filters#new({'ignore_context': 1})
+  let filt = filt.raw(a:context.definition)
+  return filt.str()
 endfunction
 
 function! unite#taskwarrior#context#set(context) abort
