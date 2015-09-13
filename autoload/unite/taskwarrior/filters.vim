@@ -42,25 +42,13 @@ function! s:set_entry(filter, name, value, ...) abort
 endfunction
 
 function! unite#taskwarrior#filters#from_source(args, options) abort
-  let processed = {'tags': [], 'projects': [], 'context': '', 'raw': []}
-
-  for arg in a:args
-    let head = strpart(arg, 0, 1)
-    if head == '+'
-      call add(processed.tags, arg)
-    elseif head == '@'
-      let processed.context = strpart(arg, 1)
-    else
-      call add(processed.projects, arg)
-    endif
-  endfor
+  let processed = {}
 
   if get(a:options, 'custom_infer_project', 0)
     let processed.infer_project = 1
   endif
 
   if has_key(a:options, 'custom_filter')
-    call add(processed.raw, a:options.custom_filter)
     let processed.ignore_filter = 1
   endif
 
@@ -68,7 +56,24 @@ function! unite#taskwarrior#filters#from_source(args, options) abort
     let processed.ignore_filter = 1
   endif
 
-  return unite#taskwarrior#filters#new(processed)
+  let filt = unite#taskwarrior#filters#new(processed)
+
+  if has_key(a:options, 'custom_filter')
+    let filt = filt.raw(a:options.custom_filter)
+  endif
+
+  for arg in a:args
+    let head = strpart(arg, 0, 1)
+    if head == '+'
+      let filt = filt.tags(arg)
+    elseif head == '@'
+      let filt = filt.context(arg)
+    else
+      let filt = filt.projects(arg)
+    endif
+  endfor
+
+  return filt
 endfunction
 
 function! unite#taskwarrior#filters#new(...) abort
@@ -112,8 +117,13 @@ function! unite#taskwarrior#filters#new(...) abort
     endif
 
     if !empty(self._context)
-      let context = unite#taskwarrior#context#get(self._context)
-      call add(parts, context.description)
+      let context = self._context == '@' ? 
+            \ unite#taskwarrior#context#current() :
+            \ unite#taskwarrior#context#get(self._context)
+      let def = get(context, 'definition', '')
+      if !empty(def)
+        call add(parts, def)
+      endif
     endif
 
     return parts

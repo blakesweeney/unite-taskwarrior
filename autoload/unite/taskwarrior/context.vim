@@ -105,11 +105,12 @@ endfunction
 function! unite#taskwarrior#context#get(name) abort
   let raw = unite#taskwarrior#call('_show')
   let active = ''
+  let cname = strpart(a:name, 0, 1) == '@' ?  strpart(a:name, 1) : a:name
 
   for line in split(raw, '\n')
-    let matches = matchlist(line, '^context\.' . a:name . '=\(.\+\)$')
+    let matches = matchlist(line, '^context\.' . cname . '=\(.\+\)$')
     if !empty(matches)
-      return {'name': a:name, 'definition': matches[1]}
+      return {'name': cname, 'definition': matches[1]}
     endif
   endfor
 

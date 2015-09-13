@@ -3,6 +3,10 @@ describe 'Calling taskwarrior'
     call vimproc#system("rake setup")
   end
 
+  after 
+    call vimproc#system("rake setup")
+  end
+
   describe 'with command line arguments'
     it 'uses the configured command and returns the raw output'
       Expect unite#taskwarrior#call('count') == "4\n"
