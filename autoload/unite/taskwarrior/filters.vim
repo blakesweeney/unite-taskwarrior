@@ -3,24 +3,41 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:append_to_entry(filter, name, value) abort
+function! s:append_to_entry(filter, name, value, ...) abort
 
   if empty(a:value)
     return a:filter
   endif
 
+  let prefix = get(a:000, 0, '')
+
   let terms = type(a:value) == type([]) ? a:value : [a:value]
-  call extend(a:filter[a:name], terms)
+  for term in terms
+    if empty(prefix)
+      call add(a:filter[a:name], term)
+    else
+      if strpart(term, 0, 1) != prefix
+        let term = prefix . term
+      end
+      call add(a:filter[a:name], term)
+    endif
+  endfor
 
   return a:filter
 endfunction
 
-function! s:set_entry(filter, name, value) abort
+function! s:set_entry(filter, name, value, ...) abort
   if empty(a:value)
     return a:filter
   endif
+  let prefix = get(a:000, 0, '')
 
-  let a:filter[a:name] = type(a:value) == type([]) ? a:value[-1] : a:value
+  let term = type(a:value) == type([]) ? a:value[-1] : a:value
+  if !empty(prefix) && strpart(term, 0, 1) != prefix
+    let term = prefix . term
+  endif
+
+  let a:filter[a:name] = term
   return a:filter
 endfunction
 
@@ -63,11 +80,11 @@ function! unite#taskwarrior#filters#new(...) abort
   endfunction
 
   function! obj.tags(value) abort
-    return s:append_to_entry(self, '_tags', a:value)
+    return s:append_to_entry(self, '_tags', a:value, '+')
   endfunction
 
   function! obj.context(value) abort
-    return s:set_entry(self, '_context', a:value)
+    return s:set_entry(self, '_context', a:value, '@')
   endfunction
 
   function! obj.raw(value) abort

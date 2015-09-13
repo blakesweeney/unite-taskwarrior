@@ -32,12 +32,38 @@ describe 'Creating a simple filter'
       let obj = obj.tags('+a')
       Expect obj._tags == ['+a']
     end
+
+    it 'can use an array'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.tags(['+a', '+b'])
+      let obj = obj.tags('+c')
+      Expect obj._tags == ['+a', '+b', '+c']
+    end
+
+    it 'will add + to tags'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.tags('a')
+      Expect obj._tags == ['+a']
+    end
+
+    it 'will add + to several tags'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.tags(['a', 'b'])
+      let obj = obj.tags('+c')
+      Expect obj._tags == ['+a', '+b', '+c']
+    end
   end
 
   describe 'for contexts'
     it 'will set the context'
       let obj = unite#taskwarrior#filters#new()
       let obj = obj.context('@a')
+      Expect obj._context == '@a'
+    end
+
+    it 'will add @ to a context'
+      let obj = unite#taskwarrior#filters#new()
+      let obj = obj.context('a')
       Expect obj._context == '@a'
     end
 
