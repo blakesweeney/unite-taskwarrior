@@ -12,16 +12,20 @@ function! s:source.gather_candidates(args, context)
   let candidates = []
 
   let configuration = unite#taskwarrior#settings#load()
-  for key in keys(configuration)
-    let value = configuration[key]
+  for setting in configuration
+    let line = ''
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior/settings",
-          \ "source__data": todo,
+          \ "source__data": setting
           \ })
     unlet todo
   endfor
   return candidates
+endfunction
+
+function! unite#sources#taskwarrior_settings#define()
+  return s:source
 endfunction
 
 let &cpo = s:save_cpo
