@@ -11,7 +11,7 @@ let s:defaults = {
       \ 'command': "task",
       \ 'note_directory': '~/.task/note',
       \ 'note_suffix': 'mkd',
-      \ 'note_formatter': 'unite#taskwarrior#formatters#description',
+      \ 'note_formatter': 'unite#taskwarrior#formatters#simple',
       \ 'notes_header_lines': 1,
       \ "format_string": "[%s] %15s\t%s (%s)",
       \ "formatter": 'unite#taskwarrior#formatters#simple',
