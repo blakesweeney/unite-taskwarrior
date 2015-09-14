@@ -83,7 +83,7 @@ describe 'Dealing with configuration values'
 
     describe 'for notes'
       it 'defaults to description'
-        let ans = 'unite#taskwarrior#formatters#description'
+        let ans = 'unite#taskwarrior#formatters#simple'
         Expect unite#taskwarrior#config('note_formatter') == ans
       end
 
