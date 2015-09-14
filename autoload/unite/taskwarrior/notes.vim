@@ -35,9 +35,9 @@ endfunction
 
 function! unite#taskwarrior#notes#tasks(filt) abort
   let known = {}
-  for uuid in unite#taskwarrior#call(a:filt . ' _uuids')
+  for uuid in split(unite#taskwarrior#call(a:filt . ' _uuids'), "\n")
     let known[uuid] = 1
-    let known[strpart(data.uuid, 0, 8)] = 1
+    let known[strpart(uuid, 0, 8)] = 1
     unlet uuid
   endfor
   return known
