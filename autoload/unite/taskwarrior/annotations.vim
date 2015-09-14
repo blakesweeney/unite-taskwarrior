@@ -4,7 +4,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! unite#taskwarrior#annotations#groups(filt) abort
-  let tasks = unite#taskwarrior#select(filt)
+  let tasks = unite#taskwarrior#select(a:filt)
   let annotations = {}
   let method = unite#taskwarrior#config('group_annotations_by')
   let group = ''
