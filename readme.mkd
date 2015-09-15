@@ -67,7 +67,12 @@ Add some.
 ## Usage
 
 This is a general overview of the functionality here, for details about this
-see the docs in doc/unite-taskwarrior.txt.
+see the docs in doc/unite-taskwarrior.txt. If you don't know much about
+unite.vim it is probably a good idea to get familiar with it. You can look at
+the help with `:help unite`. Also I've found
+[this](https://bling.github.io/blog/2013/06/02/unite-dot-vim-the-plugin-you-didnt-know-you-need/)
+and [this](http://www.codeography.com/2013/06/17/replacing-all-the-things-with-unite-vim.html)
+helpful. 
 
 This doesn't come with any key bindings added by default, you should add your
 own as needed. Some useful configuration is:
