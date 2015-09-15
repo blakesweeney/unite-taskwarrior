@@ -28,14 +28,15 @@ describe 'context functions'
   describe 'loading all contexts'
     it 'can gets them all including none'
       let contexts = unite#taskwarrior#context#select()
-      Expect len(contexts) == 2
+      Expect len(contexts) == 3
     end
 
     it 'gets the all data as well as count'
       let contexts = unite#taskwarrior#context#select()
       let ans = [
             \ {'status': 'active', 'name': 'none', 'definition': '', 'count': 4},
-            \ {'status': 'inactive', 'name': 'c1', 'definition': 'project.is:c1', 'count': 0}]
+            \ {'status': 'inactive', 'name': 'c1', 'definition': 'project.is:c1', 'count': 0},
+            \ {'status': 'inactive', 'name': 'c2', 'definition': 'project.is:proj-1', 'count': 0}]
       Expect contexts == ans
     end
   end
