@@ -3,5 +3,6 @@ verbose=no
 confirmation=no
 
 context.c1 = project.is:c1
+context.c2 = project.is:proj-1
 
 default.command=list
