@@ -49,7 +49,7 @@ endfunction
 
 function! unite#taskwarrior#context#filter(context) abort
   let filt = unite#taskwarrior#filters#new({'ignore_context': 1})
-  let filt = filt.raw(a:context.definition)
+  let filt = filt.context(a:context.name)
   return filt.str()
 endfunction
 

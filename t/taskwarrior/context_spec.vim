@@ -25,6 +25,36 @@ describe 'context functions'
     end
   end
 
+  describe 'creating a context'
+    before
+      call vimproc#system('rake reset')
+    end
+
+    describe 'with a current context'
+      before
+        call unite#taskwarrior#call(['context', 'c2'])
+      end
+
+      it 'has the current current context'
+      Expect unite#taskwarrior#context#current().name == 'c2'
+      end
+
+      it 'can create a filter'
+        let c = {'name': 'c1', 'definition': 'project.is:c1'}
+        let filt = unite#taskwarrior#context#filter(c)
+        Expect filt == '( status.not:deleted ) and ( project.is:c1 )'
+      end
+    end
+
+    describe 'without a set context'
+      it 'can create a filter'
+        let c = {'name': 'c1', 'definition': 'project.is:c1'}
+        let filt = unite#taskwarrior#context#filter(c)
+        Expect filt == '( status.not:deleted ) and ( project.is:c1 )'
+      end
+    end
+  end
+
   describe 'loading all contexts'
     it 'can gets them all including none'
       let contexts = unite#taskwarrior#context#select()
