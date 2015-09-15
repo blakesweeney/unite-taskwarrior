@@ -9,8 +9,8 @@ let s:kind = {
 
 let s:kind.action_table.open = {'description': 'open all tasks for the given context'}
 function! s:kind.action_table.open.func(candidate)
-  let filter = unite#taskwarrior#context#filter(a:candidate.source__data)
-  call unite#start([['taskwarrior']], {'custom_filter': filter})
+  let data = a:candidate.source__data
+  call unite#start([['taskwarrior', '@' . data.name]], {'custom_ignore_context': 1})
 endfunction
 
 let s:kind.action_table.use = {'description': 'set and show the given context'}

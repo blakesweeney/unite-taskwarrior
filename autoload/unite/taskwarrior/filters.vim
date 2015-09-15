@@ -48,12 +48,12 @@ function! unite#taskwarrior#filters#from_source(args, options) abort
     let processed.infer_project = 1
   endif
 
-  if has_key(a:options, 'custom_filter')
+  if has_key(a:options, 'custom_filter') || has_key(a:options, 'custom_ignore_filter')
     let processed.ignore_filter = 1
   endif
 
-  if has_key(a:options, 'custom_ignore_filter')
-    let processed.ignore_filter = 1
+  if has_key(a:options, 'custom_ignore_context')
+    let processed.ignore_context = 1
   endif
 
   let filt = unite#taskwarrior#filters#new(processed)
@@ -131,7 +131,8 @@ function! unite#taskwarrior#filters#new(...) abort
 
   function! obj.str() abort
     let parts = map(self.array(), 'printf("( %s )", v:val)')
-    return join(parts, ' and ')
+    let str = join(parts, ' and ')
+    return str
   endfunction
 
   if !get(options, 'ignore_context')
