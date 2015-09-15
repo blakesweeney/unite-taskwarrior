@@ -134,10 +134,12 @@ function! unite#taskwarrior#filters#new(...) abort
     return join(parts, ' and ')
   endfunction
 
-  if get(options, 'context')
-    let obj = obj.context(options.context)
-  elseif unite#taskwarrior#config('respect_context')
-    let obj  = obj.current_context()
+  if !get(options, 'ignore_context')
+    if get(options, 'context')
+      let obj = obj.context(options.context)
+    elseif unite#taskwarrior#config('respect_context')
+      let obj  = obj.current_context()
+    endif
   endif
 
   if get(options, 'infer_project')

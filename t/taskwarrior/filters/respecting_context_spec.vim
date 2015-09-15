@@ -20,6 +20,13 @@ describe 'building filters while respecting context'
       let obj = obj.context('c2')
       Expect obj.str() == '( status.not:deleted ) and ( project.is:proj-1 )'
     end
+
+    describe 'passing in ignore_context'
+      it 'will ignore context if told to'
+      let obj = unite#taskwarrior#filters#new({'ignore_context': 1})
+      Expect obj.str() == '( status.not:deleted )'
+      end
+    end
   end
 
   describe 'when using global variables'
