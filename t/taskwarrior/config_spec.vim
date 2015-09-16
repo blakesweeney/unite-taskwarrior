@@ -107,4 +107,9 @@ describe 'Dealing with configuration values'
     end
   end
 
+  it 'will expand wiki root'
+    call unite#taskwarrior#config('wiki_root', '~/bob/other')
+    Expect unite#taskwarrior#config('wiki_root') == $HOME . '/bob/other'
+  end
+
 end
