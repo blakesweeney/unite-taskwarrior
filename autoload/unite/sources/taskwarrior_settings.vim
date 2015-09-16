@@ -12,14 +12,16 @@ function! s:source.gather_candidates(args, context)
   let candidates = []
 
   let configuration = unite#taskwarrior#settings#load()
+  let summary = unite#taskwarrior#formatters#size_summary(configuration)
+  let summary.value = 'value'
   for setting in configuration
-    let line = ''
+    let line = unite#taskwarrior#settings#format(setting, summary)
     call add(candidates, {
           \ "word": line,
           \ "kind": "taskwarrior/settings",
           \ "source__data": setting
           \ })
-    unlet todo
+    unlet setting
   endfor
   return candidates
 endfunction

@@ -18,6 +18,7 @@ let s:defaults = {
       \ "tag_formatter": 'unite#taskwarrior#formatters#named',
       \ "project_formatter": 'unite#taskwarrior#formatters#named',
       \ 'context_formatter': 'unite#taskwarrior#formatters#named_status',
+      \ 'setting_formatter': 'unite#taskwarrior#formatters#named',
       \ 'filter': 'status.not:deleted',
       \ 'toggle_mapping': { 'pending': 'completed', 'completed': 'pending' },
       \ "status_mapping": { 

@@ -92,10 +92,10 @@ endfunction
 
 function! unite#taskwarrior#formatters#named(entry, ...) abort
   let config = get(a:000, 0, {})
+  let value_name = get(config, 'value', 'count')
   let name_size = get(config, 'name', 30)
   let format_string = "%-" . name_size . "s  %s"
-
-  return printf(format_string, a:entry.name, a:entry.count)
+  return printf(format_string, a:entry.name, a:entry[value_name])
 endfunction
 
 function! unite#taskwarrior#formatters#named_status(entry, ...) abort

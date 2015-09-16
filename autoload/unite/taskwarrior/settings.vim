@@ -51,5 +51,10 @@ function! unite#taskwarrior#settings#unset(setting) abort
   return unite#taskwarrior#call(['config', name])
 endfunction
 
+function! unite#taskwarrior#settings#format(setting, summary) abort
+  let formatter = unite#taskwarrior#config('setting_formatter')
+  return call(formatter, [a:setting, a:summary])
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
