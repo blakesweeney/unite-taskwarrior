@@ -6,20 +6,12 @@ let s:kind = {
       \ 'default_action' : 'toggle',
       \ 'action_table': {},
       \ 'is_selectable': 1,
-      \ 'parents': ['common', 'openable', 'taskwarrior_base'],
+      \ 'parents': ['file', 'common', 'taskwarrior_base'],
       \ }
 
 let s:kind.action_table.open = {'description' : 'open note', 'is_selectable': 0}
 function! s:kind.action_table.open.func(candidate)
   call unite#taskwarrior#open(a:candidate.source__data)
-endfunction
-
-let s:kind.action_table.preview = {'description' : 'preview note', 'is_selectable': 0}
-function! s:kind.action_table.preview.func(candidate)
-  let todo = a:candidate.source__data
-  if filereadable(todo.note)
-    call unite#view#_preview_file(todo.note)
-  endif
 endfunction
 
 let s:kind.action_table.edit = {'description' : 'edit description', 'is_selectable': 0}
@@ -33,7 +25,8 @@ function! s:kind.action_table.edit.func(candidate)
   endif
 endfunction
 
-let s:kind.action_table.edit_tag = {'description' : 'edit tags', 'is_selectable': 1}
+let s:kind.action_table.edit_tag = {'description' : 'edit tags', 
+      \ 'is_selectable': 1, 'is_quit': 0, 'is_invalidate_cache': 1}
 function! s:kind.action_table.edit_tag.func(candidates)
   let tags = []
   for candidate in a:candidates
@@ -51,7 +44,8 @@ function! s:kind.action_table.edit_tag.func(candidates)
   endif
 endfunction
 
-let s:kind.action_table.edit_proj = {'description' : 'edit project', 'is_selectable': 1}
+let s:kind.action_table.edit_proj = {'description' : 'edit project', 'is_selectable': 1,
+      \ 'is_quit': 0, 'is_invalidate_cache': 0}
 function! s:kind.action_table.edit_proj.func(candidates)
   let projs = []
   for candidate in a:candidates
@@ -72,21 +66,24 @@ function! s:kind.action_table.edit_proj.func(candidates)
   endif
 endfunction
 
-let s:kind.action_table.do = {'description' : 'complete task', 'is_selectable': 1}
+let s:kind.action_table.do = {'description' : 'complete task', 'is_selectable': 1,
+      \ 'is_quit': 0, 'is_invalidate_cache': 1}
 function! s:kind.action_table.do.func(candidates)
   for candidate in a:candidates
     call unite#taskwarrior#do(candidate.source__data)
   endfor
 endfunction
 
-let s:kind.action_table.delete = {'description' : 'delete task', 'is_selectable': 1}
+let s:kind.action_table.delete = {'description' : 'delete task', 'is_selectable': 1,
+      \ 'is_quit': 0, 'is_invalidate_cache': 1}
 function! s:kind.action_table.delete.func(candidates)
   for candidate in a:candidates
     call unite#taskwarrior#delete(candidate.source__data)
   endfor
 endfunction
 
-let s:kind.action_table.toggle = { 'description' : 'toggle status', 'is_selectable': 1}
+let s:kind.action_table.toggle = { 'description' : 'toggle status', 'is_selectable': 1, 
+      \ 'is_quit': 0, 'is_invalidate_cache': 1}
 function! s:kind.action_table.toggle.func(candidates)
   for candidate in a:candidates
     call unite#taskwarrior#toggle(candidate.source__data)
@@ -138,7 +135,7 @@ function! s:kind.action_table.yank_uri.func(candidate)
   return unite#taskwarrior#yank(a:candidate.source__data, 'uri')
 endfunction
 
-let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0}
+let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0, 'is_quit': 0}
 function! s:kind.action_table.view.func(candidate)
   let task = a:candidate.source__data
   echo unite#taskwarrior#run(task, 'information')
@@ -173,17 +170,6 @@ let s:kind.action_table.wiki = {'description': 'open wiki file for this task'}
 function! s:kind.action_table.wiki.func(candidate) abort
   execute ':edit ' . unite#taskwarrior#taskwiki#filename(a:candidate.source__data)
 endfunction
-
-let s:parent_kind = {
-      \ 'is_quit': 0,
-      \ 'is_invalidate_cache': 1,
-      \ }
-
-call extend(s:kind.action_table.do, s:parent_kind, 'error')
-call extend(s:kind.action_table.delete, s:parent_kind, 'error')
-call extend(s:kind.action_table.toggle, s:parent_kind, 'error')
-call extend(s:kind.action_table.preview, s:parent_kind, 'error')
-call extend(s:kind.action_table.edit_tag, s:parent_kind, 'error')
 
 function! unite#kinds#taskwarrior#define()
   return s:kind

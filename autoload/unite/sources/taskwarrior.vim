@@ -26,6 +26,7 @@ function! s:source.gather_candidates(args, context)
           \ "kind": "taskwarrior",
           \ "is_multiline": 1,
           \ "source__data": todo,
+          \ 'action__path': todo.note
           \ })
     unlet todo
   endfor
