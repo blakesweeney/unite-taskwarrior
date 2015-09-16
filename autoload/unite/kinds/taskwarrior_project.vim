@@ -34,7 +34,7 @@ function! s:kind.action_table.rename.func(candidate)
   call unite#taskwarrior#call([filter, "modify", proj])
 endfunction
 
-let s:kind.action_table.notes = {'description': 'Show notes for this project'}
+let s:kind.action_table.notes = {'description': 'Show notes for this project', 'is_selectable': 1}
 function! s:kind.action_table.notes.func(candidates) abort
   let args = ['taskwarrior/notes']
   for candidate in a:candidates
