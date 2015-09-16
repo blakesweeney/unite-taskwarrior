@@ -8,7 +8,6 @@ let s:parent = unite#sources#file#get_file_source()
 let s:source = {
       \ 'name': 'taskwarrior/notes',
       \ 'description': 'get a listing of all note files',
-      \ 'default_kind': 'file',
       \ 'action_table': {},
       \ 'hooks': {}
       \ }
@@ -20,6 +19,7 @@ function! s:source.gather_candidates(args, context)
   for file in unite#taskwarrior#notes#select(filt.str())
     call add(candidates, {
           \ 'word': file.preview,
+          \ "kind": 'taskwarrior/notes',
           \ 'source__data': file,
           \ 'action__path': file.path,
           \ 'is_multiline': 1,
@@ -31,11 +31,9 @@ function! s:source.gather_candidates(args, context)
 endfunction
 
 function! s:source.hooks.on_syntax(args, context) abort
-  if unite#taskwarrior#config('define_mappings') == 0
-    return
+  if unite#taskwarrior#config('define_mappings')
+    call unite#taskwarrior#base_mappings() 
   endif
-
-  call unite#taskwarrior#base_mappings() 
 endfunction
 
 let s:source.action_table.view = {'description': 'show the associated task'}
