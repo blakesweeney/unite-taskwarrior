@@ -42,7 +42,8 @@ let s:defaults = {
       \ 'group_annotations_by': 'time',
       \ 'annotation_precision': 2,
       \ 'use_taskwiki': 0,
-      \ 'respect_context': 0
+      \ 'respect_context': 0,
+      \ 'wiki_root': $HOME . '.vim/wiki'
       \ }
 
 let s:config = deepcopy(s:defaults)

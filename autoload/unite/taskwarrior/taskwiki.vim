@@ -1,9 +1,5 @@
 function! unite#taskwarrior#taskwiki#base() abort
-  let home = $WIKIHOME
-  if home != ''
-    return home
-  endif
-  return $HOME . '/vimwiki'
+  return unite#taskwarrior#config('wiki_root')
 endfunction
 
 function! unite#taskwarrior#taskwiki#filename(task) abort
