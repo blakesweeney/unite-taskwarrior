@@ -5,7 +5,7 @@ let s:kind = {
       \ 'name' : 'taskwarrior/notes',
       \ 'default_action' : 'open',
       \ 'action_table': {},
-      \ 'parents': ['common', 'file', 'taskwarrior_base'],
+      \ 'parents': ['file', 'taskwarrior_base'],
       \ }
 
 function! unite#kinds#taskwarrior_notes#define()
