@@ -5,6 +5,7 @@ let s:kind = {
       \ 'name' : 'taskwarrior_context',
       \ 'default_action' : 'open',
       \ 'action_table': {},
+      \ 'parents': ['common', 'taskwarrior_base'],
       \ }
 
 let s:kind.action_table.open = {'description': 'open all tasks for the given context'}
