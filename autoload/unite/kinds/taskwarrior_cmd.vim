@@ -2,7 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:kind = {
-      \ 'name' : 'taskwarrior_cmd',
+      \ 'name' : 'taskwarrior/cmd',
       \ 'default_action' : 'execute',
       \ 'action_table': {},
       \ 'parents': ['taskwarrior_base'],
@@ -16,9 +16,7 @@ let s:kind.action_table.execute = {
 
 function! s:kind.action_table.execute.func(candidates)
   for candidate in a:candidates
-    let args = ['']
-    call extend(args, split(candidate.word))
-    echo call('unite#taskwarrior#call', [args])
+    echo unite#taskwarrior#call(candidate.word)
   endfor
 endfunction
 

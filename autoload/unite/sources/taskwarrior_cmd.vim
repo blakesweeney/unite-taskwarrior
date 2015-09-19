@@ -16,7 +16,8 @@ function! s:source.gather_candidates(args, context)
   for command in commands
     call add(candidates, {
           \ 'word': command,
-          \ 'source__data': command
+          \ 'source__data': command,
+          \ 'kind': 'taskwarrior/cmd'
           \ })
   endfor
   return reverse(sort(candidates))
