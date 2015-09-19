@@ -38,7 +38,9 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
         \ a:task.description,
         \ tags)
 
-  if unite#taskwarrior#config('show_annotations')
+  let show_annotations = get(options, 'show_annotations',
+        \ unite#taskwarrior#config('show_annotations'))
+  if show_annotations
     let annotations = []
     for annotation in get(a:task, 'annotations', [])
       let annotation_spaces = 2
@@ -109,8 +111,31 @@ function! unite#taskwarrior#formatters#named_status(entry, ...) abort
   return printf(format_string, status_flag, a:entry.name, a:entry.count)
 endfunction
 
+function! unite#taskwarrior#formatters#flipped(annotation, ...) abort
+  let summary = get(a:000, 0, {})
+  let copied = extend(deepcopy(summary), 
+        \ {
+        \   'show_annotations': 0,
+        \   'indent': get(summary, 'indent', 2),
+        \   'max': 80
+        \ })
+  let indent = copied.indent
+  let spaces = repeat(' ', indent)
+  let copied.max += 2
+
+  let formatted_tasks = []
+  for task in a:annotation.tasks
+    let formatted = unite#taskwarrior#formatters#simple(task, copied)
+    let formatted = strpart(formatted, 2)
+    call add(formatted_tasks, spaces . formatted)
+  endfor
+
+  return printf("%s\n%s", a:annotation.description,
+        \ join(formatted_tasks, "\n"))
+endfunction
+
 function! unite#taskwarrior#formatters#size_summary(tasks) abort
-  let summary = {'project': [], 'description': [], 'name': []}
+  let summary = {'project': [], 'description': [], 'name': [], 'max': 80}
 
   for task in a:tasks
     call add(summary.project, len(get(task, 'project', '')))

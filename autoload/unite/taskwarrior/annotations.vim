@@ -29,9 +29,9 @@ function! unite#taskwarrior#annotations#groups(filt) abort
   return values(annotations)
 endfunction
 
-function! unite#taskwarrior#annotations#format(annotation) abort
-  return printf("%s\n\t%s", a:annotation.description,
-        \ join(map(a:annotation.tasks, "'#' . v:val.short"), ", "))
+function! unite#taskwarrior#annotations#format(annotation, summary) abort
+  let formatter = unite#taskwarrior#config('annotation_formatter')
+  return call(formatter, [a:annotation, a:summary])
 endfunction
 
 function! unite#taskwarrior#annotations#time(annotation) abort

@@ -13,6 +13,7 @@ let s:DEFAULTS = {
       \ 'context_formatter': 'unite#taskwarrior#formatters#named_status',
       \ 'setting_formatter': 'unite#taskwarrior#formatters#named',
       \ 'config_formatter': 'unite#taskwarrior#formatters#named',
+      \ 'annotation_formatter': 'unite#taskwarrior#formatters#flipped',
       \ 'filter': 'status.not:deleted',
       \ 'toggle_mapping': { 
       \   'pending': 'completed', 
