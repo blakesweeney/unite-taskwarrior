@@ -10,19 +10,18 @@ let s:source = {
       \ }
 
 function! s:source.gather_candidates(args, context)
-  let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
-  let loaded = unite#taskwarrior#select(filt.str())
+  let loaded = unite#taskwarrior#config#as_list()
   let summary = unite#taskwarrior#formatters#size_summary(loaded)
+  let summary.value = 'value'
 
   let candidates = []
-  for todo in loaded
-    let line = unite#taskwarrior#format(todo, summary)
+  for config in loaded
     call add(candidates, {
-          \ "word": line,
+          \ "word": unite#taskwarrior#config#format(config, summary),
           \ "kind": "taskwarrior/config",
           \ "source__data": config,
           \ })
-    unlet todo
+    unlet config
   endfor
 
   return candidates
@@ -36,7 +35,7 @@ function! s:source.hooks.on_syntax(args, context) abort
   call unite#taskwarrior#base_mappings()
 endfunction
 
-function! unite#sources#taskwarrior#define()
+function! unite#sources#taskwarrior_config#define()
   return s:source
 endfunction
 
