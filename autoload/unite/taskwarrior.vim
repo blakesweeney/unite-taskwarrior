@@ -7,87 +7,13 @@ let s:V = vital#of('unite_taskwarrior')
 let s:JSON = s:V.load('Web.JSON')
 let s:JSON = s:JSON.Web.JSON
 
-let s:defaults = {
-      \ 'command': "task",
-      \ 'note_directory': '~/.task/note',
-      \ 'note_suffix': 'mkd',
-      \ 'note_formatter': 'unite#taskwarrior#formatters#simple',
-      \ 'notes_header_lines': 1,
-      \ "format_string": "[%s] %15s\t%s (%s)",
-      \ "formatter": 'unite#taskwarrior#formatters#simple',
-      \ "tag_formatter": 'unite#taskwarrior#formatters#named',
-      \ "project_formatter": 'unite#taskwarrior#formatters#named',
-      \ 'context_formatter': 'unite#taskwarrior#formatters#named_status',
-      \ 'setting_formatter': 'unite#taskwarrior#formatters#named',
-      \ 'filter': 'status.not:deleted',
-      \ 'toggle_mapping': { 'pending': 'completed', 'completed': 'pending' },
-      \ "status_mapping": { 
-      \   'active_context': '@',
-      \   'active': '#',
-      \   'inactive': ' ',
-      \   'pending': ' ', 
-      \   'deleted': 'D',
-      \   'completed': 'X',
-      \   'waiting': 'W',
-      \   'recurring': 'R',
-      \   'started': 'S',
-      \   'unknown': 'N',
-      \ },
-      \ "projects_abbr": "$",
-      \ "tags_abbr": "+",
-      \ "fallback_match": "matcher_fuzzy",
-      \ 'uri_format': '<task:%s>',
-      \ 'missing_project': '(none)',
-      \ 'show_annotations': 1,
-      \ 'group_annotations_by': 'time',
-      \ 'annotation_precision': 2,
-      \ 'use_taskwiki': 0,
-      \ 'respect_context': 0,
-      \ 'wiki_root': $HOME . '.vim/wiki'
-      \ }
-
-let s:config = deepcopy(s:defaults)
-
 function! unite#taskwarrior#config(key, ...) abort
-  if type(a:key) == type({})
-    return extend(s:config, a:key)
+  if empty(a:000) && type({}) != type(a:key)
+    return unite#taskwarrior#config#get(a:key)
   endif
 
-  if type(a:key) == type('')
-    let prefix = 'unite_taskwarrior_'
-    let key_name = substitute(a:key, prefix, '', "")
-
-    if empty(a:000)
-      let global_key = prefix . key_name
-      if has_key(g:, global_key)
-        let value = get(g:, global_key)
-      else
-        let value = s:config[key_name]
-      endif
-
-      if key_name == 'note_directory'
-        let value = expand(value)
-      endif
-
-      if key_name == 'wiki_root'
-        let value = expand(value)
-      endif
-
-      if key_name == 'note_formatter'
-            \ && unite#taskwarrior#config('use_taskwiki')
-        let value = 'unite#taskwarrior#formatters#taskwiki'
-      endif
-
-      return value
-    endif
-
-    let s:config[key_name] = a:1
-    return s:config
-  endif
-endfunction
-
-function! unite#taskwarrior#reset_config()
-  let s:config = deepcopy(s:defaults)
+  let args = extend([a:key], a:000)
+  return call('unite#taskwarrior#config#set', args)
 endfunction
 
 function! unite#taskwarrior#trim(str)

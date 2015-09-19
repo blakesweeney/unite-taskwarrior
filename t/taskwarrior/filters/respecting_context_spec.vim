@@ -6,7 +6,7 @@ describe 'building filters while respecting context'
     end
 
     after
-      call unite#taskwarrior#reset_config()
+      call unite#taskwarrior#config#reset()
       call vimproc#system('rake reset')
     end
 
@@ -59,7 +59,7 @@ describe 'building filters while respecting context'
     end
 
     after
-      call unite#taskwarrior#reset_config()
+      call unite#taskwarrior#config#reset()
       call vimproc#system('rake reset')
     end
 

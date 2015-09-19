@@ -1,7 +1,7 @@
 describe 'Dealing with configuration values'
 
   before
-    call unite#taskwarrior#reset_config()
+    call unite#taskwarrior#config#reset()
   end
 
   it 'can get a default value'
@@ -13,9 +13,9 @@ describe 'Dealing with configuration values'
     Expect 'run' == unite#taskwarrior#config('command')
   end
 
-  it 'can reset a config with reset_config'
+  it 'can reset a config with config#reset'
     call unite#taskwarrior#config('command', 'other')
-    call unite#taskwarrior#reset_config()
+    call unite#taskwarrior#config#reset()
     Expect 'task' == unite#taskwarrior#config('command')
   end
 

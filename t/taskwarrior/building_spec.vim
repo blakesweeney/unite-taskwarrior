@@ -28,7 +28,7 @@ describe 'building a task object'
 
   describe 'comptuing properities'
     before
-      call unite#taskwarrior#reset_config()
+      call unite#taskwarrior#config#reset()
     end
 
     it 'computes short based on uuid'
