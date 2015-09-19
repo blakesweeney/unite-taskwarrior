@@ -7,13 +7,16 @@ let s:V = vital#of('unite_taskwarrior')
 let s:JSON = s:V.load('Web.JSON')
 let s:JSON = s:JSON.Web.JSON
 
-function! unite#taskwarrior#config(key, ...) abort
-  if empty(a:000) && type({}) != type(a:key)
-    return unite#taskwarrior#config#get(a:key)
+function! unite#taskwarrior#config(...) abort
+  if empty(a:000)
+    return unite#taskwarrior#config#current()
   endif
 
-  let args = extend([a:key], a:000)
-  return call('unite#taskwarrior#config#set', args)
+  if a:0 == 1 && type({}) != type(a:1)
+    return unite#taskwarrior#config#get(a:1)
+  endif
+
+  return call('unite#taskwarrior#config#set', a:000)
 endfunction
 
 function! unite#taskwarrior#trim(str)
