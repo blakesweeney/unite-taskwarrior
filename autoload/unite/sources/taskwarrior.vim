@@ -17,6 +17,7 @@ function! s:source.gather_candidates(args, context)
   let filt = unite#taskwarrior#filters#from_source(a:args, a:context)
   let loaded = unite#taskwarrior#select(filt.str())
   let summary = unite#taskwarrior#formatters#size_summary(loaded)
+  let summary.annotation_indent = unite#taskwarrior#settings#get('indent.annotation').value
 
   let candidates = []
   for todo in loaded

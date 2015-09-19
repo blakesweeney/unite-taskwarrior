@@ -16,7 +16,7 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
 
   let mapping = unite#taskwarrior#config('status_mapping')
   let status = get(mapping, a:task.status, '?')
-  let total = get(options, 'total', 80)
+  let total = get(options, 'max', 80)
   let project_size = get(options, 'project', 10)
 
   let leader = index(a:task.tags, 'note') == -1 ?  '-' : '+'
@@ -40,10 +40,11 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
 
   let show_annotations = get(options, 'show_annotations',
         \ unite#taskwarrior#config('show_annotations'))
+
   if show_annotations
     let annotations = []
     for annotation in get(a:task, 'annotations', [])
-      let annotation_spaces = 2
+      let annotation_spaces = get(options, 'annotation_indent', 2)
       let spaces = repeat(" ", project_size + 7 + annotation_spaces)
       let desc_size = 80 - len(spaces)
       let pretty = printf("%s%." . desc_size . "s", 
@@ -51,6 +52,7 @@ function! unite#taskwarrior#formatters#simple(task, ...) abort
             \ annotation.description)
       call add(annotations, pretty)
     endfor
+
     if !empty(annotations)
       let formatted = printf("%s\n%s", formatted, join(annotations, "\n"))
     endif
