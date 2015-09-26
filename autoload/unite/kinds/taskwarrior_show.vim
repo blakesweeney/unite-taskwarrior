@@ -2,7 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:kind = {
-      \ 'name' : 'taskwarrior/settings',
+      \ 'name' : 'taskwarrior/show',
       \ 'default_action' : 'edit',
       \ 'action_table': {},
       \ 'parents': ['taskwarrior_base'],
@@ -38,7 +38,7 @@ function! s:kind.action_table.set.func(candidate) abort
   call unite#taskwarrior#settings#set(setting, value)
 endfunction
 
-function! unite#kinds#taskwarrior_settings#define()
+function! unite#kinds#taskwarrior_show#define()
   return s:kind
 endfunction
 

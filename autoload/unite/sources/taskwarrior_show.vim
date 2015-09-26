@@ -4,7 +4,7 @@ set cpo&vim
 call unite#taskwarrior#init()
 
 let s:source = {
-      \ 'name': 'taskwarrior/settings',
+      \ 'name': 'taskwarrior/show',
       \ 'description': 'list and modify taskwarrior settings',
       \ }
 
@@ -18,7 +18,7 @@ function! s:source.gather_candidates(args, context)
     let line = unite#taskwarrior#settings#format(setting, summary)
     call add(candidates, {
           \ "word": line,
-          \ "kind": "taskwarrior/settings",
+          \ "kind": "taskwarrior/show",
           \ "source__data": setting
           \ })
     unlet setting
@@ -26,7 +26,7 @@ function! s:source.gather_candidates(args, context)
   return candidates
 endfunction
 
-function! unite#sources#taskwarrior_settings#define()
+function! unite#sources#taskwarrior_show#define()
   return s:source
 endfunction
 
