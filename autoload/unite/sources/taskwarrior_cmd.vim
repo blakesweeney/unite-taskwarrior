@@ -6,7 +6,7 @@ call unite#taskwarrior#init()
 let s:source = {
       \ 'name': 'taskwarrior/cmd',
       \ 'description': 'Execute a taskwarrior command',
-      \ 'default_kind': 'taskwarrior_cmd',
+      \ 'default_kind': 'taskwarrior/cmd',
       \ 'hooks': {}
       \ }
 
@@ -16,8 +16,7 @@ function! s:source.gather_candidates(args, context)
   for command in commands
     call add(candidates, {
           \ 'word': command,
-          \ 'source__data': command,
-          \ 'kind': 'taskwarrior/cmd'
+          \ 'source__data': command
           \ })
   endfor
   return reverse(sort(candidates))
