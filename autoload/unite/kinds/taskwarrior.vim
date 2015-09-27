@@ -135,8 +135,8 @@ function! s:kind.action_table.yank_uri.func(candidate)
   return unite#taskwarrior#yank(a:candidate.source__data, 'uri')
 endfunction
 
-let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0, 'is_quit': 0}
-function! s:kind.action_table.view.func(candidate)
+let s:kind.action_table.preview = {'description': 'view a task', 'is_selectable': 0, 'is_quit': 0}
+function! s:kind.action_table.preview.func(candidate)
   let task = a:candidate.source__data
   call unite#taskwarrior#show_result('unite#taskwarrior#run', [task, 'information'])
 endfunction
