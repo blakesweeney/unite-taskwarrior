@@ -82,12 +82,18 @@ function! s:kind.action_table.delete.func(candidates)
   endfor
 endfunction
 
-let s:kind.action_table.toggle = { 'description' : 'toggle status', 'is_selectable': 1, 
+let s:kind.action_table.toggle = { 'description' : 'toggle status', 'is_selectable': 0, 
       \ 'is_quit': 0, 'is_invalidate_cache': 1}
-function! s:kind.action_table.toggle.func(candidates)
-  for candidate in a:candidates
-    call unite#taskwarrior#toggle(candidate.source__data)
-  endfor
+function! s:kind.action_table.toggle.func(candidate)
+  if !unite#taskwarrior#config('prompt_on_toggle')
+    return unite#taskwarrior#toggle(a:candidate.source__data)
+  endif
+
+  let suggested = get(unite#taskwarrior#config('toggle_mapping'),
+        \ a:candidate.source__data.status,
+        \ 'pending')
+  let status = unite#taskwarrior#trim(input("Status: ", suggested))
+  return unite#taskwarrior#modify(a:candidate.source__data, 'status:' . status)
 endfunction
 
 let s:kind.action_table.modify = {'description': 'modify task', 'is_selectable': 1}
