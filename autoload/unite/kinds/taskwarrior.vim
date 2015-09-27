@@ -135,10 +135,26 @@ function! s:kind.action_table.yank_uri.func(candidate)
   return unite#taskwarrior#yank(a:candidate.source__data, 'uri')
 endfunction
 
-let s:kind.action_table.preview = {'description': 'view a task', 'is_selectable': 0, 'is_quit': 0}
-function! s:kind.action_table.preview.func(candidate)
-  let task = a:candidate.source__data
-  call unite#taskwarrior#show_result('unite#taskwarrior#run', [task, 'information'])
+let s:kind.action_table.preview = {
+      \ 'description': 'preview the task', 
+      \ 'is_selectable': 0, 
+      \ 'is_quit': 0
+      \ }
+function! s:kind.action_table.preview.func(candidate) abort
+  let name = unite#taskwarrior#config('preview_action')
+  let action = get(s:kind.action_table, name)
+  return action.func(a:candidate)
+endfunction
+
+let s:kind.action_table.preview_info = {'description': 'view task information', 'is_selectable': 0, 'is_quit': 0}
+function! s:kind.action_table.preview_info.func(candidate)
+  call unite#taskwarrior#show_result('unite#taskwarrior#run', 
+        \ [a:candidate.source__data, 'information'])
+endfunction
+
+let s:kind.action_table.preview_note = {'description': 'show note for this task'}
+function! s:kind.action_table.preview_note.func(candidate) abort
+  call unite#view#_preview_file(a:candidate.source__data.note)
 endfunction
 
 let s:kind.action_table.add_dependency = {'description': 'add a dependency', 'is_selectable': 1}

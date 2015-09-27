@@ -41,7 +41,8 @@ let s:DEFAULTS = {
       \ 'use_taskwiki': 0,
       \ 'respect_context': 0,
       \ 'wiki_root': $HOME . '.vim/wiki',
-      \ 'define_mappings': 0
+      \ 'define_mappings': 0,
+      \ 'preview_action': 'preview_info'
       \ }
 
 let s:config = deepcopy(s:DEFAULTS)
