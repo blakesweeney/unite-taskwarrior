@@ -3,6 +3,7 @@ addons:
   apt:
     packages:
       - uuid-dev
+      - vim
 env:
   - PATH=$PATH:.:./bin TASKDATA=./t/tasks TASKRC=./t/taskrc
 before_script:

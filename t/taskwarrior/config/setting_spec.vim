@@ -2,25 +2,29 @@ describe 'setting values'
   before
     call unite#taskwarrior#config#reset()
   end
+  
+  after
+    call unite#taskwarrior#config#reset()
+  end
 
   describe 'it can set a value'
     call unite#taskwarrior#config#set('command', 'A')
     Expect unite#taskwarrior#config#get('command') == 'A'
   end
 
-  describe 'nested values'
-    it 'can set a nested value with .'
-      call unite#taskwarrior#config#set('status_mapping.active', 'A')
-      let val = unite#taskwarrior#config#get('status_mapping')
-      Expect val.active == 'A'
-    end
+  " describe 'nested values'
+    " it 'can set a value with .'
+    "   call unite#taskwarrior#config#set('status_mapping.active', 'A')
+    "   let val = unite#taskwarrior#config#get('status_mapping')
+    "   Expect val.active == 'A'
+    " end
 
-    it 'will not alter the other values'
-      call unite#taskwarrior#config#set('status_mapping.active', 'A')
-      let val = unite#taskwarrior#config#get('status_mapping')
-      Expect val.active_context == '@'
-    end
-  end
+    " it 'will not alter the other values'
+    "   call unite#taskwarrior#config#set('status_mapping.active', 'A')
+    "   let val = unite#taskwarrior#config#get('status_mapping')
+    "   Expect val.active_context == '@'
+    " end
+  " end
 
   describe 'using dictonaries'
 
