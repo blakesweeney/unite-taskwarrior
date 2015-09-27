@@ -2,6 +2,10 @@ describe 'setting values'
   before
     call unite#taskwarrior#config#reset()
   end
+  
+  after
+    call unite#taskwarrior#config#reset()
+  end
 
   describe 'it can set a value'
     call unite#taskwarrior#config#set('command', 'A')
