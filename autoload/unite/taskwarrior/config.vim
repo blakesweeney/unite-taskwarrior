@@ -17,7 +17,8 @@ let s:DEFAULTS = {
       \ 'filter': 'status.not:deleted',
       \ 'toggle_mapping': { 
       \   'pending': 'completed', 
-      \   'completed': 'pending' 
+      \   'completed': 'deleted',
+      \   'deleted': 'pending'
       \ },
       \ "status_mapping": { 
       \   'active_context': '@',
@@ -42,7 +43,8 @@ let s:DEFAULTS = {
       \ 'respect_context': 0,
       \ 'wiki_root': $HOME . '.vim/wiki',
       \ 'define_mappings': 0,
-      \ 'preview_action': 'preview_info'
+      \ 'preview_action': 'preview_info',
+      \ 'prompt_on_toggle': 1
       \ }
 
 let s:config = deepcopy(s:DEFAULTS)
