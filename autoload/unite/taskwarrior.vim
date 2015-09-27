@@ -337,5 +337,29 @@ function! unite#taskwarrior#similar(tasks)
   return filt.str()
 endfunction
 
+" Below is mostly copied from unite.vim to serve as nice way to preview stuff
+function! unite#taskwarrior#show_result(fn, args) abort
+  let filename = tempname()
+  call writefile(split(call(a:fn, a:args), "\n"), filename)
+  let cmd = exists('g:loaded_AnsiEscPlugin') ? '+AnsiEsc' : ''
+
+  let context = unite#get_context()
+  if context.vertical_preview
+    let unite_winwidth = winwidth(0)
+    silent execute 'vertical pedit!' . cmd . ' ' . fnameescape(filename)
+    wincmd P
+    let target_winwidth = (unite_winwidth + winwidth(0)) / 2
+    execute 'wincmd p | vert resize ' . target_winwidth
+  else
+    let previewheight_save = &previewheight
+    try
+      let &previewheight = context.previewheight
+      silent execute 'pedit!' . cmd . ' ' . fnameescape(filename)
+    finally
+      let &previewheight = previewheight_save
+    endtry
+  endif
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
