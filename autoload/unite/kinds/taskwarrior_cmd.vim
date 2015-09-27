@@ -9,15 +9,12 @@ let s:kind = {
       \ }
 
 let s:kind.action_table.execute = {
-      \ 'description' : 'execute command',
-      \ 'is_selectable': 1,
+      \ 'description': 'execute command',
       \ 'is_quit': 1
       \ }
-
-function! s:kind.action_table.execute.func(candidates)
-  for candidate in a:candidates
-    echo unite#taskwarrior#call(candidate.word)
-  endfor
+function! s:kind.action_table.execute.func(candidate)
+  call unite#taskwarrior#show_result('unite#taskwarrior#call',
+        \ [a:candidate.word])
 endfunction
 
 function! unite#kinds#taskwarrior_cmd#define()

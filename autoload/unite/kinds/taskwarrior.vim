@@ -115,7 +115,7 @@ function! s:kind.action_table.undo.func(candidate) abort
   return unite#taskwarrior#undo()
 endfunction
 
-let s:kind.action_table.start = {'description': 'start a task', 'is_selectable': 0}
+let s:kind.action_table.start = {'description': 'start a task', 'is_selectable': 0, 'is_quit': 0}
 function! s:kind.action_table.start.func(candidate)
   return unite#taskwarrior#start(a:candidate.source__data)
 endfunction
@@ -138,7 +138,7 @@ endfunction
 let s:kind.action_table.view = {'description': 'view a task', 'is_selectable': 0, 'is_quit': 0}
 function! s:kind.action_table.view.func(candidate)
   let task = a:candidate.source__data
-  echo unite#taskwarrior#run(task, 'information')
+  call unite#taskwarrior#show_result('unite#taskwarrior#run', [task, 'information'])
 endfunction
 
 let s:kind.action_table.add_dependency = {'description': 'add a dependency', 'is_selectable': 1}
