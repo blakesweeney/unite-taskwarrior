@@ -49,5 +49,17 @@ describe 'the sorter_task filter'
       Expect sorter.func(t2, t4) == 1
       Expect sorter.func(t3, t4) == -1
     end
+
+    it 'can be used in sort'
+      let t1 = {'project': 'A', 'urgency': 2, 'id': 1}
+      let t2 = {'project': 'A', 'urgency': 1, 'id': 2}
+      let t3 = {'project': 'B', 'urgency': 1, 'id': 3}
+      let t4 = {'project': 'B', 'urgency': 2, 'id': 4}
+
+      let context = {'custom_sorting': 'project-,urgency+'}
+      let sorter = unite#filters#sorter_task#build(context)
+      let val = sort([t2, t4, t3, t1], sorter.func, sorter)
+      Expect val == [t3, t4, t2, t1]
+    end
   end
 end
