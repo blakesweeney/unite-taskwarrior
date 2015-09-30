@@ -31,7 +31,7 @@ endfunction
 
 function! unite#filters#sorter_task#get_sorting_definition(context) abort
   let key = get(a:context, 'custom_sorting',
-        \ unite#taskwarrrior#config('default_sorting'))
+        \ unite#taskwarrior#config('default_ordering'))
   let known = unite#taskwarrior#config('sort_orders')
 
   return get(known, key, key)
