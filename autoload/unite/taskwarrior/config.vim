@@ -45,7 +45,7 @@ let s:DEFAULTS = {
       \ 'define_mappings': 0,
       \ 'preview_action': 'preview_info',
       \ 'prompt_on_toggle': 1,
-      \ 'default_ordering': "project+,due-",
+      \ 'default_ordering': "urgency-",
       \ 'sort_orders': {}
       \ }
 
