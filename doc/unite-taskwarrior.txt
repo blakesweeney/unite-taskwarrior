@@ -21,6 +21,9 @@ Usage                                        |unite-taskwarrior-usage|
     taskwarrior/notes                        |unite-taskwarrior_notes|
     taskwarrior/projects                     |unite-taskwarrior_projects|
     taskwarrior/tags                         |unite-taskwarrior_tags|
+  Unite Filters                              |unite-taskwarrior-filters|
+    sorter_count                             |unite-taskwarrior-sorter_count|
+    sorter_task                              |unite-taskwarrior-sorter_task|
   Common Actions                             |unite-taskwarrior-actions|
   Note Files                                 |unite-taskwarrior-notes|
   Functions                                  |unite-taskwarrior-functions|
@@ -514,7 +517,42 @@ notes
 Open the notes related to this project.
 
 ==============================================================================
-Common actions                              *unite-taskwarrior-common-actions*
+Unite Filters                                      *unite-taskwarrior-filters*
+
+We provide a few filters for sorting tasks and things in useful ways. They are
+described below.
+
+------------------------------------------------------------------------------
+sorter_count                                  *unite-taskwarrior-sorter_count*
+
+This sorts things by their count. It is used for sorting in the
+|unite-taskwarrior_projects|, |unite-taskwarrior_tags| and
+|unite-taskwarrior_context| sources.
+
+------------------------------------------------------------------------------
+sorter_task                                    *unite-taskwarrior-sorter_task*
+
+This is used to sort tasks by a defintion string like: 'project+,urgency-'. This
+means to sorty by project in ascending order and then urgency in descending
+order. This idea is taken from taskwiki. This sorter is the default sorter for
+the taskwiki source. It can be configured in this source by using the
+'-custom_sorting' option. 
+
+For example: >
+:Unite taskwarrior -custom_sorting='project+'
+:Unite taskwarrior -custom_sorting='due+,project-'
+<
+
+If no ordering is given it will use what is in
+unite_taskwarrior-default-ordering. If that is empty it will not sort. It can
+also accept a name and lookup the ordering. For example: >
+let g:unite_taskwarrior_sort_order = {"L": "project+,urgency-", "B": "project-"}
+:Unite taskwarrior -custom_sorting='L'
+<
+will sort by project in ascending order and then urgency in descending order.
+
+==============================================================================
+Common Actions                              *unite-taskwarrior-common-actions*
 
 This adds an annotate action to the unite kinds specified in
 |g:unite_taskwarrior_add_annotations| which defaults to ["common"]. The effect
