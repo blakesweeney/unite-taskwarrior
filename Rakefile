@@ -30,7 +30,9 @@ task :reset do
 end
 
 task :test do
-  sh 'bundle exec vim-flavor test t/taskwarrior/*_spec.vim t/taskwarrior/**/*_spec.vim'
+  test_patterns = %W{t/taskwarrior/*_spec.vim t/taskwarrior/**/*_spec.vim 
+    t/unite/filters/**/*_spec.vim}
+  sh "bundle exec vim-flavor test #{test_patterns.join(" ")}"
 end
 
 task :ci => [:dump, :test]
