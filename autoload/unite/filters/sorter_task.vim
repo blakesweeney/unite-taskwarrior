@@ -10,10 +10,13 @@ let s:sorter = {
       \ 'description' : 'taskwiki style sorting',
       \}
 
-function! s:less(name, a1, a2, dir) abort
-  let p1 = forward ? a:a1[a:name] : a:a2[a:name]
-  let p2 = forward ? a:a2[a:name] : a:a1[a:name]
-  return type(p1) == type([]) ? len(p1) < len(p2) : p1 < p2
+function! s:less(name, a1, a2, forward) abort
+  let p1 = get((a:forward ? a:a1 : a:a2), a:name)
+  let p2 = get((a:forward ? a:a2 : a:a1), a:name)
+  if type(p1) == type([])
+    return len(p1) - len(p2)
+  endif
+  return p1 == p2 ? 0 : p1 > p2 ? 1 : -1
 endfunction
 
 function! s:date_less(name, a1, a2, forward) abort
@@ -24,12 +27,6 @@ function! s:date_less(name, a1, a2, forward) abort
           \ s:DT.from_format(a:a2[a:name], '%Y%m%dT%H%M%SZ'))
     return (a:forward ? a:a1[parsed].compare(a:a2[parsed]) :
           \ a:a2[parsed].compare(a:a1[parsed]))
-endfunction
-
-function! s:sorting(definitions, candidates) abort
-  for definition in a:definitions
-    if 
-  endfor
 endfunction
 
 function! unite#filters#sorter_task#get_sorting_definition(context) abort
