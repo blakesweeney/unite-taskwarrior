@@ -24,6 +24,30 @@ describe 'the sorter_task filter'
     end
   end
 
-  " describe 'sorting tasks'
-  " end
+  describe 'building the sorter'
+    it 'can get all attributes'
+      let context = {'custom_sorting': 'due+,project-,urgency+'}
+      let val = unite#filters#sorter_task#build(context)
+      Expect len(val.attrs) == 3
+    end
+
+    it 'builds a function that can compare using all attributes'
+      let t1 = {'project': 'A', 'urgency': 2}
+      let t2 = {'project': 'A', 'urgency': 1}
+      let t3 = {'project': 'B', 'urgency': 1}
+      let t4 = {'project': 'B', 'urgency': 2}
+
+      let context = {'custom_sorting': 'project-,urgency+'}
+      let sorter = unite#filters#sorter_task#build(context)
+
+      Expect sorter.func(t1, t1) == 0
+      Expect sorter.func(t1, t2) == 1
+      Expect sorter.func(t1, t3) == 1
+      Expect sorter.func(t1, t4) == 1
+      Expect sorter.func(t2, t1) == -1
+      Expect sorter.func(t2, t3) == 1
+      Expect sorter.func(t2, t4) == 1
+      Expect sorter.func(t3, t4) == -1
+    end
+  end
 end

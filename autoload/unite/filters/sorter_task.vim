@@ -52,18 +52,18 @@ function! unite#filters#sorter_task#parse(definition) abort
   return attrs
 endfunction
 
-function! s:sorter.filter(candidates, context) abort
-  if empty(a:candidates)
-    return a:candidates
+function! unite#filters#sorter_task#build(context) abort
+  let def = unite#filters#sorter_task#get_sorting_definition(a:context)
+  if empty(def)
+    return {}
   endif
 
-  let def = unite#filters#sorter_task#get_sorting_definition(a:context)
   let attrs = unite#filters#sorter_task#parse(def)
-  let sorting = {'attrs': attrs}
+  let sorter = {'attrs': attrs}
 
-  function! sorter.compare(c1, c2) abort
+  function! sorter.func(c1, c2) abort
     for attr in self.attrs
-      let current = attr.func(attr.name, c1, c2, attr.ordering)
+      let current = attr.func(attr.name, a:c1, a:c2, attr.ordering)
       if current
         return current
       endif
@@ -71,7 +71,20 @@ function! s:sorter.filter(candidates, context) abort
     return 0
   endfunction
 
-  return sort(a:candidates, sorter.compare, sorter)
+  return sorter
+endfunction
+
+function! s:sorter.filter(candidates, context) abort
+  if empty(a:candidates)
+    return a:candidates
+  endif
+
+  let sorter = unite#filters#sorter_task#build(a:context)
+  if empty(sorter)
+    return a:candidates
+  endif
+
+  return sort(a:candidates, sorter.func, sorter)
 endfunction
 
 function! unite#filters#sorter_task#define() abort
