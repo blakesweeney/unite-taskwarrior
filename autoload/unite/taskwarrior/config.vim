@@ -44,7 +44,9 @@ let s:DEFAULTS = {
       \ 'wiki_root': $HOME . '.vim/wiki',
       \ 'define_mappings': 0,
       \ 'preview_action': 'preview_info',
-      \ 'prompt_on_toggle': 1
+      \ 'prompt_on_toggle': 1,
+      \ 'default_ordering': "project+,due-",
+      \ 'sort_orders': {}
       \ }
 
 let s:config = deepcopy(s:DEFAULTS)
@@ -118,6 +120,10 @@ function! unite#taskwarrior#config#get(key) abort
 
   if name == 'note_formatter' && unite#taskwarrior#config('use_taskwiki')
     let value = 'unite#taskwarrior#formatters#taskwiki'
+  endif
+
+  if name == 'sort_orders'
+    let value = extend(get(g:, 'taskwiki_sort_orders', {}), value)
   endif
 
   return value

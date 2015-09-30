@@ -78,4 +78,27 @@ describe 'getting configuration values'
     end
   end
 
+  describe 'sorting values'
+    it 'gets the configured sorting keys'
+      call unite#taskwarrior#config#set('sort_orders', {'T': 'due-'})
+      let val = unite#taskwarrior#config#get('sort_orders')
+      Expect val == {'T': 'due-'}
+    end
+
+    it 'will use known taskwiki orderings'
+      let g:taskwiki_sort_orders = {"L": "project+,due-"}
+      let val = unite#taskwarrior#config#get('sort_orders')
+      Expect val == {"L": "project+,due-"}
+      unlet g:taskwiki_sort_orders
+    end
+
+    it 'will merge taskwiki orderings with configured ones'
+      call unite#taskwarrior#config#set('sort_orders', {'T': 'due-'})
+      let g:taskwiki_sort_orders = {"L": "project+,due-", 'T': 'due-'}
+      let val = unite#taskwarrior#config#get('sort_orders')
+      Expect val == {"L": "project+,due-", 'T': 'due-'}
+      unlet g:taskwiki_sort_orders
+    end
+  end
+
 end
