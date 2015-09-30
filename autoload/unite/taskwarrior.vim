@@ -202,11 +202,16 @@ function! unite#taskwarrior#newest() abort
   let tasks = split(unite#taskwarrior#call("newest"), "\n")
   let task_id = split(tasks[2])[0]
   let raw = unite#taskwarrior#call(["export", task_id])
-  let parsed = unite#taskwarrior#parse(raw)
-  if type(parsed) == type([])
-    return parsed[0]
-  endif
-  return parsed
+  try
+    let parsed = unite#taskwarrior#parse(raw)
+    if type(parsed) == type([])
+      return parsed[0]
+    endif
+    return parsed
+  catch
+    call unite#print_error("Could not get newest")
+    return {}
+  endtry
 endfunction
 
 function! unite#taskwarrior#input(args, use_range, line1, line2)
