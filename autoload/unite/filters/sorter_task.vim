@@ -58,16 +58,17 @@ function! unite#filters#sorter_task#build(context) abort
     return {}
   endif
 
-  let attrs = unite#filters#sorter_task#parse(def)
-  let sorter = {'attrs': attrs}
+  let sorter = {'attrs': unite#filters#sorter_task#parse(def)}
 
   function! sorter.func(c1, c2) abort
     for attr in self.attrs
-      let current = attr.func(attr.name, a:c1, a:c2, attr.ordering)
-      if current
+      let current = attr.func(attr.name, a:c1.source__data, a:c2.source__data,
+            \ attr.ordering)
+      if !empty(current)
         return current
       endif
     endfor
+
     return 0
   endfunction
 

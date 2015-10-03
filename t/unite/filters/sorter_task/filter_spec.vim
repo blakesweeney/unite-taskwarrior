@@ -32,10 +32,10 @@ describe 'the sorter_task filter'
     end
 
     it 'builds a function that can compare using all attributes'
-      let t1 = {'project': 'A', 'urgency': 2}
-      let t2 = {'project': 'A', 'urgency': 1}
-      let t3 = {'project': 'B', 'urgency': 1}
-      let t4 = {'project': 'B', 'urgency': 2}
+      let t1 = {'source__data': {'project': 'A', 'urgency': 2}}
+      let t2 = {'source__data': {'project': 'A', 'urgency': 1}}
+      let t3 = {'source__data': {'project': 'B', 'urgency': 1}}
+      let t4 = {'source__data': {'project': 'B', 'urgency': 2}}
 
       let context = {'custom_sorting': 'project-,urgency+'}
       let sorter = unite#filters#sorter_task#build(context)
@@ -51,10 +51,10 @@ describe 'the sorter_task filter'
     end
 
     it 'can be used in sort'
-      let t1 = {'project': 'A', 'urgency': 2, 'id': 1}
-      let t2 = {'project': 'A', 'urgency': 1, 'id': 2}
-      let t3 = {'project': 'B', 'urgency': 1, 'id': 3}
-      let t4 = {'project': 'B', 'urgency': 2, 'id': 4}
+      let t1 = {'source__data': {'project': 'A', 'urgency': 2, 'id': 1}}
+      let t2 = {'source__data': {'project': 'A', 'urgency': 1, 'id': 2}}
+      let t3 = {'source__data': {'project': 'B', 'urgency': 1, 'id': 3}}
+      let t4 = {'source__data': {'project': 'B', 'urgency': 2, 'id': 4}}
 
       let context = {'custom_sorting': 'project-,urgency+'}
       let sorter = unite#filters#sorter_task#build(context)
