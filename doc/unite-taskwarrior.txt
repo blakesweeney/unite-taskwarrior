@@ -532,24 +532,38 @@ This sorts things by their count. It is used for sorting in the
 ------------------------------------------------------------------------------
 sorter_task                                    *unite-taskwarrior-sorter_task*
 
-This is used to sort tasks by a defintion string like: 'project+,urgency-'. This
-means to sorty by project in ascending order and then urgency in descending
+This is used to sort tasks by a definition string like: 'project+,urgency-'. This
+means to sort by project in ascending order and then urgency in descending
 order. This idea is taken from taskwiki. This sorter is the default sorter for
 the taskwiki source. It can be configured in this source by using the
 '-custom_sorting' option. 
 
 For example: >
-:Unite taskwarrior -custom_sorting='project+'
-:Unite taskwarrior -custom_sorting='due+,project-'
+        :Unite taskwarrior -custom_sorting='project+'
+        :Unite taskwarrior -custom_sorting='due+,project-'
 <
 
 If no ordering is given it will use what is in
 unite_taskwarrior-default-ordering. If that is empty it will not sort. It can
 also accept a name and lookup the ordering. For example: >
-let g:unite_taskwarrior_sort_order = {"L": "project+,urgency-", "B": "project-"}
-:Unite taskwarrior -custom_sorting='L'
+        let g:unite_taskwarrior_sort_order = {"L": "project+,urgency-", "B": "project-"}
+        :Unite taskwarrior -custom_sorting='L'
 <
+
 will sort by project in ascending order and then urgency in descending order.
+
+This can also use taskwiki sorting definitions. For example: >
+
+        let g:taskwiki_sort_orders={"T": "project+,due-"}
+
+        :Unite taskwarrior -custom_sorting='T'
+<
+
+will is list tasks sorted by project, then due date. If there are orderings for
+both this and taskwiki then the ones configured for unite-taskwarrior will take
+priority.
+
+The default sorting is configured by |unite_taskwarrior_default_ordering|.
 
 ==============================================================================
 Common Actions                              *unite-taskwarrior-common-actions*
