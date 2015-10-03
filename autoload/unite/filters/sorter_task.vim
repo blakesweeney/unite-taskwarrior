@@ -36,6 +36,9 @@ endfunction
 
 function! s:is_date(attr) abort
   let pattern = '^\d\{8}T\d\{6}Z$'
+  if type(a:attr) != type('')
+    return 0
+  endif
   return match(pattern, a:attr) != -1
 endfunction
 
