@@ -16,6 +16,11 @@ function! s:less(name, a1, a2, forward) abort
   if type(p1) == type([])
     return len(p1) - len(p2)
   endif
+
+  if s:is_date(p1) && s:is_date(p2)
+    return s:date_less(name, a:a1, a:a2, a:forward)
+  end
+
   return p1 == p2 ? 0 : p1 > p2 ? 1 : -1
 endfunction
 
@@ -27,6 +32,11 @@ function! s:date_less(name, a1, a2, forward) abort
           \ s:DT.from_format(a:a2[a:name], '%Y%m%dT%H%M%SZ'))
     return (a:forward ? a:a1[parsed].compare(a:a2[parsed]) :
           \ a:a2[parsed].compare(a:a1[parsed]))
+endfunction
+
+function! s:is_date(attr) abort
+  let pattern = '^\d\{8}T\d\{6}Z$'
+  return match(pattern, a:attr) != -1
 endfunction
 
 function! unite#filters#sorter_task#get_sorting_definition(context) abort

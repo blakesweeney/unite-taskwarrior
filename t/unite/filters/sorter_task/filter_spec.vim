@@ -61,5 +61,17 @@ describe 'the sorter_task filter'
       let val = sort([t2, t4, t3, t1], sorter.func, sorter)
       Expect val == [t3, t4, t2, t1]
     end
+
+    it 'can sort by date'
+      let t1 = {'source__data': {'project': 'A', 'urgency': 2, 'due': '20120110T231200Z'}}
+      let t2 = {'source__data': {'project': 'A', 'urgency': 1, 'due': '20120110T231203Z'}}
+      let t3 = {'source__data': {'project': 'B', 'urgency': 1, 'due': '20120110T231201Z'}}
+      let t4 = {'source__data': {'project': 'B', 'urgency': 2, 'due': '20120110T231200Z'}}
+
+      let context = {'custom_sorting': 'due-'}
+      let sorter = unite#filters#sorter_task#build(context)
+      let val = sort([t2, t4, t3, t1], sorter.func, sorter)
+      Expect val == [t2, t3, t4, t1]
+    end
   end
 end
