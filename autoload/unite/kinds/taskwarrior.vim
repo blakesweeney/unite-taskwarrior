@@ -92,7 +92,9 @@ function! s:kind.action_table.toggle.func(candidate)
   let suggested = get(unite#taskwarrior#config('toggle_mapping'),
         \ a:candidate.source__data.status,
         \ 'pending')
-  let status = unite#taskwarrior#trim(input("Status: ", suggested))
+
+  let complete = 'customlist,unite#taskwarrior#complete#next_status'
+  let status = unite#taskwarrior#trim(input("Status: ", suggested, complete))
   return unite#taskwarrior#modify(a:candidate.source__data, 'status:' . status)
 endfunction
 
