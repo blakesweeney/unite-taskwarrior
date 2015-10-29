@@ -18,7 +18,7 @@ function! s:less(name, a1, a2, forward) abort
   endif
 
   if s:is_date(p1) && s:is_date(p2)
-    return s:date_less(name, a:a1, a:a2, a:forward)
+    return s:date_less(a:name, a:a1, a:a2, a:forward)
   end
 
   return p1 == p2 ? 0 : p1 > p2 ? 1 : -1
