@@ -18,6 +18,7 @@ function! s:less(name, a1, a2, forward) abort
   endif
 
   if s:is_date(p1) && s:is_date(p2)
+    echomsg printf("%s is a date: %s, %s", a:name, p1, p2)
     return s:date_less(a:name, a:a1, a:a2, a:forward)
   end
 
@@ -26,17 +27,17 @@ endfunction
 
 function! s:date_less(name, a1, a2, forward) abort
   let parsed = '_' . a:name
-    let a:a1[parsed] = get(a:a1, parsed,
-          \ s:DT.from_format(a:a1[a:name], '%Y%m%dT%H%M%SZ'))
-    let a:a2[parsed] = get(a:a2, parsed,
-          \ s:DT.from_format(a:a2[a:name], '%Y%m%dT%H%M%SZ'))
-    return (a:forward ? a:a1[parsed].compare(a:a2[parsed]) :
-          \ a:a2[parsed].compare(a:a1[parsed]))
+  let a:a1[parsed] = get(a:a1, parsed,
+        \ s:DT.from_format(a:a1[a:name], '%Y%m%dT%H%M%SZ'))
+  let a:a2[parsed] = get(a:a2, parsed,
+        \ s:DT.from_format(a:a2[a:name], '%Y%m%dT%H%M%SZ'))
+  return (a:forward ? a:a1[parsed].compare(a:a2[parsed]) :
+        \ a:a2[parsed].compare(a:a1[parsed]))
 endfunction
 
 function! s:is_date(attr) abort
   let pattern = '^\d\{8}T\d\{6}Z$'
-  if type(a:attr) != type('')
+  if type(a:attr) != type('') || empty(a:attr)
     return 0
   endif
   return match(pattern, a:attr) != -1
