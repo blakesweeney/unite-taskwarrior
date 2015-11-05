@@ -1,12 +1,11 @@
 language: ruby
-addons:
-  apt:
-    packages:
-      - uuid-dev
-      - vim
 env:
   - PATH=$PATH:.:./bin TASKDATA=./t/tasks TASKRC=./t/taskrc
 before_script:
+  - sudo add-apt-repository ppa:fcwu-tw/ppa -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq vim
+  - sudo apt-get install -qq uuid-dev
   - ./install_task.sh
   - rake compile
 rvm:
